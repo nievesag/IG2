@@ -62,7 +62,7 @@ void IG2App::setupScene(void){
     mCamNode = mSM->getRootSceneNode()->createChildSceneNode("nCam");
     mCamNode->attachObject(cam);
 
-    mCamNode->setPosition(0, 0, 1000);
+    mCamNode->setPosition(0, -2000, 5000);
     mCamNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TS_WORLD);
     
     // and tell it to render into the main window
@@ -84,7 +84,7 @@ void IG2App::setupScene(void){
     mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
     //mLightNode = mCamNode->createChildSceneNode("nLuz");
     mLightNode->attachObject(luz);
-    mLightNode->setDirection(Ogre::Vector3(0, 0, -1));
+    mLightNode->setDirection(Ogre::Vector3(0.5, -1, 0.5));
     
 
     
@@ -106,6 +106,10 @@ void IG2App::setupScene(void){
     
     //mSinbadNode->yaw(Ogre::Degree(-45));
     //mSinbadNode->setVisible(false);    
+
+    mLab = new Labyrinth();
+    mLab->setupLabyrinth(mSM);
+    mLab->readFile("stage1.txt");
 }
 
 
