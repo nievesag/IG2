@@ -2,6 +2,8 @@
 #include "Wall.h"
 #include "Empty.h"
 
+using namespace std;
+
 void Labyrinth::setupLabyrinth(SceneManager* mSM)
 {
     _mSM = mSM;
