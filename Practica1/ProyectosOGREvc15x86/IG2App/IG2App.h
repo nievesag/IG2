@@ -41,7 +41,10 @@ protected:
     Ogre::SceneNode* mCamNode = nullptr;
     OgreBites::CameraMan* mCamMgr = nullptr;
 
+    // Objetos de juego
     Labyrinth* mLab = nullptr;
+    Hero* mHero = nullptr;
+    // ... enemigos 
 };
 
 #endif

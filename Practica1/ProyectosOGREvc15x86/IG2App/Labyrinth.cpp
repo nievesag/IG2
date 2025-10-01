@@ -1,13 +1,15 @@
 #include "Labyrinth.h"
 #include "Wall.h"
 #include "Empty.h"
+#include "Constants.h"
 
 using namespace std;
 
-void Labyrinth::setupLabyrinth(SceneManager* mSM)
+void Labyrinth::setupLabyrinth(SceneManager* mSM, Hero* hero)
 {
     _mSM = mSM;
     _labyrinthNode = _mSM->getRootSceneNode()->createChildSceneNode("nLabMain");
+    _hero = hero;
 }
 
 void Labyrinth::readFile(string fileName)
@@ -30,7 +32,7 @@ void Labyrinth::readFile(string fileName)
     {
         cin >> fila;
 
-        std::vector<IG2Object*> line;
+        std::vector<Object*> line;
 
         for (int j = 0; j < width; j++) 
         {
@@ -40,14 +42,21 @@ void Labyrinth::readFile(string fileName)
             if (fila[j] == 'x') 
             {
                 SceneNode* node = _labyrinthNode->createChildSceneNode(id);
-                IG2Object* muro = new Wall(Vector3(j * 100, 0, i * 100), node, _mSM, "cube.mesh");
+                Object* muro = new Wall(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM, "cube.mesh");
                 line.push_back(muro);
             }
             else if (fila[j] == 'o')
             {
                 SceneNode* node = _labyrinthNode->createChildSceneNode(id);
-                IG2Object* vacio = new Empty(Vector3(j * 100, 0, i * 100), node, _mSM);
+                Object* vacio = new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM);
                 line.push_back(vacio);
+            }
+            else if (fila[j] == 'h') 
+            {
+                SceneNode* node = _labyrinthNode->createChildSceneNode(id);
+                line.push_back(new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM)); // vacio en el mapa
+          
+                _hero->setPosition(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize));
             }
             
             // labyrinth[i,j] = fila[j];
@@ -60,6 +69,17 @@ void Labyrinth::readFile(string fileName)
     cin.rdbuf(cinbuf);
 }
 
+void Labyrinth::frameRendered(const Ogre::FrameEvent& evt) 
+{
+    Vector3 wantToMove = _hero->getLastPosibleDirection();
+    pair<int, int> dirToMove = { wantToMove.x, wantToMove.z };
+
+    _heroPos = vectorToMap(_hero->getPosition());
+
+    bool movable = checkMove(_heroPos, dirToMove);
+
+    _hero->moveCharacter(Vector3(dirToMove.first, 0, dirToMove.second));
+}
 
 void Labyrinth::DebugMap()
 {
@@ -72,4 +92,17 @@ void Labyrinth::DebugMap()
         }
         cout << "\n";
     }
+}
+
+pair<int, int> Labyrinth::vectorToMap(Vector3 pos)
+{
+    return pair<int, int>(pos.x / Constants::mapSize, pos.z / Constants::mapSize);
+}
+
+bool Labyrinth::checkMove(pair<int, int> pos, pair<int, int> dir)
+{
+    int x = pos.first + dir.first;
+    int z = pos.second + dir.second;
+
+    return map[x][z]->isEmpty();
 }

@@ -1,0 +1,3 @@
+- que ogre se gire al girar.
+- que se frene cuando llegue a una pared
+- que cuando gire se mueva por el centro

@@ -91,9 +91,10 @@ void IG2App::setupScene(void){
     //------------------------------------------------------------------------
     // Creating Sinbad
 
+    /*
     Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
-    mSinbadNode = mSM->getRootSceneNode()->createChildSceneNode("nSinbad");
-    mSinbadNode->attachObject(ent);
+    //mSinbadNode = mSM->getRootSceneNode()->createChildSceneNode("nSinbad");
+    //mSinbadNode->attachObject(ent);
 
     // Show bounding box
     mSinbadNode->showBoundingBox(true);
@@ -105,11 +106,15 @@ void IG2App::setupScene(void){
     mSinbadNode->setScale(20, 20, 20);
     
     //mSinbadNode->yaw(Ogre::Degree(-45));
-    //mSinbadNode->setVisible(false);    
+    //mSinbadNode->setVisible(false);   
+    */
+
+    SceneNode* nodeHero = mSM->getRootSceneNode()->createChildSceneNode("Hero");
+    nodeHero->setScale(11, 11, 11);
+    mHero = new Hero(Vector3(0, 0, 0), nodeHero, mSM, "Sinbad.mesh");
+    addInputListener(mHero);
 
     mLab = new Labyrinth();
-    mLab->setupLabyrinth(mSM);
+    mLab->setupLabyrinth(mSM, mHero);
     mLab->readFile("stage1.txt");
 }
-
-

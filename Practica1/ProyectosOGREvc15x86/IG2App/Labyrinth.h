@@ -10,13 +10,16 @@
 #include <SDL_keycode.h>
 #include <iostream>
 #include <vector>
+#include "Character.h"
+#include "Hero.h"
 
 #include "IG2Object.h"
+#include "Object.h"
 
 using namespace Ogre;
 using namespace std;
 
-class Labyrinth
+class Labyrinth : public OgreBites::InputListener
 {
 private:
 	//static Labyrinth* _labyrinth;
@@ -27,13 +30,18 @@ private:
 	int width = 0, height = 0;
 
 	// vector de bloques
-	std::vector<std::vector<IG2Object*>> map;
+	std::vector<std::vector<Object*>> map;
 
-	// posicion del hero
+	// --- hero
+	Hero* _hero = nullptr;
+	std::pair<int, int> _heroPos; // posicion del hero en coordenadas de bloques
 
-
-	//Otros
+	// Otros
 	void DebugMap();
+
+	pair<int, int> vectorToMap(Vector3 pos); // para pasar a coordenadas de bloques
+
+	bool checkMove(pair<int, int> pos, pair<int, int> dir);
 
 public:
 	Labyrinth() = default;
@@ -41,6 +49,9 @@ public:
 	// para gestion del singleton
 	//static Labyrinth* getInstance();
 
-	void setupLabyrinth(SceneManager* mSM);
+	void setupLabyrinth(SceneManager* mSM, Hero* hero);
 	void readFile(string fileName);
+
+	virtual void frameRendered(const Ogre::FrameEvent& evt);
+
 };
