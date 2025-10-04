@@ -36,12 +36,15 @@ private:
 	Hero* _hero = nullptr;
 	std::pair<int, int> _heroPos; // posicion del hero en coordenadas de bloques
 
+	void updateHero();
+
 	// Otros
 	void DebugMap();
 
 	pair<int, int> vectorToMap(Vector3 pos); // para pasar a coordenadas de bloques
 
 	bool checkMove(pair<int, int> pos, pair<int, int> dir);
+	bool checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 realPos);
 
 public:
 	Labyrinth() = default;

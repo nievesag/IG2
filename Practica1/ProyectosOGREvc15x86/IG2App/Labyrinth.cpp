@@ -51,6 +51,8 @@ void Labyrinth::readFile(string fileName)
                 SceneNode* node = _labyrinthNode->createChildSceneNode(id);
                 Object* vacio = new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM);
                 line.push_back(vacio);
+                //std::cout << "x: " << j << " z: " << i << "\n";
+                //std::cout << line[j]->isEmpty() << "\n";
             }
             else if (fila[j] == 'h') 
             {
@@ -63,6 +65,12 @@ void Labyrinth::readFile(string fileName)
             // labyrinth[i,j] = fila[j];
         }
 
+        /*for (auto a : line)
+        {
+            std::cout << a->isEmpty() << " ";
+        }
+        std::cout << "\n";*/
+
         map.push_back(line);
     }
     //DebugMap();
@@ -72,15 +80,28 @@ void Labyrinth::readFile(string fileName)
 
 void Labyrinth::frameRendered(const Ogre::FrameEvent& evt) 
 {
+    updateHero();
+}
+
+void Labyrinth::updateHero()
+{
     Vector3 wantToMove = _hero->getLastPosibleDirection();
     pair<int, int> dirToMove = { wantToMove.x, wantToMove.z };
 
-    _heroPos = vectorToMap(_hero->getPosition());
+    Vector3 isMoving = _hero->getCurrentDirection();
+    pair<int, int> dirMoving = { isMoving.x, isMoving.z };
+
+    Vector3 realPos = _hero->getPosition();
+    _heroPos = vectorToMap(realPos);
     std::cout << _heroPos.first << " " << _heroPos.second << "\n";
 
-    bool movable = checkMove(_heroPos, dirToMove);
+    bool turn = checkMove(_heroPos, dirToMove);
+    bool movable = checkForward(_heroPos, dirMoving, realPos);
 
-    _hero->moveCharacter();
+    if (turn)
+        _hero->moveCharacter();
+    else if (!movable)
+        _hero->stopCharacter();
 }
 
 void Labyrinth::DebugMap()
@@ -106,5 +127,27 @@ bool Labyrinth::checkMove(pair<int, int> pos, pair<int, int> dir)
     int x = pos.first + dir.first;
     int z = pos.second + dir.second;
 
-    return map[x][z]->isEmpty();
+    //std::cout << map[x][z]->isEmpty() << "\n";
+
+    return map[z][x]->isEmpty();
+}
+
+bool Labyrinth::checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 realPos)
+{
+    float worldSize = Constants::mapSize;
+    Vector3 squareCenter(pos.first * worldSize + worldSize / 2, 0, pos.second * worldSize + worldSize / 2);
+
+    if (!checkMove(pos, dir))
+    {
+        if (dir.first > 0 && realPos.x > squareCenter.x)
+            return false;
+        if (dir.first < 0 && realPos.x < squareCenter.x)
+            return false;
+        if (dir.second > 0 && realPos.z > squareCenter.z)
+            return false;
+        if (dir.second < 0 && realPos.z < squareCenter.z)
+            return false;
+    }
+
+    return true;
 }

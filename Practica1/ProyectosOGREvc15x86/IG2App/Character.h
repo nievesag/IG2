@@ -16,6 +16,7 @@ public:
 		currentDirection = Vector3(0, 0, 0);
 	};
 	Vector3 getLastPosibleDirection() { return lastPosibleDirection; }
+	Vector3 getCurrentDirection() { return currentDirection; }
 
 
 	void moveCharacter();
