@@ -84,7 +84,7 @@ void IG2App::setupScene(void){
     mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
     //mLightNode = mCamNode->createChildSceneNode("nLuz");
     mLightNode->attachObject(luz);
-    mLightNode->setDirection(Ogre::Vector3(0.5, -1, 0.5));
+    mLightNode->setDirection(Ogre::Vector3(0.5, -0.5, 0.5));
     
 
     
@@ -117,4 +117,5 @@ void IG2App::setupScene(void){
     mLab = new Labyrinth();
     mLab->setupLabyrinth(mSM, mHero);
     mLab->readFile("stage1.txt");
+    addInputListener(mLab);
 }

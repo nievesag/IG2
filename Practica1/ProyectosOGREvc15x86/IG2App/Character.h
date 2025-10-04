@@ -19,6 +19,8 @@ public:
 
 
 	void moveCharacter();
+	void stopCharacter();
+	void snapToRail(Vector3 rail);
 	
 protected:
 	Vector3 lastPosibleDirection; // ultima "posible" direccion

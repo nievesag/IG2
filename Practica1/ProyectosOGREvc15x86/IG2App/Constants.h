@@ -22,7 +22,7 @@ namespace Constants
 		SDLK_RIGHT
 	};
 
-	 static const double heroSpeed = 50;
+	 static const double heroSpeed = 200;
 
 	 static const int mapSize = 100;
 

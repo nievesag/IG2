@@ -10,6 +10,7 @@ void Labyrinth::setupLabyrinth(SceneManager* mSM, Hero* hero)
     _mSM = mSM;
     _labyrinthNode = _mSM->getRootSceneNode()->createChildSceneNode("nLabMain");
     _hero = hero;
+    
 }
 
 void Labyrinth::readFile(string fileName)
@@ -75,10 +76,11 @@ void Labyrinth::frameRendered(const Ogre::FrameEvent& evt)
     pair<int, int> dirToMove = { wantToMove.x, wantToMove.z };
 
     _heroPos = vectorToMap(_hero->getPosition());
+    std::cout << _heroPos.first << " " << _heroPos.second << "\n";
 
     bool movable = checkMove(_heroPos, dirToMove);
 
-    _hero->moveCharacter(Vector3(dirToMove.first, 0, dirToMove.second));
+    _hero->moveCharacter();
 }
 
 void Labyrinth::DebugMap()
