@@ -169,5 +169,15 @@ bool Labyrinth::checkCentered(pair<int, int> pos)
     std::cout << "CENTRO CUADRADO: " << squareCenter << std::endl;
     std::cout << "CENTRO HEROE: " << squareCenter << std::endl;
 
-    return squareCenter == heroCenter;
+    float xS = squareCenter.x;
+    int xH = heroCenter.x + 3;
+
+    float zS = squareCenter.z;
+    int zH = heroCenter.z + 3;
+
+    cout << xS << " " << xH << endl;
+    cout << zS << " " << zH << endl;
+    cout << (xS == xH ? "SI X" : "NO X") << endl;
+
+    return xS == xH && zS == zH;
 }
