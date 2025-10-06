@@ -133,7 +133,8 @@ void Labyrinth::DebugMap()
 
 pair<int, int> Labyrinth::vectorToMap(Vector3 pos)
 {
-    cout << "HOLAAAAAAAAAAAAAAAAAAAAAAAA " << round(pos.x / Constants::mapSize) << " " << round(pos.z / Constants::mapSize);
+    // !!!!! EL PROBLEMA ESTA EN LA CONVERSION ------------------------------>
+    cout << "HOLAAAAAAAAAAAAAAAAAAAAAAAA " << (pos.x / Constants::mapSize)+0.1 << " " << (pos.z / Constants::mapSize);
     return pair<int, int>(round(pos.x / Constants::mapSize), round(pos.z / Constants::mapSize));
 }
 
