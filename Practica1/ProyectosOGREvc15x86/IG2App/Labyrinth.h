@@ -45,6 +45,7 @@ private:
 
 	bool checkMove(pair<int, int> pos, pair<int, int> dir);
 	bool checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 realPos);
+	bool checkCentered(pair<int, int> pos);
 
 public:
 	Labyrinth() = default;

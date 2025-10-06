@@ -86,8 +86,6 @@ void IG2App::setupScene(void){
     mLightNode->attachObject(luz);
     mLightNode->setDirection(Ogre::Vector3(0.5, -0.5, 0.5));
     
-
-    
     //------------------------------------------------------------------------
     // Creating Sinbad
 

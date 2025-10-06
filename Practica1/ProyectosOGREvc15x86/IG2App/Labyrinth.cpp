@@ -97,11 +97,17 @@ void Labyrinth::updateHero()
 
     bool turn = checkMove(_heroPos, dirToMove);
     bool movable = checkForward(_heroPos, dirMoving, realPos);
+    bool centered = checkCentered(_heroPos);
 
-    if (turn)
-        _hero->moveCharacter();
-    else if (!movable)
-        _hero->stopCharacter();
+    cout << (centered ? "SI" : "NO") << endl;
+
+    if (centered) 
+    {
+        if (turn)
+            _hero->moveCharacter();
+        else if (!movable)
+            _hero->stopCharacter();
+    }
 }
 
 void Labyrinth::DebugMap()
@@ -150,4 +156,18 @@ bool Labyrinth::checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 rea
     }
 
     return true;
+}
+
+bool Labyrinth::checkCentered(pair<int, int> pos)
+{
+    float worldSize = Constants::mapSize;
+    Vector3 squareCenter(pos.first * worldSize + worldSize / 2, 0, pos.second * worldSize + worldSize / 2);
+
+    Vector3 heroSize = _hero->calculateBoxSize();
+    Vector3 heroCenter(pos.first * worldSize + heroSize.x / 2, 0, pos.second * worldSize + heroSize.x / 2);
+
+    std::cout << "CENTRO CUADRADO: " << squareCenter << std::endl;
+    std::cout << "CENTRO HEROE: " << squareCenter << std::endl;
+
+    return squareCenter == heroCenter;
 }
