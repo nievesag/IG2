@@ -30,8 +30,6 @@ bool Hero::keyPressed(const OgreBites::KeyboardEvent& evt)
     if (lastPressed == 'u' || lastPressed == 'd' || lastPressed == 'l' || lastPressed == 'r') 
     { lastPosibleDirection = keyToDirection(lastPressed); }
 
-    //std::cout << lastPosibleDirection.x << "\n";
-
     return true;
 }
 

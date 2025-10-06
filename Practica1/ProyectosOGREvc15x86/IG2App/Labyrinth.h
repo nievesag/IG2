@@ -34,7 +34,7 @@ private:
 
 	// --- hero
 	Hero* _hero = nullptr;
-	std::pair<int, int> _heroPos; // posicion del hero en coordenadas de bloques
+	std::pair<int, int> _heroPos = { 0,0 }; // posicion del hero en coordenadas de bloques
 
 	void updateHero();
 
