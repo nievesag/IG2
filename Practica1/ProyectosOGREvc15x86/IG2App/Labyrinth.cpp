@@ -57,18 +57,11 @@ void Labyrinth::readFile(string fileName)
             {
                 SceneNode* node = _labyrinthNode->createChildSceneNode(id);
                 line.push_back(new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM)); // vacio en el mapa
-          
+                _heroPos.first = j;
+                _heroPos.second = i;
                 _hero->setPosition(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize));
             }
-            
-            // labyrinth[i,j] = fila[j];
         }
-
-        /*for (auto a : line)
-        {
-            std::cout << a->isEmpty() << " ";
-        }
-        std::cout << "\n";*/
 
         map.push_back(line);
     }
@@ -103,17 +96,19 @@ void Labyrinth::updateHero()
 
     cout << "last possible: " << wantToMove.x << " " << wantToMove.z << endl;
 
-    //_heroPos.first += dirMoving.first;
-    //_heroPos.second += dirMoving.second;
+    _heroPos.first += dirMoving.first;
+    _heroPos.second += dirMoving.second;
+
+    pair<int, int> nextPos = { _heroPos.first + dirToMove.first ,_heroPos.first + dirToMove.second };
 
     cout << "ACT: " << _heroPos.first << " " << _heroPos.second << endl;
     cout << "SIG: " << (_heroPos.first + dirToMove.first) << " " << (_heroPos.first + dirToMove.second) << endl;
 
     if (centered) 
     {
-        if (turn) {
-            _heroPos.first += dirToMove.first;
-            _heroPos.second += dirToMove.second;
+        if (turn) 
+        {
+            _heroPos = nextPos;
             cout << "AY: " << _heroPos.first << " " << _heroPos.second << endl;
             _hero->moveCharacter();
         }
@@ -138,7 +133,8 @@ void Labyrinth::DebugMap()
 
 pair<int, int> Labyrinth::vectorToMap(Vector3 pos)
 {
-    return pair<int, int>(pos.x / Constants::mapSize, pos.z / Constants::mapSize);
+    cout << "HOLAAAAAAAAAAAAAAAAAAAAAAAA " << round(pos.x / Constants::mapSize) << " " << round(pos.z / Constants::mapSize);
+    return pair<int, int>(round(pos.x / Constants::mapSize), round(pos.z / Constants::mapSize));
 }
 
 bool Labyrinth::checkMove(pair<int, int> pos, pair<int, int> dir)
@@ -165,7 +161,7 @@ bool Labyrinth::checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 rea
         if (dir.second < 0) // se está moviendo hacia abajo y 
             return false;
     }
-
+    
     return true;
 }
 
@@ -185,10 +181,6 @@ bool Labyrinth::checkCentered(pair<int, int> pos)
 
     float zS = squareCenter.z;
     int zH = heroCenter.z + 3;
-
-    //cout << xS << " " << xH << endl;
-    //cout << zS << " " << zH << endl;
-    //cout << (xS == xH ? "SI X" : "NO X") << endl;
 
     return xS == xH && zS == zH;
 }
