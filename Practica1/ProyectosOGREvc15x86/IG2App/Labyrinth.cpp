@@ -127,33 +127,33 @@ void Labyrinth::updateHero()
 
     Vector3 realPos = _hero->getPosition();
     _heroPos = vectorToMap(realPos);
-    std::cout << _heroPos.first << " " << _heroPos.second << "\n";
+    //std::cout << _heroPos.first << " " << _heroPos.second << "\n";
 
     bool turn = checkMove(_heroPos, dirToMove);
     bool movable = checkForward(_heroPos, dirMoving, realPos);
     bool centered = checkCentered(_heroPos);
 
     //cout << (centered ? "SI" : "NO") << endl;
-    cout << (turn ? "SI" : "NO") << endl;
+    //cout << (turn ? "SI" : "NO") << endl;
 
-    cout << "last possible: " << wantToMove.x << " " << wantToMove.z << endl;
+    //cout << "last possible: " << wantToMove.x << " " << wantToMove.z << endl;
 
     _heroPos.first += dirMoving.first;
     _heroPos.second += dirMoving.second;
 
     pair<int, int> nextPos = { _heroPos.first + dirToMove.first ,_heroPos.first + dirToMove.second };
 
-    cout << "ACT: " << _heroPos.first << " " << _heroPos.second << endl;
-    cout << "SIG: " << (_heroPos.first + dirToMove.first) << " " << (_heroPos.first + dirToMove.second) << endl;
+    //cout << "ACT: " << _heroPos.first << " " << _heroPos.second << endl;
+    //cout << "SIG: " << (_heroPos.first + dirToMove.first) << " " << (_heroPos.first + dirToMove.second) << endl;
 
-    if (centered) 
+    if (centered)
     {
         if (turn) 
         {
             _heroPos = nextPos;
-            cout << "AY: " << _heroPos.first << " " << _heroPos.second << endl;
-            _heroNode->rotate(_hero->quaternionRotateCharacter());
+            //cout << "AY: " << _heroPos.first << " " << _heroPos.second << endl;
             _hero->moveCharacter();
+            _heroNode->rotate(_hero->quaternionRotateCharacter());
         }
             
         else if (!movable)
@@ -170,7 +170,7 @@ void Labyrinth::updateEnemies()
 pair<int, int> Labyrinth::vectorToMap(Vector3 pos)
 {
     // !!!!! EL PROBLEMA ESTA EN LA CONVERSION ------------------------------>
-    cout << "HOLAAAAAAAAAAAAAAAAAAAAAAAA " << (pos.x / Constants::mapSize)+0.1 << " " << (pos.z / Constants::mapSize);
+    //cout << "HOLAAAAAAAAAAAAAAAAAAAAAAAA " << (pos.x / Constants::mapSize)+0.1 << " " << (pos.z / Constants::mapSize);
     return pair<int, int>(round(pos.x / Constants::mapSize), round(pos.z / Constants::mapSize));
 }
 
