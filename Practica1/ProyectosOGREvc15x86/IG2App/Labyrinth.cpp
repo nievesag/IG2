@@ -13,7 +13,10 @@ void Labyrinth::setupLabyrinth(SceneManager* mSM, Hero* hero)
     _hero = hero;
 
     // >>>>>>>> apartado 4:
-    // Ogre::MeshManager::getSingleton().createPlane();
+    MeshManager::getSingleton().createPlane("floor", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+    Plane(Vector3::UNIT_Y, 0),
+        1500, 1500, 200, 200, true, 1, 5, 5,
+        Vector3::UNIT_Z);
 }
 
 void Labyrinth::readFile(string fileName)

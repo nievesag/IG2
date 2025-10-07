@@ -122,6 +122,7 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Empty.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="IG2ApplicationContext.h" />
     <ClInclude Include="IG2App.h" />
@@ -134,6 +135,7 @@
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Constants.cpp" />
     <ClCompile Include="Empty.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="IG2ApplicationContext.cpp" />
     <ClCompile Include="IG2Main.cpp" />
