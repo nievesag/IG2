@@ -11,11 +11,11 @@ public:
 	virtual bool keyPressed(const OgreBites::KeyboardEvent& evt);
 	virtual void frameRendered(const Ogre::FrameEvent& evt);
 
+	int getLives() { return lives; }
+	void decreaseLives() { lives--; }
+
 private:
 	char lastPressed = ' ';
-	
+	int lives = 3;
 	Vector3 keyToDirection(char x);
-
-	
 };
-

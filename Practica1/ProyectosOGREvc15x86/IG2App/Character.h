@@ -18,10 +18,9 @@ public:
 	Vector3 getLastPosibleDirection() { return lastPosibleDirection; }
 	Vector3 getCurrentDirection() { return currentDirection; }
 
-
 	void moveCharacter();
 	void stopCharacter();
-	void snapToRail(Vector3 rail);
+	void rotateCharacter();
 	
 protected:
 	Vector3 lastPosibleDirection; // ultima "posible" direccion

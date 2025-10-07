@@ -36,7 +36,12 @@ private:
 	Hero* _hero = nullptr;
 	std::pair<int, int> _heroPos = { 1,1 }; // posicion del hero en coordenadas de bloques
 
+	// --- enemies
+	std::vector<Object*> enemies; // vector de enemigos
+
+	void update();
 	void updateHero();
+	void updateEnemies();
 
 	// Otros
 	void DebugMap();

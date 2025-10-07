@@ -5,11 +5,15 @@
 
 using namespace std;
 
+// --------- INIT
 void Labyrinth::setupLabyrinth(SceneManager* mSM, Hero* hero)
 {
     _mSM = mSM;
     _labyrinthNode = _mSM->getRootSceneNode()->createChildSceneNode("nLabMain");
     _hero = hero;
+
+    // >>>>>>>> apartado 4:
+    // Ogre::MeshManager::getSingleton().createPlane();
 }
 
 void Labyrinth::readFile(string fileName)
@@ -61,6 +65,11 @@ void Labyrinth::readFile(string fileName)
                 _heroPos.second = i;
                 _hero->setPosition(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize));
             }
+            else if (fila[j] == 'v') 
+            {
+                SceneNode* node = _labyrinthNode->createChildSceneNode(id);
+                line.push_back(new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM)); // vacio en el mapa
+            }
         }
 
         map.push_back(line);
@@ -70,9 +79,29 @@ void Labyrinth::readFile(string fileName)
     cin.rdbuf(cinbuf);
 }
 
+void Labyrinth::DebugMap()
+{
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            cout << "x: " << map[i][j]->getPosition().x << "  z: " << map[i][j]->getPosition().z << "\n";
+
+        }
+        cout << "\n";
+    }
+}
+
+// --------- UPDATE
 void Labyrinth::frameRendered(const Ogre::FrameEvent& evt) 
 {
+    update();
+}
+
+void Labyrinth::update()
+{
     updateHero();
+    updateEnemies();
 }
 
 void Labyrinth::updateHero()
@@ -110,6 +139,7 @@ void Labyrinth::updateHero()
         {
             _heroPos = nextPos;
             cout << "AY: " << _heroPos.first << " " << _heroPos.second << endl;
+            _hero->rotateCharacter();
             _hero->moveCharacter();
         }
             
@@ -118,19 +148,12 @@ void Labyrinth::updateHero()
     }
 }
 
-void Labyrinth::DebugMap()
+void Labyrinth::updateEnemies()
 {
-    for (int i = 0; i < height; i++)
-    {
-        for (int j = 0; j < width; j++) 
-        {
-            cout << "x: " << map[i][j]->getPosition().x << "  z: " << map[i][j]->getPosition().z << "\n";
 
-        }
-        cout << "\n";
-    }
 }
 
+// --------- AUX
 pair<int, int> Labyrinth::vectorToMap(Vector3 pos)
 {
     // !!!!! EL PROBLEMA ESTA EN LA CONVERSION ------------------------------>
@@ -138,6 +161,7 @@ pair<int, int> Labyrinth::vectorToMap(Vector3 pos)
     return pair<int, int>(round(pos.x / Constants::mapSize), round(pos.z / Constants::mapSize));
 }
 
+// --------- CHECKS
 bool Labyrinth::checkMove(pair<int, int> pos, pair<int, int> dir)
 {
     int x = pos.first + dir.first;
