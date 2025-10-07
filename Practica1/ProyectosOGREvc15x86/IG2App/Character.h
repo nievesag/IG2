@@ -20,10 +20,9 @@ public:
 
 	void moveCharacter();
 	void stopCharacter();
-	void rotateCharacter();
+	Quaternion quaternionRotateCharacter();
 	
 protected:
 	Vector3 lastPosibleDirection; // ultima "posible" direccion
 	Vector3 currentDirection; // hacia donde mira
 };
-

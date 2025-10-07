@@ -62,11 +62,13 @@ void IG2App::setupScene(void){
     mCamNode = mSM->getRootSceneNode()->createChildSceneNode("nCam");
     mCamNode->attachObject(cam);
 
-    mCamNode->setPosition(0, -2000, 5000);
-    mCamNode->lookAt(Ogre::Vector3(0, 0, 0), Ogre::Node::TS_WORLD);
+    mCamNode->setPosition(4000, -2000, 2000);
+    mCamNode->lookAt(Ogre::Vector3(2000, -1000, 0), Ogre::Node::TS_WORLD);
+    mCamNode->yaw(Ogre::Degree(-20));
     
     // and tell it to render into the main window
     Viewport* vp = getRenderWindow()->addViewport(cam);
+    vp->setBackgroundColour(ColourValue(0, 0, 0.3, 1));
     
     mCamMgr = new OgreBites::CameraMan(mCamNode);
     addInputListener(mCamMgr);

@@ -11,8 +11,7 @@ void Character::stopCharacter()
 	currentDirection = Vector3(0, 0, 0);
 }
 
-void Character::rotateCharacter()
+Quaternion Character::quaternionRotateCharacter()
 {
-	Quaternion q = this->getOrientation().getRotationTo(lastPosibleDirection);
-	//rotate(q);
+	return this->getOrientation().getRotationTo(lastPosibleDirection);
 }

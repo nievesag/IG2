@@ -11,12 +11,6 @@ void Labyrinth::setupLabyrinth(SceneManager* mSM, Hero* hero)
     _mSM = mSM;
     _labyrinthNode = _mSM->getRootSceneNode()->createChildSceneNode("nLabMain");
     _hero = hero;
-
-    // >>>>>>>> apartado 4:
-    MeshManager::getSingleton().createPlane("floor", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-    Plane(Vector3::UNIT_Y, 0),
-        1500, 1500, 200, 200, true, 1, 5, 5,
-        Vector3::UNIT_Z);
 }
 
 void Labyrinth::readFile(string fileName)
@@ -62,8 +56,8 @@ void Labyrinth::readFile(string fileName)
             }
             else if (fila[j] == 'h') 
             {
-                SceneNode* node = _labyrinthNode->createChildSceneNode(id);
-                line.push_back(new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM)); // vacio en el mapa
+                _heroNode = _labyrinthNode->createChildSceneNode(id);
+                line.push_back(new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), _heroNode, _mSM)); // vacio en el mapa
                 _heroPos.first = j;
                 _heroPos.second = i;
                 _hero->setPosition(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize));
@@ -80,6 +74,22 @@ void Labyrinth::readFile(string fileName)
     //DebugMap();
 
     cin.rdbuf(cinbuf);
+
+    createFloor();
+}
+
+void Labyrinth::createFloor()
+{
+    // >>>>>>>> apartado 4:
+    MeshManager::getSingleton().createPlane("floor",
+        ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        Plane(Vector3::UNIT_Y, 0),
+        width*Constants::mapSize, height * Constants::mapSize, 100, 80,
+        true, 1, 1.0, 1.0, Vector3::UNIT_Z);
+    Ogre::Entity* plane = _mSM->createEntity("floor");
+    SceneNode* nodePlane = _mSM->getRootSceneNode()->createChildSceneNode("floor");
+    nodePlane->attachObject(plane);
+    nodePlane->setPosition(Vector3((width * Constants::mapSize)/2, -Constants::mapSize/2, (height * Constants::mapSize)/2));
 }
 
 void Labyrinth::DebugMap()
@@ -124,7 +134,7 @@ void Labyrinth::updateHero()
     bool centered = checkCentered(_heroPos);
 
     //cout << (centered ? "SI" : "NO") << endl;
-    cout << (turn ? "SI" : "NO") << endl; 
+    cout << (turn ? "SI" : "NO") << endl;
 
     cout << "last possible: " << wantToMove.x << " " << wantToMove.z << endl;
 
@@ -142,7 +152,7 @@ void Labyrinth::updateHero()
         {
             _heroPos = nextPos;
             cout << "AY: " << _heroPos.first << " " << _heroPos.second << endl;
-            _hero->rotateCharacter();
+            _heroNode->rotate(_hero->quaternionRotateCharacter());
             _hero->moveCharacter();
         }
             

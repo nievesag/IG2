@@ -34,6 +34,7 @@ private:
 
 	// --- hero
 	Hero* _hero = nullptr;
+	SceneNode* _heroNode = nullptr;
 	std::pair<int, int> _heroPos = { 1,1 }; // posicion del hero en coordenadas de bloques
 
 	// --- enemies
@@ -51,6 +52,8 @@ private:
 	bool checkMove(pair<int, int> pos, pair<int, int> dir);
 	bool checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 realPos);
 	bool checkCentered(pair<int, int> pos);
+
+	void createFloor();
 
 public:
 	Labyrinth() = default;
