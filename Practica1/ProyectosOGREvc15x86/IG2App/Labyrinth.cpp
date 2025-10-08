@@ -6,11 +6,12 @@
 using namespace std;
 
 // --------- INIT
-void Labyrinth::setupLabyrinth(SceneManager* mSM, Hero* hero)
+void Labyrinth::setupLabyrinth(SceneManager* mSM, Hero* hero, SceneNode* heroscn)
 {
     _mSM = mSM;
     _labyrinthNode = _mSM->getRootSceneNode()->createChildSceneNode("nLabMain");
     _hero = hero;
+    _heroNode = heroscn;
 }
 
 void Labyrinth::readFile(string fileName)
@@ -56,8 +57,8 @@ void Labyrinth::readFile(string fileName)
             }
             else if (fila[j] == 'h') 
             {
-                _heroNode = _labyrinthNode->createChildSceneNode(id);
-                line.push_back(new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), _heroNode, _mSM)); // vacio en el mapa
+                SceneNode* node = _labyrinthNode->createChildSceneNode(id);
+                line.push_back(new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM)); // vacio en el mapa
                 _heroPos.first = j;
                 _heroPos.second = i;
                 _hero->setPosition(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize));
@@ -133,29 +134,20 @@ void Labyrinth::updateHero()
     bool movable = checkForward(_heroPos, dirMoving, realPos);
     bool centered = checkCentered(_heroPos);
 
-    //cout << (centered ? "SI" : "NO") << endl;
-    //cout << (turn ? "SI" : "NO") << endl;
-
-    //cout << "last possible: " << wantToMove.x << " " << wantToMove.z << endl;
-
     _heroPos.first += dirMoving.first;
     _heroPos.second += dirMoving.second;
 
     pair<int, int> nextPos = { _heroPos.first + dirToMove.first ,_heroPos.first + dirToMove.second };
-
-    //cout << "ACT: " << _heroPos.first << " " << _heroPos.second << endl;
-    //cout << "SIG: " << (_heroPos.first + dirToMove.first) << " " << (_heroPos.first + dirToMove.second) << endl;
 
     if (centered)
     {
         if (turn) 
         {
             _heroPos = nextPos;
-            //cout << "AY: " << _heroPos.first << " " << _heroPos.second << endl;
+            if(isMoving != Vector3(0, 0, 0))
+                _heroNode->rotate(_hero->quaternionRotateCharacter());
             _hero->moveCharacter();
-            _heroNode->rotate(_hero->quaternionRotateCharacter());
         }
-            
         else if (!movable)
             _hero->stopCharacter();
     }
@@ -169,8 +161,6 @@ void Labyrinth::updateEnemies()
 // --------- AUX
 pair<int, int> Labyrinth::vectorToMap(Vector3 pos)
 {
-    // !!!!! EL PROBLEMA ESTA EN LA CONVERSION ------------------------------>
-    //cout << "HOLAAAAAAAAAAAAAAAAAAAAAAAA " << (pos.x / Constants::mapSize)+0.1 << " " << (pos.z / Constants::mapSize);
     return pair<int, int>(round(pos.x / Constants::mapSize), round(pos.z / Constants::mapSize));
 }
 
@@ -206,19 +196,13 @@ bool Labyrinth::checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 rea
 bool Labyrinth::checkCentered(pair<int, int> pos)
 {
     float worldSize = Constants::mapSize; 
-    Vector3 squareCenter(pos.first * worldSize + worldSize / 2, 0, pos.second * worldSize + worldSize / 2);
-
-    Vector3 heroSize = _hero->calculateBoxSize();
-    Vector3 heroCenter(pos.first * worldSize + heroSize.x / 2, 0, pos.second * worldSize + heroSize.x / 2);
-
-    //std::cout << "CENTRO CUADRADO: " << squareCenter << std::endl;
-    //std::cout << "CENTRO HEROE: " << squareCenter << std::endl;
+    Vector3 squareCenter(pos.first * worldSize, 0, pos.second * worldSize);
 
     float xS = squareCenter.x;
-    int xH = heroCenter.x + 3;
+    int xH = _hero->getPosition().x;
 
     float zS = squareCenter.z;
-    int zH = heroCenter.z + 3;
+    int zH = _hero->getPosition().z;
 
-    return xS == xH && zS == zH;
+    return ((xS < xH + 5) && (xS > xH - 5)) && ((zS < zH + 5) && (zS > zH -5));
 }

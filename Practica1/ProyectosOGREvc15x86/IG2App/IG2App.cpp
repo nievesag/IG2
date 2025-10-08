@@ -115,7 +115,7 @@ void IG2App::setupScene(void){
     addInputListener(mHero);
 
     mLab = new Labyrinth();
-    mLab->setupLabyrinth(mSM, mHero);
+    mLab->setupLabyrinth(mSM, mHero, nodeHero);
     mLab->readFile("stage1.txt");
     addInputListener(mLab);
 }

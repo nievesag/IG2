@@ -61,7 +61,7 @@ public:
 	// para gestion del singleton
 	//static Labyrinth* getInstance();
 
-	void setupLabyrinth(SceneManager* mSM, Hero* hero);
+	void setupLabyrinth(SceneManager* mSM, Hero* hero, SceneNode* heroscn);
 	void readFile(string fileName);
 
 	virtual void frameRendered(const Ogre::FrameEvent& evt);
