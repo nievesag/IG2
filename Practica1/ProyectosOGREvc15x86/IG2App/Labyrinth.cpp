@@ -79,6 +79,12 @@ void Labyrinth::readFile(string fileName)
     createFloor();
 }
 
+void Labyrinth::registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox)
+{
+    stageLabel = label;
+    infoTextBox = textbox;
+}
+
 void Labyrinth::createFloor()
 {
     // >>>>>>>> apartado 4:
@@ -116,6 +122,7 @@ void Labyrinth::update()
 {
     updateHero();
     updateEnemies();
+    updateUI();
 }
 
 void Labyrinth::updateHero()
@@ -151,6 +158,12 @@ void Labyrinth::updateHero()
         else if (!movable)
             _hero->stopCharacter();
     }
+}
+
+void Labyrinth::updateUI()
+{
+    stageLabel->setCaption("Stage: " + (char)stage);
+    // ...
 }
 
 void Labyrinth::updateEnemies()

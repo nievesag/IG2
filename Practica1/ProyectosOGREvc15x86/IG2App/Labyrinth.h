@@ -40,8 +40,16 @@ private:
 	// --- enemies
 	std::vector<Object*> enemies; // vector de enemigos
 
+	// --- UI
+	OgreBites::Label* stageLabel = nullptr;
+	OgreBites::TextBox* infoTextBox = nullptr;
+
+	// Game info
+	int stage = 1;
+
 	void update();
 	void updateHero();
+	void updateUI();
 	void updateEnemies();
 
 	// Otros
@@ -64,6 +72,10 @@ public:
 	void setupLabyrinth(SceneManager* mSM, Hero* hero, SceneNode* heroscn);
 	void readFile(string fileName);
 
+	void registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox);
+
 	virtual void frameRendered(const Ogre::FrameEvent& evt);
 
+	void setStage(int i) { stage = i; }
+	void nextStage() { stage++; }
 };

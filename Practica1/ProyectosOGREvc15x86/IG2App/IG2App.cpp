@@ -62,18 +62,17 @@ void IG2App::setupScene(void){
     mCamNode = mSM->getRootSceneNode()->createChildSceneNode("nCam");
     mCamNode->attachObject(cam);
 
-    mCamNode->setPosition(4000, -2000, 2000);
-    mCamNode->lookAt(Ogre::Vector3(2000, -1000, 0), Ogre::Node::TS_WORLD);
-    mCamNode->yaw(Ogre::Degree(-20));
+    mCamNode->setPosition(950, 2500, 1900);
+    mCamNode->lookAt(Ogre::Vector3(950, 0, 950), Ogre::Node::TS_WORLD);
     
     // and tell it to render into the main window
     Viewport* vp = getRenderWindow()->addViewport(cam);
     vp->setBackgroundColour(ColourValue(0, 0, 0.3, 1));
     
-    mCamMgr = new OgreBites::CameraMan(mCamNode);
+    // >> descomentar para usar eventos de teclado para mover la camara
+    /*mCamMgr = new OgreBites::CameraMan(mCamNode);
     addInputListener(mCamMgr);
-    mCamMgr->setStyle(OgreBites::CS_ORBIT);
-    
+    mCamMgr->setStyle(OgreBites::CS_ORBIT);*/
     
     //------------------------------------------------------------------------
     // Creating the light
@@ -88,34 +87,18 @@ void IG2App::setupScene(void){
     mLightNode->attachObject(luz);
     mLightNode->setDirection(Ogre::Vector3(0.5, -0.5, 0.5));
     
-    //------------------------------------------------------------------------
-    // Creating Sinbad
-
-    /*
-    Ogre::Entity* ent = mSM->createEntity("Sinbad.mesh");
-    //mSinbadNode = mSM->getRootSceneNode()->createChildSceneNode("nSinbad");
-    //mSinbadNode->attachObject(ent);
-
-    // Show bounding box
-    mSinbadNode->showBoundingBox(true);
-    
-    // Set position of Sinbad
-    //mSinbadNode->setPosition(x, y, z);
-    
-    // Set scale of Sinbad
-    mSinbadNode->setScale(20, 20, 20);
-    
-    //mSinbadNode->yaw(Ogre::Degree(-45));
-    //mSinbadNode->setVisible(false);   
-    */
 
     SceneNode* nodeHero = mSM->getRootSceneNode()->createChildSceneNode("Hero");
     nodeHero->setScale(11, 11, 11);
     mHero = new Hero(Vector3(0, 0, 0), nodeHero, mSM, "Sinbad.mesh");
     addInputListener(mHero);
 
+    OgreBites::Label* stageLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "StageLabel", "Stage: ", 200);
+    OgreBites::TextBox* infoTextBox = mTrayMgr->createTextBox(OgreBites::TL_BOTTOMRIGHT, "InfoTextBox", "Game info here!", 200, 100);
+
     mLab = new Labyrinth();
     mLab->setupLabyrinth(mSM, mHero, nodeHero);
     mLab->readFile("stage1.txt");
+    mLab->registerUI(stageLabel, infoTextBox);
     addInputListener(mLab);
 }
