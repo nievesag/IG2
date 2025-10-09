@@ -46,6 +46,7 @@ private:
 
 	// Game info
 	int stage = 1;
+	int points = 0;
 
 	void update();
 	void updateHero();
@@ -76,6 +77,10 @@ public:
 
 	virtual void frameRendered(const Ogre::FrameEvent& evt);
 
+	int getStage() { return stage; }
 	void setStage(int i) { stage = i; }
 	void nextStage() { stage++; }
+
+	int getPoints() { return points; }
+	void addPoints(int i) { points += i; }
 };

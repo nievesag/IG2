@@ -162,8 +162,9 @@ void Labyrinth::updateHero()
 
 void Labyrinth::updateUI()
 {
-    stageLabel->setCaption("Stage: " + (char)stage);
-    // ...
+    stageLabel->setCaption("Stage: " + StringConverter::toString(stage));
+    infoTextBox->setText("Lives: " + StringConverter::toString(_hero->getLives()) + "\n" +
+							"Points: " + StringConverter::toString(_hero->getLives()));
 }
 
 void Labyrinth::updateEnemies()

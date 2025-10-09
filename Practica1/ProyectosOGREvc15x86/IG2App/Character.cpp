@@ -12,8 +12,5 @@ void Character::stopCharacter()
 
 Quaternion Character::quaternionRotateCharacter()
 {
-	std::cout << "act: " << this->getOrientation() << endl;
-	std::cout << "sig: " << lastPosibleDirection << endl;
-
 	return this->getOrientation().getRotationTo(lastPosibleDirection);
 }
