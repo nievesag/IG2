@@ -1,3 +1,1 @@
-- que ogre se gire al girar.
-- que se frene cuando llegue a una pared
-- que cuando gire se mueva por el centro
+comprobar si en ese update (en ese delta, tiempo que ha transcurrido) has cruzado la mitad del cubo
