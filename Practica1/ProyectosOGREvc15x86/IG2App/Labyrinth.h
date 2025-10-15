@@ -40,6 +40,10 @@ private:
 	// --- enemies
 	std::vector<Object*> enemies; // vector de enemigos
 
+	// --- Textures
+	std::string matwall;
+	std::string matfloor;
+
 	// --- UI
 	OgreBites::Label* stageLabel = nullptr;
 	OgreBites::TextBox* infoTextBox = nullptr;

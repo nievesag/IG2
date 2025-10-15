@@ -27,7 +27,9 @@ void Labyrinth::readFile(string fileName)
     // para poder hacer cin para leer el archivo
     auto cinbuf = cin.rdbuf(entrada.rdbuf());
 
-    cin >> height >> width;
+    cin >> height >> width; 
+
+    cin >> matwall >> matfloor;
 
     string fila;
     for (int i = 0; i < height; i++) 
@@ -45,6 +47,7 @@ void Labyrinth::readFile(string fileName)
             {
                 SceneNode* node = _labyrinthNode->createChildSceneNode(id);
                 Object* muro = new Wall(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM, "cube.mesh");
+                muro->setMaterialName(matwall);
                 line.push_back(muro);
             }
             else if (fila[j] == 'o')
@@ -97,6 +100,7 @@ void Labyrinth::createFloor()
     SceneNode* nodePlane = _mSM->getRootSceneNode()->createChildSceneNode("floor");
     nodePlane->attachObject(plane);
     nodePlane->setPosition(Vector3((width * Constants::mapSize)/2, -Constants::mapSize/2, (height * Constants::mapSize)/2));
+    plane->setMaterialName(matfloor);
 }
 
 void Labyrinth::DebugMap()
