@@ -140,6 +140,20 @@ void Labyrinth::frameRendered(const Ogre::FrameEvent& evt)
 
 void Labyrinth::update()
 {
+    bool heroHit = checkCollision();
+    if (heroHit) 
+    {
+        _hero->decreaseLives();
+
+        if (_hero->getLives() > 0) 
+        {
+            _heroPos.first = _heroInitPos.first;
+            _heroPos.second = _heroInitPos.second;
+
+            _hero->setPosition(Vector3(_heroPos.first * Constants::mapSize, 0, _heroPos.second * Constants::mapSize));
+        }
+    }
+    
     updateHero();
     updateEnemies();
     updateUI();
@@ -147,6 +161,11 @@ void Labyrinth::update()
 
 void Labyrinth::updateHero()
 {
+    if (_hero->getLives() <= 0)
+    {
+        std::cout << "FIN DE JUEGO" << endl;
+    }
+
     Vector3 wantToMove = _hero->getLastPosibleDirection();
     pair<int, int> dirToMove = { wantToMove.x, wantToMove.z };
 
@@ -183,7 +202,7 @@ void Labyrinth::updateUI()
 {
     stageLabel->setCaption("Stage: " + StringConverter::toString(stage));
     infoTextBox->setText("Lives: " + StringConverter::toString(_hero->getLives()) + "\n" +
-							"Points: " + StringConverter::toString(_hero->getLives()));
+							"Points: " + StringConverter::toString(getPoints()));
 }
 
 void Labyrinth::updateEnemies()
@@ -245,6 +264,11 @@ bool Labyrinth::checkCollision()
     // colision hero-enemigos
     for (auto e : _enemies) 
     {
-        if (e->checkCharacterCollision(_hero->getAABB())) return true;
+        if (e->checkCharacterCollision(_hero->getAABB())) 
+        {
+            return true;
+        }
     }
+
+    return false;
 }

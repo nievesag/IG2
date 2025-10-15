@@ -17,5 +17,6 @@ Quaternion Character::quaternionRotateCharacter()
 
 bool Character::checkCharacterCollision(const AxisAlignedBox& b)
 {
-	return this->getAABB().intersects(b);
+	bool choque = this->getAABB().intersects(b);
+	return choque;
 }
