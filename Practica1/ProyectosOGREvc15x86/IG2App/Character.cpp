@@ -14,3 +14,8 @@ Quaternion Character::quaternionRotateCharacter()
 {
 	return this->getOrientation().getRotationTo(lastPosibleDirection);
 }
+
+bool Character::checkCharacterCollision(const AxisAlignedBox& b)
+{
+	return this->getAABB().intersects(b);
+}

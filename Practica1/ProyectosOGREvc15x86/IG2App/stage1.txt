@@ -3,7 +3,7 @@
 Muro
 Suelo
 xxxxxxxxxxxxxxxxxxx
-xhoooooooxoooooooox
+xhoooooooxooooooovx
 xoxxoxxxoxoxxxoxxox
 xooooooooooooooooox
 xoxxoxoxxxxxoxoxxox
@@ -17,7 +17,7 @@ xooooooooxoooooooox
 xoxxoxxxoxoxxxoxxox
 xooxoooooooooooxoox
 xxoxoxoxxxxxoxoxoxx
-xooooxoooxoooxoooox
+xooooxoovxoooxoooox
 xoxxxxxxoxoxxxxxxox
 xooooooooxoooooooox
 xxxxxxxxxxxxxxxxxxx

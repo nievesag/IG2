@@ -21,6 +21,8 @@ public:
 	void moveCharacter();
 	void stopCharacter();
 	Quaternion quaternionRotateCharacter();
+
+	bool checkCharacterCollision(const AxisAlignedBox& b);
 	
 protected:
 	Vector3 lastPosibleDirection; // ultima "posible" direccion

@@ -6,12 +6,14 @@
 using namespace std;
 
 // --------- INIT
-void Labyrinth::setupLabyrinth(SceneManager* mSM, Hero* hero, SceneNode* heroscn)
+void Labyrinth::setupLabyrinth(SceneManager* mSM, 
+    Hero* hero, SceneNode* heroscn)
 {
-    _mSM = mSM;
-    _labyrinthNode = _mSM->getRootSceneNode()->createChildSceneNode("nLabMain");
-    _hero = hero;
-    _heroNode = heroscn;
+    _mSM = mSM; // manager
+    _labyrinthNode = _mSM->getRootSceneNode()->createChildSceneNode("nLabMain"); // nodo laberinto
+
+    _hero = hero;           // objeto hero
+    _heroNode = heroscn;    // nodo heroe
 }
 
 void Labyrinth::readFile(string fileName)
@@ -41,8 +43,7 @@ void Labyrinth::readFile(string fileName)
         for (int j = 0; j < width; j++) 
         {
             string id = to_string(i) + "-" + to_string(j) + "cube";
-            //cout << id << "\n";
-            // creamos el muro
+            // MURO
             if (fila[j] == 'x') 
             {
                 SceneNode* node = _labyrinthNode->createChildSceneNode(id);
@@ -50,6 +51,7 @@ void Labyrinth::readFile(string fileName)
                 muro->setMaterialName(matwall);
                 line.push_back(muro);
             }
+            // VACIO
             else if (fila[j] == 'o')
             {
                 SceneNode* node = _labyrinthNode->createChildSceneNode(id);
@@ -58,18 +60,32 @@ void Labyrinth::readFile(string fileName)
                 //std::cout << "x: " << j << " z: " << i << "\n";
                 //std::cout << line[j]->isEmpty() << "\n";
             }
+            // HERO
             else if (fila[j] == 'h') 
             {
                 SceneNode* node = _labyrinthNode->createChildSceneNode(id);
                 line.push_back(new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM)); // vacio en el mapa
+                
                 _heroPos.first = j;
                 _heroPos.second = i;
+
+                _heroInitPos.first = j;
+                _heroInitPos.second = i;
+
                 _hero->setPosition(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize));
             }
-            else if (fila[j] == 'v') 
+            // ENEMIGOS
+            else if (fila[j] == 'v')
             {
                 SceneNode* node = _labyrinthNode->createChildSceneNode(id);
                 line.push_back(new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM)); // vacio en el mapa
+                
+                SceneNode* nodeEnemy = _mSM->getRootSceneNode()->createChildSceneNode("Enemy" + enemyCount);
+                _enemiesNode.push_back(nodeEnemy);
+
+                _enemies.push_back(new Enemy(Vector3(0, 0, 0), nodeEnemy, _mSM, "ogrehead.mesh"));
+                _enemies[enemyCount]->setPosition(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize));
+                enemyCount++;
             }
         }
 
@@ -90,12 +106,12 @@ void Labyrinth::registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox)
 
 void Labyrinth::createFloor()
 {
-    // >>>>>>>> apartado 4:
     MeshManager::getSingleton().createPlane("floor",
         ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
         Plane(Vector3::UNIT_Y, 0),
         width*Constants::mapSize, height * Constants::mapSize, 100, 80,
         true, 1, 1.0, 1.0, Vector3::UNIT_Z);
+
     Ogre::Entity* plane = _mSM->createEntity("floor");
     SceneNode* nodePlane = _mSM->getRootSceneNode()->createChildSceneNode("floor");
     nodePlane->attachObject(plane);
@@ -139,7 +155,6 @@ void Labyrinth::updateHero()
 
     Vector3 realPos = _hero->getPosition();
     _heroPos = vectorToMap(realPos);
-    //std::cout << _heroPos.first << " " << _heroPos.second << "\n";
 
     bool turn = checkMove(_heroPos, dirToMove);
     bool movable = checkForward(_heroPos, dirMoving, realPos);
@@ -223,4 +238,13 @@ bool Labyrinth::checkCentered(pair<int, int> pos)
     int zH = _hero->getPosition().z;
 
     return ((xS < xH + 5) && (xS > xH - 5)) && ((zS < zH + 5) && (zS > zH -5));
+}
+
+bool Labyrinth::checkCollision()
+{
+    // colision hero-enemigos
+    for (auto e : _enemies) 
+    {
+        if (e->checkCharacterCollision(_hero->getAABB())) return true;
+    }
 }

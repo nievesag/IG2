@@ -74,9 +74,7 @@ void IG2App::setupScene(void){
     addInputListener(mCamMgr);
     mCamMgr->setStyle(OgreBites::CS_ORBIT);*/
     
-    //------------------------------------------------------------------------
-    // Creating the light
-    
+    // ---------------- LUZ
     //mSM->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
     Light* luz = mSM->createLight("Luz");
     luz->setType(Ogre::Light::LT_DIRECTIONAL);
@@ -88,14 +86,20 @@ void IG2App::setupScene(void){
     mLightNode->setDirection(Ogre::Vector3(0.5, -0.5, 0.5));
     
 
+    // ---------------- OBJETOS ESCENA
+    // -- Hero
     SceneNode* nodeHero = mSM->getRootSceneNode()->createChildSceneNode("Hero");
     nodeHero->setScale(11, 11, 11);
     mHero = new Hero(Vector3(0, 0, 0), nodeHero, mSM, "Sinbad.mesh");
     addInputListener(mHero);
 
+    // -- Villanos
+
+    // -- UI
     OgreBites::Label* stageLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "StageLabel", "Stage: ", 200);
     OgreBites::TextBox* infoTextBox = mTrayMgr->createTextBox(OgreBites::TL_BOTTOMRIGHT, "InfoTextBox", "Game info here!", 200, 100);
 
+    // -- Laberinto
     mLab = new Labyrinth();
     mLab->setupLabyrinth(mSM, mHero, nodeHero);
     mLab->readFile("stage1.txt");

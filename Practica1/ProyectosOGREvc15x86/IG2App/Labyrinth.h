@@ -12,6 +12,7 @@
 #include <vector>
 #include "Character.h"
 #include "Hero.h"
+#include "Enemy.h"
 
 #include "IG2Object.h"
 #include "Object.h"
@@ -33,12 +34,15 @@ private:
 	std::vector<std::vector<Object*>> map;
 
 	// --- hero
-	Hero* _hero = nullptr;
-	SceneNode* _heroNode = nullptr;
+	Hero* _hero = nullptr; // objeto hero
+	SceneNode* _heroNode = nullptr; // nodo en escena
+	std::pair<int, int> _heroInitPos = { 1,1 }; // posicion inicial para moverle al perder
 	std::pair<int, int> _heroPos = { 1,1 }; // posicion del hero en coordenadas de bloques
 
 	// --- enemies
-	std::vector<Object*> enemies; // vector de enemigos
+	std::vector<Enemy*> _enemies; // vector de objetos enemigo
+	std::vector<SceneNode*> _enemiesNode; // vector de nodos enemigo
+	int enemyCount = 0;
 
 	// --- Textures
 	std::string matwall;
@@ -52,6 +56,7 @@ private:
 	int stage = 1;
 	int points = 0;
 
+	// update
 	void update();
 	void updateHero();
 	void updateUI();
@@ -65,6 +70,7 @@ private:
 	bool checkMove(pair<int, int> pos, pair<int, int> dir);
 	bool checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 realPos);
 	bool checkCentered(pair<int, int> pos);
+	bool checkCollision();
 
 	void createFloor();
 

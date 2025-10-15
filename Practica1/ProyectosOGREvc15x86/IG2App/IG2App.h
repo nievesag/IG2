@@ -28,7 +28,6 @@ protected:
     virtual void shutdown();
     virtual void setupScene();
     
-    
     Ogre::SceneNode* mSinbadNode = nullptr;
       
     Ogre::SceneManager* mSM = nullptr;
@@ -44,7 +43,7 @@ protected:
     // Objetos de juego
     Labyrinth* mLab = nullptr;
     Hero* mHero = nullptr;
-    // ... enemigos 
+    std::vector<Enemy*> mEnemies;
 };
 
 #endif
