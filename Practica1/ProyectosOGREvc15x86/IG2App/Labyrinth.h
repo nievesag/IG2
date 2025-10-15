@@ -23,23 +23,22 @@ using namespace std;
 class Labyrinth : public OgreBites::InputListener
 {
 private:
-	//static Labyrinth* _labyrinth;
-
-	SceneNode* _labyrinthNode = nullptr;
+	// ATRIBUTOS
+	// --- SceneManager
 	SceneManager* _mSM = nullptr;
 
+	// --- Mapa
+	SceneNode* _labyrinthNode = nullptr;
 	int width = 0, height = 0;
-
-	// vector de bloques
 	std::vector<std::vector<Object*>> map;
 
-	// --- hero
+	// --- Hero
 	Hero* _hero = nullptr; // objeto hero
 	SceneNode* _heroNode = nullptr; // nodo en escena
 	std::pair<int, int> _heroInitPos = { 1,1 }; // posicion inicial para moverle al perder
 	std::pair<int, int> _heroPos = { 1,1 }; // posicion del hero en coordenadas de bloques
 
-	// --- enemies
+	// --- Enemies
 	std::vector<Enemy*> _enemies; // vector de objetos enemigo
 	std::vector<SceneNode*> _enemiesNode; // vector de nodos enemigo
 	int enemyCount = 0;
@@ -52,45 +51,52 @@ private:
 	OgreBites::Label* stageLabel = nullptr;
 	OgreBites::TextBox* infoTextBox = nullptr;
 
-	// Game info
+	// --- Luces
+	std::string lightType;
+	Ogre::Light* _light = nullptr;
+	Ogre::SceneNode* _lightNode = nullptr;
+
+	// --- Game info
 	int stage = 1;
 	int points = 0;
 
-	// update
+	// METODOS
+	// --- Update
 	void update();
 	void updateHero();
 	void updateUI();
 	void updateEnemies();
 
-	// Otros
+	// --- Auxiliares
 	void DebugMap();
-
 	pair<int, int> vectorToMap(Vector3 pos); // para pasar a coordenadas de bloques
 
+	// --- Check...
 	bool checkMove(pair<int, int> pos, pair<int, int> dir);
 	bool checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 realPos);
 	bool checkCentered(pair<int, int> pos);
 	bool checkCollision();
 
+	// --- Suelo
 	void createFloor();
 
 public:
 	Labyrinth() = default;
 
-	// para gestion del singleton
-	//static Labyrinth* getInstance();
+	void setupLabyrinth(SceneManager* mSM, Hero* hero, SceneNode* heroscn); // inicializar laberinto
+	void readFile(string fileName); // leer el fichero
 
-	void setupLabyrinth(SceneManager* mSM, Hero* hero, SceneNode* heroscn);
-	void readFile(string fileName);
+	void registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox); // registra UI
+	void registerLights(Ogre::Light* light, Ogre::SceneNode* mLightNode); // registra luces
 
-	void registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox);
+	virtual void frameRendered(const Ogre::FrameEvent& evt); // update
 
-	virtual void frameRendered(const Ogre::FrameEvent& evt);
-
-	int getStage() { return stage; }
+	// --- Setters
 	void setStage(int i) { stage = i; }
 	void nextStage() { stage++; }
-
-	int getPoints() { return points; }
 	void addPoints(int i) { points += i; }
+
+	// --- Getters
+	int getStage() { return stage; }
+	int getPoints() { return points; }
 };

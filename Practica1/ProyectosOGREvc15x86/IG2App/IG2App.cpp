@@ -13,8 +13,8 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
   return true;
 }
 
-void IG2App::shutdown(){
-    
+void IG2App::shutdown()
+{
   mShaderGenerator->removeSceneManager(mSM);
   mSM->removeRenderQueueListener(mOverlaySystem);  
 					
@@ -27,8 +27,8 @@ void IG2App::shutdown(){
   IG2ApplicationContext::shutdown(); 
 }
 
-void IG2App::setup(void){
-    
+void IG2App::setup(void) 
+{    
     // do not forget to call the base first
     IG2ApplicationContext::setup();
 
@@ -48,11 +48,9 @@ void IG2App::setup(void){
     setupScene();
 }
 
-void IG2App::setupScene(void){
-    
-    //------------------------------------------------------------------------
-    // Creating the camera
-    
+void IG2App::setupScene(void)
+{
+    // ---------------- CAMARA
     Camera* cam = mSM->createCamera("Cam");
     cam->setNearClipDistance(1);
     cam->setFarClipDistance(10000);
@@ -74,18 +72,6 @@ void IG2App::setupScene(void){
     addInputListener(mCamMgr);
     mCamMgr->setStyle(OgreBites::CS_ORBIT);*/
     
-    // ---------------- LUZ
-    //mSM->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
-    Light* luz = mSM->createLight("Luz");
-    luz->setType(Ogre::Light::LT_DIRECTIONAL);
-    luz->setDiffuseColour(0.75, 0.75, 0.75);
-
-    mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
-    //mLightNode = mCamNode->createChildSceneNode("nLuz");
-    mLightNode->attachObject(luz);
-    mLightNode->setDirection(Ogre::Vector3(0.5, -0.5, 0.5));
-    
-
     // ---------------- OBJETOS ESCENA
     // -- Hero
     SceneNode* nodeHero = mSM->getRootSceneNode()->createChildSceneNode("Hero");
@@ -93,7 +79,14 @@ void IG2App::setupScene(void){
     mHero = new Hero(Vector3(0, 0, 0), nodeHero, mSM, "Sinbad.mesh");
     addInputListener(mHero);
 
-    // -- Villanos
+    // -- Luces
+    light = mSM->createLight("Luz");
+    light->setType(Ogre::Light::LT_DIRECTIONAL);
+    light->setDiffuseColour(0.75, 0.75, 0.75);
+
+    mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
+    mLightNode->attachObject(light);
+    mLightNode->setDirection(Ogre::Vector3(0.5, -0.5, 0.5));
 
     // -- UI
     OgreBites::Label* stageLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "StageLabel", "Stage: ", 200);
@@ -104,5 +97,6 @@ void IG2App::setupScene(void){
     mLab->setupLabyrinth(mSM, mHero, nodeHero);
     mLab->readFile("stage1.txt");
     mLab->registerUI(stageLabel, infoTextBox);
+    mLab->registerLights(light, mLightNode);
     addInputListener(mLab);
 }

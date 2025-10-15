@@ -29,9 +29,11 @@ void Labyrinth::readFile(string fileName)
     // para poder hacer cin para leer el archivo
     auto cinbuf = cin.rdbuf(entrada.rdbuf());
 
-    cin >> height >> width; 
+    cin >> height >> width;  // mapa
 
-    cin >> matwall >> matfloor;
+    cin >> matwall >> matfloor; // materiales
+
+    cin >> lightType; // luces
 
     string fila;
     for (int i = 0; i < height; i++) 
@@ -83,7 +85,7 @@ void Labyrinth::readFile(string fileName)
                 SceneNode* nodeEnemy = _mSM->getRootSceneNode()->createChildSceneNode("Enemy" + enemyCount);
                 _enemiesNode.push_back(nodeEnemy);
 
-                _enemies.push_back(new Enemy(Vector3(0, 0, 0), nodeEnemy, _mSM, "ogrehead.mesh"));
+                _enemies.push_back(new Enemy(Vector3(0, 0, 0), nodeEnemy, _mSM, "ogrehead.mesh", "cube.mesh", "sphere.mesh"));
                 _enemies[enemyCount]->setPosition(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize));
                 enemyCount++;
             }
@@ -102,6 +104,12 @@ void Labyrinth::registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox)
 {
     stageLabel = label;
     infoTextBox = textbox;
+}
+
+void Labyrinth::registerLights(Ogre::Light* light, Ogre::SceneNode* mLightNode)
+{
+    _light = light;
+    _lightNode = mLightNode;
 }
 
 void Labyrinth::createFloor()
@@ -164,6 +172,7 @@ void Labyrinth::updateHero()
     if (_hero->getLives() <= 0)
     {
         std::cout << "FIN DE JUEGO" << endl;
+        // shutdown application
     }
 
     Vector3 wantToMove = _hero->getLastPosibleDirection();

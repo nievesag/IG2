@@ -28,18 +28,19 @@ protected:
     virtual void shutdown();
     virtual void setupScene();
     
-    Ogre::SceneNode* mSinbadNode = nullptr;
-      
+    // Manager
     Ogre::SceneManager* mSM = nullptr;
     OgreBites::TrayManager* mTrayMgr = nullptr;
     
-    Ogre::Light* light = nullptr;
-    Ogre::SceneNode* mLightParent = nullptr;
-    Ogre::SceneNode* mLightNode = nullptr;
-    
+    // Camara
     Ogre::SceneNode* mCamNode = nullptr;
     OgreBites::CameraMan* mCamMgr = nullptr;
 
+    // Luces
+    //Ogre::SceneNode* mLightParent = nullptr;
+    Ogre::Light* light = nullptr;
+    Ogre::SceneNode* mLightNode = nullptr;
+    
     // Objetos de juego
     Labyrinth* mLab = nullptr;
     Hero* mHero = nullptr;

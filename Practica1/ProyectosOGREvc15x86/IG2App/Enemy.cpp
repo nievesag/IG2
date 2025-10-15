@@ -1,14 +1,14 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Vector3 a, SceneNode* b, SceneManager* c, String mesh)
-	: Character(a, b, c, mesh)
+Enemy::Enemy(Vector3 a, SceneNode* b, SceneManager* c, String mesh, String m2, String m3)
+	: Character(a, b, c, mesh), mesh2(m2), mesh3(m3)
 {
 	/*
 	REQUISITOS DEL ENEMY
-	Rormado por, al menos, tres mallas distintas.
-	Formado por, al menos, diez entidades.
-	Contener, al menos, dos partes móviles que tengan, al menos, tres entidades cada una que realicen rotaciones.
-	Contener un timer que controle el tiempo que las partes móviles realizarán movimientos de rotación en cada sentido.
+	- Rormado por, al menos, tres mallas distintas.
+	- Formado por, al menos, diez entidades.
+	- Contener, al menos, dos partes móviles que tengan, al menos, tres entidades cada una que realicen rotaciones.
+	- Contener un timer que controle el tiempo que las partes móviles realizarán movimientos de rotación en cada sentido.
 	*/
 }
 
