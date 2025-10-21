@@ -66,6 +66,7 @@ private:
 	void updateHero();
 	void updateUI();
 	void updateEnemies();
+	void updateLuz();
 
 	// --- Auxiliares
 	void DebugMap();
@@ -79,6 +80,9 @@ private:
 
 	// --- Suelo
 	void createFloor();
+
+	// --- Luces
+	void createLuz();
 
 public:
 	Labyrinth() = default;

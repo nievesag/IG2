@@ -2,7 +2,7 @@
 19
 Muro
 Suelo
-directional
+point
 xxxxxxxxxxxxxxxxxxx
 xhoooooooxooooooovx
 xoxxoxxxoxoxxxoxxox

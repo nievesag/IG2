@@ -98,6 +98,7 @@ void Labyrinth::readFile(string fileName)
     cin.rdbuf(cinbuf);
 
     createFloor();
+    createLuz();
 }
 
 void Labyrinth::registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox)
@@ -125,6 +126,36 @@ void Labyrinth::createFloor()
     nodePlane->attachObject(plane);
     nodePlane->setPosition(Vector3((width * Constants::mapSize)/2, -Constants::mapSize/2, (height * Constants::mapSize)/2));
     plane->setMaterialName(matfloor);
+}
+
+void Labyrinth::createLuz()
+{
+    _light = _mSM->createLight("Luzmap");
+    _light->setDiffuseColour(0.75, 0.75, 0.75);
+    _lightNode = _mSM->getRootSceneNode()->createChildSceneNode("nLuzmap");
+    _lightNode->attachObject(_light);
+
+    if (lightType == "point")
+    {
+        _light->setType(Ogre::Light::LT_POINT);
+        //_light->setAttenuation(Constants::mapSize * 10, );
+        Vector3 hPos = _hero->getPosition();
+        _lightNode->setPosition(Ogre::Vector3(hPos.x, hPos.y + Constants::mapSize, hPos.z));
+    }
+    else if (lightType == "spotlight")
+    {
+        _light->setType(Ogre::Light::LT_SPOTLIGHT);
+        _lightNode->setPosition(Ogre::Vector3(950, 2500, 1900));
+        _lightNode->lookAt(_hero->getPosition(), Ogre::Node::TS_WORLD);
+        //_light.set
+    }
+    else
+    {
+        _light->setType(Ogre::Light::LT_DIRECTIONAL);
+        _lightNode->setDirection(Ogre::Vector3(0.5, -0.5, 0.5));
+    }
+    
+   
 }
 
 void Labyrinth::DebugMap()
@@ -165,6 +196,7 @@ void Labyrinth::update()
     updateHero();
     updateEnemies();
     updateUI();
+    updateLuz();
 }
 
 void Labyrinth::updateHero()
@@ -216,7 +248,21 @@ void Labyrinth::updateUI()
 
 void Labyrinth::updateEnemies()
 {
+    
+}
 
+void Labyrinth::updateLuz()
+{
+    if (_lightNode != nullptr)
+    {
+        if (lightType == "point")
+        {
+            Vector3 hPos = _hero->getPosition();
+            _lightNode->setPosition(Ogre::Vector3(hPos.x, hPos.y + Constants::mapSize, hPos.z));
+        }
+        else if (lightType == "spotlight")
+            _lightNode->lookAt(_hero->getPosition(), Ogre::Node::TS_WORLD);
+    }
 }
 
 // --------- AUX

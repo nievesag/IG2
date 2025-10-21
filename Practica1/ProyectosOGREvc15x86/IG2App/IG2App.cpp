@@ -80,13 +80,13 @@ void IG2App::setupScene(void)
     addInputListener(mHero);
 
     // -- Luces
-    light = mSM->createLight("Luz");
+    /*light = mSM->createLight("Luz");
     light->setType(Ogre::Light::LT_DIRECTIONAL);
     light->setDiffuseColour(0.75, 0.75, 0.75);
 
     mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
     mLightNode->attachObject(light);
-    mLightNode->setDirection(Ogre::Vector3(0.5, -0.5, 0.5));
+    mLightNode->setDirection(Ogre::Vector3(0.5, -0.5, 0.5));*/
 
     // -- UI
     OgreBites::Label* stageLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "StageLabel", "Stage: ", 200);
@@ -97,6 +97,6 @@ void IG2App::setupScene(void)
     mLab->setupLabyrinth(mSM, mHero, nodeHero);
     mLab->readFile("stage1.txt");
     mLab->registerUI(stageLabel, infoTextBox);
-    mLab->registerLights(light, mLightNode);
+    //mLab->registerLights(light, mLightNode);
     addInputListener(mLab);
 }
