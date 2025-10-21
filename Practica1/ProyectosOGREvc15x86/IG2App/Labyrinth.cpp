@@ -85,7 +85,7 @@ void Labyrinth::readFile(string fileName)
                 SceneNode* nodeEnemy = _mSM->getRootSceneNode()->createChildSceneNode("Enemy" + enemyCount);
                 _enemiesNode.push_back(nodeEnemy);
 
-                _enemies.push_back(new Enemy(Vector3(0, 0, 0), nodeEnemy, _mSM, "ogrehead.mesh", "cube.mesh", "sphere.mesh"));
+                _enemies.push_back(new Enemy(Vector3(0, 0, 0), nodeEnemy, _mSM, "spine.mesh", "cube.mesh", "sphere.mesh"));
                 _enemies[enemyCount]->setPosition(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize));
                 enemyCount++;
             }

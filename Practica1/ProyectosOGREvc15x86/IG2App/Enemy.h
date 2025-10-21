@@ -6,7 +6,7 @@
 class Enemy : public Character
 {
 public:
-	Enemy(Vector3 a, SceneNode* b, SceneManager* c, String mesh, String m2, String m3);
+	Enemy(Vector3 a, SceneNode* b, SceneManager* c, String mesh);
 	virtual void frameRendered(const Ogre::FrameEvent& evt);
 
 private:

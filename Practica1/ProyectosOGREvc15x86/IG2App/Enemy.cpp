@@ -1,7 +1,7 @@
 #include "Enemy.h"
 
-Enemy::Enemy(Vector3 a, SceneNode* b, SceneManager* c, String mesh, String m2, String m3)
-	: Character(a, b, c, mesh), mesh2(m2), mesh3(m3)
+Enemy::Enemy(Vector3 a, SceneNode* b, SceneManager* c, String mesh)
+	: Character(a, b, c, mesh)
 {
 	/*
 	REQUISITOS DEL ENEMY
