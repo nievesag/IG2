@@ -1,0 +1,13 @@
+material Muro
+{
+    technique
+    {
+        pass
+        {
+            texture_unit 
+            {
+                texture terr_rock6.jpg
+            }
+        }
+    }
+}

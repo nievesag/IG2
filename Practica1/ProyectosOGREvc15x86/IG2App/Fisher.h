@@ -24,8 +24,8 @@ private:
     Ogre::SceneNode* mPez3Node = nullptr;       // --- pez 3
 
     // serpiente
-    Ogre::SceneNode* mCuerpoSerpienteNode = nullptr;    // ------- cuerpo serpiente
-    Ogre::SceneNode* mCabezaSerpienteNode = nullptr;    // ------- cuerpo serpiente
-    Ogre::SceneNode* mColaSerpienteNode = nullptr;      // ------- cuerpo serpiente
+    Ogre::SceneNode* mCuerpoSerpNode = nullptr;    // ------- cuerpo serpiente
+    Ogre::SceneNode* mCabezaSerpNode = nullptr;    // ------- cabeza serpiente
+    Ogre::SceneNode* mColaSerpNode = nullptr;      // ------- cola serpiente
 };
 
