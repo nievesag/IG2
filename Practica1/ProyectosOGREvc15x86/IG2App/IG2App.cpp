@@ -71,6 +71,7 @@ void IG2App::setupScene(void)
     mCamMgr = new OgreBites::CameraMan(mCamNode);
     addInputListener(mCamMgr);
     mCamMgr->setStyle(OgreBites::CS_ORBIT);
+    // <<
     
     // ---------------- OBJETOS ESCENA
     // -- Hero
