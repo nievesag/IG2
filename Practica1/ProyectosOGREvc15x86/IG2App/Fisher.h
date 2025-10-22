@@ -12,8 +12,8 @@ public:
 
 private:
     // pinguino
-    Ogre::SceneNode* mFisherNode = nullptr;     // ---------- nodo fisher root
-    Ogre::SceneNode* mPenguinNode = nullptr;    // ---------- pinguino
+    //Ogre::SceneNode* mFisherNode = nullptr;     // ---------- nodo fisher root
+    //Ogre::SceneNode* mPenguinNode = nullptr;    // ---------- pinguino
     Ogre::SceneNode* mPelucaNode = nullptr;     // ------- peluca
 
     // caña
