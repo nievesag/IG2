@@ -60,6 +60,7 @@ Fisher::Fisher(Vector3 initPos, SceneNode* node, SceneManager* sceneMng)
 
 Fisher::~Fisher()
 {
+
 }
 
 void Fisher::frameRendered(const Ogre::FrameEvent& evt)

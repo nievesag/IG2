@@ -82,6 +82,8 @@ void Labyrinth::readFile(string fileName)
             {
                 SceneNode* node = _labyrinthNode->createChildSceneNode(id);
                 line.push_back(new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM)); // vacio en el mapa
+
+                _enemiesPos.push_back({j,i});
                 
                 SceneNode* nodeEnemy = _mSM->getRootSceneNode()->createChildSceneNode("Enemy" + enemyCount);
                 _enemiesNode.push_back(nodeEnemy);
@@ -251,7 +253,44 @@ void Labyrinth::updateUI()
 
 void Labyrinth::updateEnemies()
 {
-    
+    int i = 0;
+    for (auto e : _enemies) 
+    {
+        // TODO: gestionar muertes
+
+        Vector3 wantToMove = e->getLastPosibleDirection();
+        pair<int, int> dirToMove = { wantToMove.x, wantToMove.z };
+
+        Vector3 isMoving = e->getCurrentDirection();
+        pair<int, int> dirMoving = { isMoving.x, isMoving.z };
+
+        Vector3 realPos = e->getPosition();
+        _enemiesPos[i] = vectorToMap(realPos);
+
+        bool turn = checkMove(_enemiesPos[i], dirToMove);
+        bool movable = checkForward(_enemiesPos[i], dirMoving, realPos);
+        bool centered = checkCentered(_enemiesPos[i]);
+
+        _enemiesPos[i].first += dirMoving.first;
+        _enemiesPos[i].second += dirMoving.second;
+
+        pair<int, int> nextPos = { _enemiesPos[i].first + dirToMove.first ,_enemiesPos[i].first + dirToMove.second };
+
+        if (centered)
+        {
+            if (turn)
+            {
+                _enemiesPos[i] = nextPos;
+                if (isMoving != Vector3(0, 0, 0))
+                    _enemiesNode[i]->rotate(e->quaternionRotateCharacter());
+                e->moveCharacter();
+            }
+            else if (!movable)
+                e->stopCharacter();
+        }
+
+        ++i; // seguir buscando
+    }
 }
 
 void Labyrinth::updateLuz()

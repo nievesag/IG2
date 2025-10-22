@@ -41,6 +41,7 @@ private:
 	// --- Enemies
 	std::vector<Enemy*> _enemies; // vector de objetos enemigo
 	std::vector<SceneNode*> _enemiesNode; // vector de nodos enemigo
+	std::vector<std::pair<int, int>> _enemiesPos; // posicion de los enemigos en coordenadas de bloques
 	int enemyCount = 0;
 
 	// --- Textures
@@ -73,7 +74,7 @@ private:
 	pair<int, int> vectorToMap(Vector3 pos); // para pasar a coordenadas de bloques
 
 	// --- Check...
-	bool checkMove(pair<int, int> pos, pair<int, int> dir);
+	bool checkMove(pair<int, int> pos, pair<int, int> dir); // si delante tiene empty
 	bool checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 realPos);
 	bool checkCentered(pair<int, int> pos);
 	bool checkCollision();
