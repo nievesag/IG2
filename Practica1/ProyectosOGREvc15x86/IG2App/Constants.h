@@ -23,6 +23,7 @@ namespace Constants
 	};
 
 	 static const double heroSpeed = 200;
+	 static const double enemySpeed = 150;
 
 	 static const int mapSize = 100;
 	 static const int characterSize = 100;

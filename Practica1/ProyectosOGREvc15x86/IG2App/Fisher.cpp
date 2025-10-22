@@ -83,9 +83,9 @@ void Fisher::frameRendered(const Ogre::FrameEvent& evt)
 {
 	Enemy::frameRendered(evt);
 
-	std::cout << "anim";
-	// animacion ?
+	//std::cout << "anim";
 
+	// animacion
 	mPez1Node->yaw(Ogre::Angle(3));
 	mPez2Node->yaw(Ogre::Angle(-4));
 	mPez3Node->yaw(Ogre::Angle(5));

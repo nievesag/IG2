@@ -76,7 +76,7 @@ private:
 	// --- Check...
 	bool checkMove(pair<int, int> pos, pair<int, int> dir); // si delante tiene empty
 	bool checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 realPos);
-	bool checkCentered(pair<int, int> pos);
+	bool checkCentered(pair<int, int> pos, Character* c);
 	bool checkCollision();
 
 	// --- Suelo

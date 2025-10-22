@@ -100,10 +100,10 @@ void Labyrinth::readFile(string fileName)
     createFloor();
     createLuz();
 
-    SceneNode* nodeEnemy = _mSM->getRootSceneNode()->createChildSceneNode("Enemy" + enemyCount);
-    _enemiesNode.push_back(nodeEnemy);
-    _enemies.push_back(new Fisher(Vector3(0, 0, 0), nodeEnemy, _mSM));
-    _enemies[enemyCount]->setPosition(Ogre::Vector3(0, 100, 0));
+    //SceneNode* nodeEnemy = _mSM->getRootSceneNode()->createChildSceneNode("Enemy" + enemyCount);
+    //_enemiesNode.push_back(nodeEnemy);
+    //_enemies.push_back(new Fisher(Vector3(0, 0, 0), nodeEnemy, _mSM));
+    //_enemies[enemyCount]->setPosition(Ogre::Vector3(0, 100, 0));
 }
 
 void Labyrinth::registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox)
@@ -225,7 +225,7 @@ void Labyrinth::updateHero()
 
     bool turn = checkMove(_heroPos, dirToMove);
     bool movable = checkForward(_heroPos, dirMoving, realPos);
-    bool centered = checkCentered(_heroPos);
+    bool centered = checkCentered(_heroPos, _hero);
 
     _heroPos.first += dirMoving.first;
     _heroPos.second += dirMoving.second;
@@ -265,13 +265,15 @@ void Labyrinth::updateEnemies()
 
         Vector3 isMoving = e->getCurrentDirection();
         pair<int, int> dirMoving = { isMoving.x, isMoving.z };
+        //std::cout << i << ": " << dirToMove.first << " " << dirToMove.second << endl;
 
         Vector3 realPos = e->getPosition();
         _enemiesPos[i] = vectorToMap(realPos);
 
+        cout << _enemiesPos[i].first << " " << _enemiesPos[i].second << endl;
         bool turn = checkMove(_enemiesPos[i], dirToMove);
         bool movable = checkForward(_enemiesPos[i], dirMoving, realPos);
-        bool centered = checkCentered(_enemiesPos[i]);
+        bool centered = checkCentered(_enemiesPos[i], _enemies[i]);
 
         _enemiesPos[i].first += dirMoving.first;
         _enemiesPos[i].second += dirMoving.second;
@@ -321,6 +323,8 @@ bool Labyrinth::checkMove(pair<int, int> pos, pair<int, int> dir)
     int x = pos.first + dir.first;
     int z = pos.second + dir.second;
 
+    cout << "HOLA " << map[z][x]->isEmpty() << endl;
+
     return map[z][x]->isEmpty();
 }
 
@@ -344,16 +348,16 @@ bool Labyrinth::checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 rea
     return true;
 }
 
-bool Labyrinth::checkCentered(pair<int, int> pos)
+bool Labyrinth::checkCentered(pair<int, int> pos, Character* c)
 {
     float worldSize = Constants::mapSize; 
     Vector3 squareCenter(pos.first * worldSize, 0, pos.second * worldSize);
 
     float xS = squareCenter.x;
-    int xH = _hero->getPosition().x;
+    int xH = c->getPosition().x;
 
     float zS = squareCenter.z;
-    int zH = _hero->getPosition().z;
+    int zH = c->getPosition().z;
 
     return ((xS < xH + 5) && (xS > xH - 5)) && ((zS < zH + 5) && (zS > zH -5));
 }
