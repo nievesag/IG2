@@ -19,8 +19,8 @@
 class IG2App : public  OgreBites::IG2ApplicationContext, OgreBites::InputListener{
 
 public:
-    explicit IG2App() : IG2ApplicationContext("IG2App") { };  // new -> setup()
-    virtual ~IG2App() { };                                    // delete -> shutdown()
+    explicit IG2App() : IG2ApplicationContext("IG2App") { }  // new -> setup()
+    virtual ~IG2App() { }                                    // delete -> shutdown()
  
 protected:
     virtual bool keyPressed(const OgreBites::KeyboardEvent& evt);  // InputListener
@@ -45,6 +45,8 @@ protected:
     Labyrinth* mLab = nullptr;
     Hero* mHero = nullptr;
     std::vector<Enemy*> mEnemies;
+    std::vector<SceneNode*> mEnemiesNode;
+    int enemyCount = 2; // ENEMIGOS QUE VA A HABER EN EL MAPA
 };
 
 #endif

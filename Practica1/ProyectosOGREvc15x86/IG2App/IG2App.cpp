@@ -1,5 +1,7 @@
 #include "IG2App.h"
 
+#include "Fisher.h"
+
 using namespace Ogre;
 using namespace std;
 
@@ -80,14 +82,14 @@ void IG2App::setupScene(void)
     mHero = new Hero(Vector3(0, 0, 0), nodeHero, mSM, "Sinbad.mesh");
     addInputListener(mHero);
 
-    // -- Luces
-    /*light = mSM->createLight("Luz");
-    light->setType(Ogre::Light::LT_DIRECTIONAL);
-    light->setDiffuseColour(0.75, 0.75, 0.75);
-
-    mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
-    mLightNode->attachObject(light);
-    mLightNode->setDirection(Ogre::Vector3(0.5, -0.5, 0.5));*/
+    // -- Enemigos
+    for (int i = 0; i < enemyCount; i++)
+    {
+        SceneNode* nodeEnemy = mSM->getRootSceneNode()->createChildSceneNode("Enemy" + i);
+        mEnemiesNode.push_back(nodeEnemy);
+        mEnemies.push_back(new Fisher(Vector3(0, 0, 0), nodeEnemy, mSM));
+        addInputListener(mEnemies.back());
+    }
 
     // -- UI
     OgreBites::Label* stageLabel = mTrayMgr->createLabel(OgreBites::TL_BOTTOMRIGHT, "StageLabel", "Stage: ", 200);
@@ -95,9 +97,8 @@ void IG2App::setupScene(void)
 
     // -- Laberinto
     mLab = new Labyrinth();
-    mLab->setupLabyrinth(mSM, mHero, nodeHero);
+    mLab->setupLabyrinth(mSM, mHero, nodeHero, mEnemies, mEnemiesNode);
     mLab->readFile("stage1.txt");
     mLab->registerUI(stageLabel, infoTextBox);
-    //mLab->registerLights(light, mLightNode);
     addInputListener(mLab);
 }

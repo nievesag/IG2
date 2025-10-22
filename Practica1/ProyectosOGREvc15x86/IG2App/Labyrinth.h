@@ -88,7 +88,7 @@ private:
 public:
 	Labyrinth() = default;
 
-	void setupLabyrinth(SceneManager* mSM, Hero* hero, SceneNode* heroscn); // inicializar laberinto
+	void setupLabyrinth(SceneManager* mSM, Hero* hero, SceneNode* heroscn, std::vector<Enemy*> enemies, std::vector<SceneNode*> enemiesNode);
 	void readFile(string fileName); // leer el fichero
 
 	void registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox); // registra UI

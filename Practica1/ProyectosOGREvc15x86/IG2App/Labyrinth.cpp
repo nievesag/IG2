@@ -8,13 +8,17 @@ using namespace std;
 
 // --------- INIT
 void Labyrinth::setupLabyrinth(SceneManager* mSM, 
-    Hero* hero, SceneNode* heroscn)
+    Hero* hero, SceneNode* heroscn,
+    std::vector<Enemy*> enemies, std::vector<SceneNode*> enemiesNode)
 {
     _mSM = mSM; // manager
     _labyrinthNode = _mSM->getRootSceneNode()->createChildSceneNode("nLabMain"); // nodo laberinto
 
     _hero = hero;           // objeto hero
     _heroNode = heroscn;    // nodo heroe
+
+    _enemies = enemies;
+    _enemiesNode = enemiesNode;
 }
 
 void Labyrinth::readFile(string fileName)
@@ -60,8 +64,6 @@ void Labyrinth::readFile(string fileName)
                 SceneNode* node = _labyrinthNode->createChildSceneNode(id);
                 Object* vacio = new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM);
                 line.push_back(vacio);
-                //std::cout << "x: " << j << " z: " << i << "\n";
-                //std::cout << line[j]->isEmpty() << "\n";
             }
             // HERO
             else if (fila[j] == 'h') 
@@ -84,11 +86,6 @@ void Labyrinth::readFile(string fileName)
                 line.push_back(new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM)); // vacio en el mapa
 
                 _enemiesPos.push_back({j,i});
-                
-                SceneNode* nodeEnemy = _mSM->getRootSceneNode()->createChildSceneNode("Enemy" + enemyCount);
-                _enemiesNode.push_back(nodeEnemy);
-                //_enemies.push_back(new Enemy(Vector3(0, 0, 0), nodeEnemy, _mSM, "ogrehead.mesh"));
-                _enemies.push_back(new Fisher(Vector3(0, 0, 0), nodeEnemy, _mSM));
                 _enemies[enemyCount]->setPosition(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize));
                 enemyCount++;
             }
@@ -105,9 +102,7 @@ void Labyrinth::readFile(string fileName)
 
     SceneNode* nodeEnemy = _mSM->getRootSceneNode()->createChildSceneNode("Enemy" + enemyCount);
     _enemiesNode.push_back(nodeEnemy);
-    //_enemies.push_back(new Enemy(Vector3(0, 0, 0), nodeEnemy, _mSM, "ogrehead.mesh"));
     _enemies.push_back(new Fisher(Vector3(0, 0, 0), nodeEnemy, _mSM));
-    //_enemies[enemyCount]->setPosition(Ogre::Vector3(950, 1800, 1700));
     _enemies[enemyCount]->setPosition(Ogre::Vector3(0, 100, 0));
 }
 
