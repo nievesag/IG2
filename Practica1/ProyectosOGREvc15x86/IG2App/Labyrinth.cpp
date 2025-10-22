@@ -85,7 +85,6 @@ void Labyrinth::readFile(string fileName)
                 
                 SceneNode* nodeEnemy = _mSM->getRootSceneNode()->createChildSceneNode("Enemy" + enemyCount);
                 _enemiesNode.push_back(nodeEnemy);
-
                 //_enemies.push_back(new Enemy(Vector3(0, 0, 0), nodeEnemy, _mSM, "ogrehead.mesh"));
                 _enemies.push_back(new Fisher(Vector3(0, 0, 0), nodeEnemy, _mSM));
                 _enemies[enemyCount]->setPosition(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize));
@@ -142,14 +141,16 @@ void Labyrinth::createLuz()
         _light->setType(Ogre::Light::LT_POINT);
         //_light->setAttenuation(Constants::mapSize * 10, );
         Vector3 hPos = _hero->getPosition();
-        _lightNode->setPosition(Ogre::Vector3(hPos.x, hPos.y + Constants::mapSize, hPos.z));
+        _lightNode->setPosition(Ogre::Vector3(hPos.x, hPos.y + Constants::mapSize / 2, hPos.z));
     }
     else if (lightType == "spotlight")
     {
         _light->setType(Ogre::Light::LT_SPOTLIGHT);
         _lightNode->setPosition(Ogre::Vector3(950, 2500, 1900));
         _lightNode->lookAt(_hero->getPosition(), Ogre::Node::TS_WORLD);
-        //_light.set
+        _light->setSpotlightInnerAngle(Ogre::Angle(Constants::sptInner));
+        _light->setSpotlightOuterAngle(Ogre::Angle(Constants::sptOuter));
+        _light->setSpotlightFalloff(Constants::sptFalloff);
     }
     else
     {
