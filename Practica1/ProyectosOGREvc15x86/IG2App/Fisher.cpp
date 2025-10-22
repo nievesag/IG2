@@ -4,11 +4,12 @@ Fisher::Fisher(Vector3 initPos, SceneNode* node, SceneManager* sceneMng)
 	: Enemy(initPos, node, sceneMng, "ogrehead.mesh"), mFisherNode(node)
 {
 	// -- pinguino
+	// 
+	/*
 	// 1) pinguino
 	Ogre::Entity* pinguino = mSM->createEntity("penguin.mesh");
 	mPenguinNode = mFisherNode->createChildSceneNode();
 	mPenguinNode->attachObject(pinguino);
-	std::cout << "HOLA1" << std::endl;
 
 	// 2) peluca pinguino
 	Ogre::Entity* peluca = mSM->createEntity("sphere.mesh");
@@ -56,6 +57,7 @@ Fisher::Fisher(Vector3 initPos, SceneNode* node, SceneManager* sceneMng)
 	Ogre::Entity* colaSerp = mSM->createEntity("fish.mesh");
 	mColaSerpNode = mCuerpoSerpNode->createChildSceneNode();
 	mColaSerpNode->attachObject(colaSerp);
+	*/
 }
 
 Fisher::~Fisher()
