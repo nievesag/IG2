@@ -3,12 +3,11 @@
 #include "Empty.h"
 #include "Constants.h"
 #include "Fisher.h"
-#include <stdlib.h>
 
 using namespace std;
 
 // --------- INIT
-void Labyrinth::setupLabyrinth(SceneManager* mSM, 
+void Labyrinth::setupLabyrinth(SceneManager* mSM,
     Hero* hero, SceneNode* heroscn,
     std::vector<Enemy*> enemies, std::vector<SceneNode*> enemiesNode)
 {
@@ -26,7 +25,7 @@ void Labyrinth::readFile(string fileName)
 {
     ifstream entrada(fileName);
 
-    if (!entrada.is_open()) 
+    if (!entrada.is_open())
     {
         cout << "Error abriendo archivo\n";
         return;
@@ -42,17 +41,17 @@ void Labyrinth::readFile(string fileName)
     cin >> lightType; // luces
 
     string fila;
-    for (int i = 0; i < height; i++) 
+    for (int i = 0; i < height; i++)
     {
         cin >> fila;
 
         std::vector<Object*> line;
 
-        for (int j = 0; j < width; j++) 
+        for (int j = 0; j < width; j++)
         {
             string id = to_string(i) + "-" + to_string(j) + "cube";
             // MURO
-            if (fila[j] == 'x') 
+            if (fila[j] == 'x')
             {
                 SceneNode* node = _labyrinthNode->createChildSceneNode(id);
                 Object* muro = new Wall(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM, "cube.mesh");
@@ -67,11 +66,11 @@ void Labyrinth::readFile(string fileName)
                 line.push_back(vacio);
             }
             // HERO
-            else if (fila[j] == 'h') 
+            else if (fila[j] == 'h')
             {
                 SceneNode* node = _labyrinthNode->createChildSceneNode(id);
                 line.push_back(new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM)); // vacio en el mapa
-                
+
                 _heroPos.first = j;
                 _heroPos.second = i;
 
@@ -86,7 +85,7 @@ void Labyrinth::readFile(string fileName)
                 SceneNode* node = _labyrinthNode->createChildSceneNode(id);
                 line.push_back(new Empty(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize), node, _mSM)); // vacio en el mapa
 
-                _enemiesPos.push_back({j,i});
+                _enemiesPos.push_back({ j,i });
                 _enemies[enemyCount]->setPosition(Vector3(j * Constants::mapSize, 0, i * Constants::mapSize));
                 enemyCount++;
             }
@@ -124,13 +123,13 @@ void Labyrinth::createFloor()
     MeshManager::getSingleton().createPlane("floor",
         ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
         Plane(Vector3::UNIT_Y, 0),
-        width*Constants::mapSize, height * Constants::mapSize, 100, 80,
+        width * Constants::mapSize, height * Constants::mapSize, 100, 80,
         true, 1, 1.0, 1.0, Vector3::UNIT_Z);
 
     Ogre::Entity* plane = _mSM->createEntity("floor");
     SceneNode* nodePlane = _mSM->getRootSceneNode()->createChildSceneNode("floor");
     nodePlane->attachObject(plane);
-    nodePlane->setPosition(Vector3((width * Constants::mapSize)/2, -Constants::mapSize/2, (height * Constants::mapSize)/2));
+    nodePlane->setPosition(Vector3((width * Constants::mapSize) / 2, -Constants::mapSize / 2, (height * Constants::mapSize) / 2));
     plane->setMaterialName(matfloor);
 }
 
@@ -162,8 +161,8 @@ void Labyrinth::createLuz()
         _light->setType(Ogre::Light::LT_DIRECTIONAL);
         _lightNode->setDirection(Ogre::Vector3(0.5, -0.5, 0.5));
     }
-    
-   
+
+
 }
 
 void Labyrinth::DebugMap()
@@ -180,7 +179,7 @@ void Labyrinth::DebugMap()
 }
 
 // --------- UPDATE
-void Labyrinth::frameRendered(const Ogre::FrameEvent& evt) 
+void Labyrinth::frameRendered(const Ogre::FrameEvent& evt)
 {
     update();
 }
@@ -188,21 +187,19 @@ void Labyrinth::frameRendered(const Ogre::FrameEvent& evt)
 void Labyrinth::update()
 {
     bool heroHit = checkCollision();
-    if (heroHit) 
+    if (heroHit)
     {
         _hero->decreaseLives();
 
-        if (_hero->getLives() > 0) 
+        if (_hero->getLives() > 0)
         {
             _heroPos.first = _heroInitPos.first;
             _heroPos.second = _heroInitPos.second;
 
             _hero->setPosition(Vector3(_heroPos.first * Constants::mapSize, 0, _heroPos.second * Constants::mapSize));
-
-            // poner direcciones a 0 !!!!!!!
         }
     }
-    
+
     updateHero();
     updateEnemies();
     updateUI();
@@ -237,10 +234,10 @@ void Labyrinth::updateHero()
 
     if (centered)
     {
-        if (turn) 
+        if (turn)
         {
             _heroPos = nextPos;
-            if(isMoving != Vector3(0, 0, 0))
+            if (isMoving != Vector3(0, 0, 0))
                 _heroNode->rotate(_hero->quaternionRotateCharacter());
             _hero->moveCharacter();
         }
@@ -253,55 +250,49 @@ void Labyrinth::updateUI()
 {
     stageLabel->setCaption("Stage: " + StringConverter::toString(stage));
     infoTextBox->setText("Lives: " + StringConverter::toString(_hero->getLives()) + "\n" +
-							"Points: " + StringConverter::toString(getPoints()));
+        "Points: " + StringConverter::toString(getPoints()));
 }
 
 void Labyrinth::updateEnemies()
 {
     int i = 0;
-    for (auto e : _enemies) 
+    for (auto e : _enemies)
     {
         // TODO: gestionar muertes
+        pair<int, int> nextDir = checkCrossroads(_enemiesPos[i], { e->getCurrentDirection().x, e->getCurrentDirection().z });
+        e->setLastPosibleDirection({ Ogre::Real(nextDir.first), 0, Ogre::Real(nextDir.second) });
 
         Vector3 wantToMove = e->getLastPosibleDirection();
         pair<int, int> dirToMove = { wantToMove.x, wantToMove.z };
 
         Vector3 isMoving = e->getCurrentDirection();
         pair<int, int> dirMoving = { isMoving.x, isMoving.z };
+        //std::cout << i << ": " << dirToMove.first << " " << dirToMove.second << endl;
 
         Vector3 realPos = e->getPosition();
         _enemiesPos[i] = vectorToMap(realPos);
 
+        cout << _enemiesPos[i].first << " " << _enemiesPos[i].second << endl;
         bool turn = checkMove(_enemiesPos[i], dirToMove);
         bool movable = checkForward(_enemiesPos[i], dirMoving, realPos);
         bool centered = checkCentered(_enemiesPos[i], _enemies[i]);
 
-        if (centered) // si esta centrado
+        _enemiesPos[i].first += dirMoving.first;
+        _enemiesPos[i].second += dirMoving.second;
+
+        pair<int, int> nextPos = { _enemiesPos[i].first + dirToMove.first ,_enemiesPos[i].first + dirToMove.second };
+
+        if (centered)
         {
-            if (turn) 
+            if (turn)
             {
-                pair<int, int> nextPos = {
-                _enemiesPos[i].first + checkCrossroads(_enemiesPos[i], dirToMove).first ,
-                _enemiesPos[i].first + checkCrossroads(_enemiesPos[i], dirToMove).second
-                };
-
                 _enemiesPos[i] = nextPos;
-
-                std::pair<int, int> mov = checkCrossroads(_enemiesPos[i], dirToMove);
-
-                if (mov.first != 0 && mov.second)
+                if (isMoving != Vector3(0, 0, 0))
                     _enemiesNode[i]->rotate(e->quaternionRotateCharacter());
-
-
-                e->setLastPosibleDirection({ Ogre::Real(mov.first) , 0,  Ogre::Real(mov.second) });
-
                 e->moveCharacter();
             }
-            else if (!movable) 
-            {
+            else if (!movable)
                 e->stopCharacter();
-                //checkCrossroads(_enemiesPos[i], dirToMove);
-            }
         }
 
         ++i; // seguir buscando
@@ -334,6 +325,8 @@ bool Labyrinth::checkMove(pair<int, int> pos, pair<int, int> dir)
     int x = pos.first + dir.first;
     int z = pos.second + dir.second;
 
+    cout << "HOLA " << map[z][x]->isEmpty() << endl;
+
     return map[z][x]->isEmpty();
 }
 
@@ -353,13 +346,13 @@ bool Labyrinth::checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 rea
         if (dir.second < 0) // se está moviendo hacia abajo y 
             return false;
     }
-    
+
     return true;
 }
 
 bool Labyrinth::checkCentered(pair<int, int> pos, Character* c)
 {
-    float worldSize = Constants::mapSize; 
+    float worldSize = Constants::mapSize;
     Vector3 squareCenter(pos.first * worldSize, 0, pos.second * worldSize);
 
     float xS = squareCenter.x;
@@ -368,15 +361,15 @@ bool Labyrinth::checkCentered(pair<int, int> pos, Character* c)
     float zS = squareCenter.z;
     int zH = c->getPosition().z;
 
-    return ((xS < xH + 5) && (xS > xH - 5)) && ((zS < zH + 5) && (zS > zH -5));
+    return ((xS < xH + 5) && (xS > xH - 5)) && ((zS < zH + 5) && (zS > zH - 5));
 }
 
 bool Labyrinth::checkCollision()
 {
     // colision hero-enemigos
-    for (auto e : _enemies) 
+    for (auto e : _enemies)
     {
-        if (e->checkCharacterCollision(_hero->getAABB())) 
+        if (e->checkCharacterCollision(_hero->getAABB()))
         {
             return true;
         }
@@ -385,7 +378,7 @@ bool Labyrinth::checkCollision()
     return false;
 }
 
-std::pair<int,int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int> dir)
+std::pair<int, int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int> dir)
 {
     /*
     Chuleta direcciones:
