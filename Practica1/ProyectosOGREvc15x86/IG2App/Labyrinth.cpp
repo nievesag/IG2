@@ -3,6 +3,7 @@
 #include "Empty.h"
 #include "Constants.h"
 #include "Fisher.h"
+#include <stdlib.h>
 
 using namespace std;
 
@@ -93,7 +94,7 @@ void Labyrinth::readFile(string fileName)
 
         map.push_back(line);
     }
-    //DebugMap();
+    DebugMap();
 
     cin.rdbuf(cinbuf);
 
@@ -197,6 +198,8 @@ void Labyrinth::update()
             _heroPos.second = _heroInitPos.second;
 
             _hero->setPosition(Vector3(_heroPos.first * Constants::mapSize, 0, _heroPos.second * Constants::mapSize));
+
+            // poner direcciones a 0 !!!!!!!
         }
     }
     
@@ -265,12 +268,10 @@ void Labyrinth::updateEnemies()
 
         Vector3 isMoving = e->getCurrentDirection();
         pair<int, int> dirMoving = { isMoving.x, isMoving.z };
-        //std::cout << i << ": " << dirToMove.first << " " << dirToMove.second << endl;
 
         Vector3 realPos = e->getPosition();
         _enemiesPos[i] = vectorToMap(realPos);
 
-        cout << _enemiesPos[i].first << " " << _enemiesPos[i].second << endl;
         bool turn = checkMove(_enemiesPos[i], dirToMove);
         bool movable = checkForward(_enemiesPos[i], dirMoving, realPos);
         bool centered = checkCentered(_enemiesPos[i], _enemies[i]);
@@ -280,17 +281,25 @@ void Labyrinth::updateEnemies()
 
         pair<int, int> nextPos = { _enemiesPos[i].first + dirToMove.first ,_enemiesPos[i].first + dirToMove.second };
 
-        if (centered)
+        if (centered) // si esta centrado
         {
-            if (turn)
+
+
+            if (turn) // si puede seguir avanzando
             {
-                _enemiesPos[i] = nextPos;
-                if (isMoving != Vector3(0, 0, 0))
-                    _enemiesNode[i]->rotate(e->quaternionRotateCharacter());
-                e->moveCharacter();
+                if (checkCrossroads(_enemiesPos[i], dirToMove))
+                {
+                    _enemiesPos[i] = nextPos;
+                    if (isMoving != Vector3(0, 0, 0))
+                        _enemiesNode[i]->rotate(e->quaternionRotateCharacter());
+                    e->moveCharacter();
+                }
             }
-            else if (!movable)
+            else if (!movable) 
+            {
                 e->stopCharacter();
+                checkCrossroads(_enemiesPos[i], dirToMove);
+            }
         }
 
         ++i; // seguir buscando
@@ -322,8 +331,6 @@ bool Labyrinth::checkMove(pair<int, int> pos, pair<int, int> dir)
 {
     int x = pos.first + dir.first;
     int z = pos.second + dir.second;
-
-    cout << "HOLA " << map[z][x]->isEmpty() << endl;
 
     return map[z][x]->isEmpty();
 }
@@ -374,4 +381,84 @@ bool Labyrinth::checkCollision()
     }
 
     return false;
+}
+
+std::pair<int,int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int> dir)
+{
+    /*
+    Chuleta direcciones:
+
+             (0,-1)
+               ^
+               |
+    (-1,0) <---+---> (1,0)
+               |
+               v
+             (0,1)
+    */
+
+    std::vector<pair<int, int>> posibleDirections; // vector de direcciones posibles salvo 180
+
+    // -- arriba
+    int xAr = pos.first + Vector3::NEGATIVE_UNIT_Z.x;
+    int zAr = pos.second + Vector3::NEGATIVE_UNIT_Z.z;
+
+    if (dir.second != 1  // si no es el giro de 180 (no vas hacia abajo)
+        && map[zAr][xAr]->isEmpty()) // y esta vacia
+    {
+        // arriba como posible direccion
+        posibleDirections.push_back({ Vector3::NEGATIVE_UNIT_Z.x , Vector3::NEGATIVE_UNIT_Z.z });
+    }
+
+    // -- abajo
+    int xAb = pos.first + Vector3::UNIT_Z.x;
+    int zAb = pos.second + Vector3::UNIT_Z.z;
+
+    if (dir.second != -1  // si no es el giro de 180 (no vas hacia arriba)
+        && map[zAb][xAb]->isEmpty()) // y esta vacia
+    {
+        // abajo como posible direccion
+        posibleDirections.push_back({ Vector3::UNIT_Z.x , Vector3::UNIT_Z.z });
+    }
+
+    // -- izquierda
+    int xIz = pos.first + Vector3::NEGATIVE_UNIT_X.x;
+    int zIz = pos.second + Vector3::NEGATIVE_UNIT_X.z;
+
+    if (dir.first != 1  // si no es el giro de 180 (no vas hacia derecha)
+        && map[zIz][xIz]->isEmpty()) // y esta vacia
+    {
+        // izquierda como posible direccion
+        posibleDirections.push_back({ Vector3::NEGATIVE_UNIT_X.x , Vector3::NEGATIVE_UNIT_X.z });
+    }
+
+    // -- derecha
+    int xDe = pos.first + Vector3::UNIT_X.x;
+    int zDe = pos.second + Vector3::UNIT_X.z;
+
+    if (dir.first != -1  // si no es el giro de 180 (no vas hacia izquierda)
+        && map[zDe][xDe]->isEmpty()) // y esta vacia
+    {
+        // derecha como posible direccion
+        posibleDirections.push_back({ Vector3::UNIT_X.x , Vector3::UNIT_X.z });
+    }
+
+    // calcular siguiente direccion
+    std::pair<int, int> nextDir;
+
+    if (posibleDirections.size() > 1) // si hay mas de una direccion posible
+    {
+        int randDir = rand() % posibleDirections.size(); // aleatoria
+        nextDir = posibleDirections[randDir];
+    }
+    else if (posibleDirections.size() == 0) // si se queda en una encrucijada
+    {
+        nextDir = { -dir.first, -dir.second }; // giro 180
+    }
+    else // si solo hay una direccion posible
+    {
+        nextDir = posibleDirections.front(); // es esa
+    }
+
+    return nextDir;
 }

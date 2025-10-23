@@ -12,6 +12,11 @@ public:
 	bool getAlive() { return alive; }
 	Vector3 getRandomDirection();
 
+	void setLastPosibleDirection() 
+	{
+
+	}
+
 private:
 	bool alive = true;
 };

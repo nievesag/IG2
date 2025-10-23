@@ -78,6 +78,7 @@ private:
 	bool checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 realPos);
 	bool checkCentered(pair<int, int> pos, Character* c);
 	bool checkCollision();
+	std::pair<int,int> checkCrossroads(pair<int, int> pos, pair<int, int> dir);
 
 	// --- Suelo
 	void createFloor();
