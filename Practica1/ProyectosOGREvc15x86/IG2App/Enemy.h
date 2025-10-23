@@ -12,9 +12,9 @@ public:
 	bool getAlive() { return alive; }
 	Vector3 getRandomDirection();
 
-	void setLastPosibleDirection() 
+	void setLastPosibleDirection(Vector3 _lastPosibleDirection) 
 	{
-
+		lastPosibleDirection = _lastPosibleDirection;
 	}
 
 private:

@@ -94,7 +94,7 @@ void Labyrinth::readFile(string fileName)
 
         map.push_back(line);
     }
-    DebugMap();
+    //DebugMap();
 
     cin.rdbuf(cinbuf);
 
@@ -276,29 +276,31 @@ void Labyrinth::updateEnemies()
         bool movable = checkForward(_enemiesPos[i], dirMoving, realPos);
         bool centered = checkCentered(_enemiesPos[i], _enemies[i]);
 
-        _enemiesPos[i].first += dirMoving.first;
-        _enemiesPos[i].second += dirMoving.second;
-
-        pair<int, int> nextPos = { _enemiesPos[i].first + dirToMove.first ,_enemiesPos[i].first + dirToMove.second };
-
         if (centered) // si esta centrado
         {
-
-
-            if (turn) // si puede seguir avanzando
+            if (turn) 
             {
-                if (checkCrossroads(_enemiesPos[i], dirToMove))
-                {
-                    _enemiesPos[i] = nextPos;
-                    if (isMoving != Vector3(0, 0, 0))
-                        _enemiesNode[i]->rotate(e->quaternionRotateCharacter());
-                    e->moveCharacter();
-                }
+                pair<int, int> nextPos = {
+                _enemiesPos[i].first + checkCrossroads(_enemiesPos[i], dirToMove).first ,
+                _enemiesPos[i].first + checkCrossroads(_enemiesPos[i], dirToMove).second
+                };
+
+                _enemiesPos[i] = nextPos;
+
+                std::pair<int, int> mov = checkCrossroads(_enemiesPos[i], dirToMove);
+
+                if (mov.first != 0 && mov.second)
+                    _enemiesNode[i]->rotate(e->quaternionRotateCharacter());
+
+
+                e->setLastPosibleDirection({ Ogre::Real(mov.first) , 0,  Ogre::Real(mov.second) });
+
+                e->moveCharacter();
             }
             else if (!movable) 
             {
                 e->stopCharacter();
-                checkCrossroads(_enemiesPos[i], dirToMove);
+                //checkCrossroads(_enemiesPos[i], dirToMove);
             }
         }
 
@@ -403,7 +405,8 @@ std::pair<int,int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int>
     int xAr = pos.first + Vector3::NEGATIVE_UNIT_Z.x;
     int zAr = pos.second + Vector3::NEGATIVE_UNIT_Z.z;
 
-    if (dir.second != 1  // si no es el giro de 180 (no vas hacia abajo)
+    if (zAr > 0 // si no se sale
+        && dir.second != 1  // si no es el giro de 180 (no vas hacia abajo)
         && map[zAr][xAr]->isEmpty()) // y esta vacia
     {
         // arriba como posible direccion
@@ -414,7 +417,8 @@ std::pair<int,int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int>
     int xAb = pos.first + Vector3::UNIT_Z.x;
     int zAb = pos.second + Vector3::UNIT_Z.z;
 
-    if (dir.second != -1  // si no es el giro de 180 (no vas hacia arriba)
+    if (zAb > map.size() // si no se sale
+        && dir.second != -1  // si no es el giro de 180 (no vas hacia arriba)
         && map[zAb][xAb]->isEmpty()) // y esta vacia
     {
         // abajo como posible direccion
@@ -425,7 +429,8 @@ std::pair<int,int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int>
     int xIz = pos.first + Vector3::NEGATIVE_UNIT_X.x;
     int zIz = pos.second + Vector3::NEGATIVE_UNIT_X.z;
 
-    if (dir.first != 1  // si no es el giro de 180 (no vas hacia derecha)
+    if (xIz > 0 // si no se sale
+        && dir.first != 1  // si no es el giro de 180 (no vas hacia derecha)
         && map[zIz][xIz]->isEmpty()) // y esta vacia
     {
         // izquierda como posible direccion
@@ -436,7 +441,8 @@ std::pair<int,int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int>
     int xDe = pos.first + Vector3::UNIT_X.x;
     int zDe = pos.second + Vector3::UNIT_X.z;
 
-    if (dir.first != -1  // si no es el giro de 180 (no vas hacia izquierda)
+    if (xDe < map.size()
+        && dir.first != -1  // si no es el giro de 180 (no vas hacia izquierda)
         && map[zDe][xDe]->isEmpty()) // y esta vacia
     {
         // derecha como posible direccion
