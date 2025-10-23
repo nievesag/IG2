@@ -44,10 +44,10 @@ Vector3 Hero::keyToDirection(char x)
     Vector3 dir;
     switch (x) 
     {
-    case 'u':
+    case 'u': //up
         dir = Vector3::NEGATIVE_UNIT_Z;
         break;
-    case 'd':
+    case 'd': //
         dir = Vector3::UNIT_Z;
         break;
     case 'l':
