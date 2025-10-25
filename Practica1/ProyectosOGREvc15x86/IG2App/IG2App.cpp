@@ -70,9 +70,9 @@ void IG2App::setupScene(void)
     vp->setBackgroundColour(ColourValue(0, 0, 0.3, 1));
     
     // >> descomentar para usar eventos de teclado para mover la camara
-    mCamMgr = new OgreBites::CameraMan(mCamNode);
+    /*mCamMgr = new OgreBites::CameraMan(mCamNode);
     addInputListener(mCamMgr);
-    mCamMgr->setStyle(OgreBites::CS_ORBIT);
+    mCamMgr->setStyle(OgreBites::CS_ORBIT);*/
     // <<
     
     // ---------------- OBJETOS ESCENA

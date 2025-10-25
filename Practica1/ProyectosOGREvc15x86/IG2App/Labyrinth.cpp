@@ -99,10 +99,6 @@ void Labyrinth::readFile(string fileName)
 
     createFloor();
     createLuz();
-
-    _enemiesPos.push_back({ 0,0 });
-    _enemies[enemyCount]->setPosition(Vector3(0, 100, 0));
-    enemyCount++;
 }
 
 void Labyrinth::registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox)
@@ -158,7 +154,7 @@ void Labyrinth::createLuz()
     else
     {
         _light->setType(Ogre::Light::LT_DIRECTIONAL);
-        _lightNode->setDirection(Ogre::Vector3(0.5, -0.5, 0.5));
+        _lightNode->setDirection(Ogre::Vector3(-0.5, -0.5, -0.5));
     }
 
 
@@ -200,7 +196,7 @@ void Labyrinth::update()
     }
 
     updateHero();
-    //updateEnemies();
+    updateEnemies();
     updateUI();
     updateLuz();
 }

@@ -2,7 +2,7 @@
 19
 Muro
 Suelo
-dir
+spotlight
 xxxxxxxxxxxxxxxxxxx
 xhoooooooxooooooovx
 xoxxoxxxoxoxxxoxxox
