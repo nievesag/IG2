@@ -46,7 +46,7 @@ protected:
     Hero* mHero = nullptr;
     std::vector<Enemy*> mEnemies;
     std::vector<SceneNode*> mEnemiesNode;
-    int enemyCount = 1; // ENEMIGOS QUE VA A HABER EN EL MAPA
+    int enemyCount = 2; // ENEMIGOS QUE VA A HABER EN EL MAPA
 };
 
 #endif

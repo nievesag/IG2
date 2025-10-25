@@ -11,7 +11,7 @@ Enemy::Enemy(Vector3 a, SceneNode* b, SceneManager* c, String mesh)
 void Enemy::frameRendered(const Ogre::FrameEvent& evt)
 {
 	Vector3 toMove(currentDirection * evt.timeSinceLastFrame * Constants::enemySpeed);
-	move(toMove);
+	//move(toMove);
 }
 
 Vector3 Enemy::getRandomDirection()

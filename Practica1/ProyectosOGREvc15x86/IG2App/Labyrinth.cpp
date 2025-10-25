@@ -100,10 +100,9 @@ void Labyrinth::readFile(string fileName)
     createFloor();
     createLuz();
 
-    //SceneNode* nodeEnemy = _mSM->getRootSceneNode()->createChildSceneNode("Enemy" + enemyCount);
-    //_enemiesNode.push_back(nodeEnemy);
-    //_enemies.push_back(new Fisher(Vector3(0, 0, 0), nodeEnemy, _mSM));
-    //_enemies[enemyCount]->setPosition(Ogre::Vector3(0, 100, 0));
+    _enemiesPos.push_back({ 0,0 });
+    _enemies[enemyCount]->setPosition(Vector3(0, 100, 0));
+    enemyCount++;
 }
 
 void Labyrinth::registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox)
@@ -201,7 +200,7 @@ void Labyrinth::update()
     }
 
     updateHero();
-    updateEnemies();
+    //updateEnemies();
     updateUI();
     updateLuz();
 }

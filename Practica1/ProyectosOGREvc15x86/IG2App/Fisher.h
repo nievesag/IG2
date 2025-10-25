@@ -17,7 +17,10 @@ private:
     Ogre::SceneNode* mPelucaNode = nullptr;     // ------- peluca
 
     // caña
+    SceneNode* mPaloEmpt = nullptr;
     Ogre::SceneNode* mPaloNode = nullptr;       // --- palo caña
+    SceneNode* mNudoEmpt = nullptr;
+    SceneNode* mHiloEmpt = nullptr;
     Ogre::SceneNode* mHiloNode = nullptr;       // --- hilo caña
     Ogre::SceneNode* mPez1Node = nullptr;       // --- pez 1
     Ogre::SceneNode* mPez2Node = nullptr;       // --- pez 2
@@ -27,5 +30,7 @@ private:
     Ogre::SceneNode* mCuerpoSerpNode = nullptr;    // ------- cuerpo serpiente
     Ogre::SceneNode* mCabezaSerpNode = nullptr;    // ------- cabeza serpiente
     Ogre::SceneNode* mColaSerpNode = nullptr;      // ------- cola serpiente
+
+    float current = 0;
 };
 
