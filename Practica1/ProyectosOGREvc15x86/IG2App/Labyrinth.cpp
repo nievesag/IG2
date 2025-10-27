@@ -256,9 +256,12 @@ void Labyrinth::updateEnemies()
             // calcula la nueva direccion
             pair<int, int> nextDir = checkCrossroads(vectorToMap(e->getPosition()), { e->getCurrentDirection().x, e->getCurrentDirection().z });
             e->setLastPosibleDirection({ Ogre::Real(nextDir.first), 0, Ogre::Real(nextDir.second) });
+            
+            // calcula la nueva posicion
             pair<int, int> nextPos = { _enemiesPos[i].first + nextDir.first ,_enemiesPos[i].first + nextDir.second };
-            std::cout << "holaaa " << nextDir.first << " " << nextDir.second << endl;
             _enemiesPos[i] = nextPos;
+
+            // rota y mueve
             _enemiesNode[i]->rotate(e->quaternionRotateCharacter());
             e->moveCharacter();
         }
@@ -318,24 +321,13 @@ bool Labyrinth::checkCentered(pair<int, int> pos, Character* c)
     float worldSize = Constants::mapSize;
     Vector3 squareCenter(pos.first * worldSize, 0, pos.second * worldSize);
 
-    // character
+    float xS = squareCenter.x;
     int xH = c->getPosition().x;
+
+    float zS = squareCenter.z;
     int zH = c->getPosition().z;
 
-    // world
-    float xS = squareCenter.x;
-    float zS = squareCenter.z;
-
-    if ((c->getCurrentDirection() == Vector3::NEGATIVE_UNIT_Z && zH < zS) ||   // arriba
-        (c->getCurrentDirection() == Vector3::UNIT_Z && zH > zS) ||            // abajo
-        (c->getCurrentDirection() == Vector3::NEGATIVE_UNIT_X && xH < xS) ||   // izquierda
-        (c->getCurrentDirection() == Vector3::UNIT_X && xH > xS))              // derecha
-    {
-
-        return true;
-    }
-
-    return false;
+    return ((xS < xH + 5) && (xS > xH - 5)) && ((zS < zH + 5) && (zS > zH - 5));
 }
 
 bool Labyrinth::checkCollision()
