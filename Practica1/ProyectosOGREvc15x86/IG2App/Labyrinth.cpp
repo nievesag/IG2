@@ -382,16 +382,10 @@ std::pair<int, int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int
     int xAr = pos.first + Vector3::NEGATIVE_UNIT_Z.x;
     int zAr = pos.second + Vector3::NEGATIVE_UNIT_Z.z;
 
-    //cout << dir.second << endl;
-    //cout << pos.first << " + " << Vector3::NEGATIVE_UNIT_Z.x << " = " << xAr << endl;
-    //cout << pos.second << " + " << Vector3::NEGATIVE_UNIT_Z.z << " = " << zAr << endl; 
-
     if (zAr > 0 // si no se sale
         && dir.second != 1  // si no es el giro de 180 (no vas hacia abajo)
         && map[zAr][xAr]->isEmpty()) // y esta vacia
     {
-        //cout << "ARRIBA OPT " << zAr << " " << dir.second << " " << map[zAr][xAr]->isEmpty() << endl;
-
         // arriba como posible direccion
         posibleDirections.push_back({ Vector3::NEGATIVE_UNIT_Z.x , Vector3::NEGATIVE_UNIT_Z.z });
     }
@@ -404,8 +398,6 @@ std::pair<int, int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int
         && dir.second != -1  // si no es el giro de 180 (no vas hacia arriba)
         && map[zAb][xAb]->isEmpty()) // y esta vacia
     {
-        //cout << "ABJ OPT " << zAr << " " << dir.second << " " << map[zAr][xAr]->isEmpty() << endl;
-
         // abajo como posible direccion
         posibleDirections.push_back({ Vector3::UNIT_Z.x , Vector3::UNIT_Z.z });
     }
@@ -414,16 +406,10 @@ std::pair<int, int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int
     int xIz = pos.first + Vector3::NEGATIVE_UNIT_X.x;
     int zIz = pos.second + Vector3::NEGATIVE_UNIT_X.z;
 
-
-    //cout << dir.second << endl;
-    //cout << pos.first << " + " << Vector3::NEGATIVE_UNIT_Z.x << " = " << xAr << endl;
-    //cout << pos.second << " + " << Vector3::NEGATIVE_UNIT_Z.z << " = " << zAr << endl; 
-
     if (xIz > 0 // si no se sale
         && dir.first != 1  // si no es el giro de 180 (no vas hacia derecha)
         && map[zIz][xIz]->isEmpty()) // y esta vacia
     {
-        //cout << "IZQ OPT " << zAr << " " << dir.second << " " << map[zAr][xAr]->isEmpty() << endl;
         // izquierda como posible direccion
         posibleDirections.push_back({ Vector3::NEGATIVE_UNIT_X.x , Vector3::NEGATIVE_UNIT_X.z });
     }
@@ -432,7 +418,7 @@ std::pair<int, int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int
     int xDe = pos.first + Vector3::UNIT_X.x;
     int zDe = pos.second + Vector3::UNIT_X.z;
 
-    if (xDe < map.size()
+    if (xDe < map.size() // si no se sale
         && dir.first != -1  // si no es el giro de 180 (no vas hacia izquierda)
         && map[zDe][xDe]->isEmpty()) // y esta vacia
     {
@@ -445,18 +431,15 @@ std::pair<int, int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int
 
     if (posibleDirections.size() > 1) // si hay mas de una direccion posible
     {
-        //cout << "!!! ALEATORIA" << endl;
-        int randDir = rand() % posibleDirections.size(); // aleatoria
+        int randDir = rand() % posibleDirections.size(); // aleatoria entre 0 y size-1
         nextDir = posibleDirections[randDir];
     }
     else if (posibleDirections.size() == 0) // si se queda en una encrucijada
     {
-        //cout << "!!! ENCRUCIJADA" << endl;
         nextDir = { -dir.first, -dir.second }; // giro 180
     }
     else // si solo hay una direccion posible
     {
-        //cout << "!!! RECTO" << endl;
         nextDir = posibleDirections.front(); // es esa
     }
 
