@@ -2,7 +2,7 @@
 19
 Muro
 Suelo
-point
+dir
 xxxxxxxxxxxxxxxxxxx
 xhoooooooxooooooovx
 xoxxoxxxoxoxxxoxxox
