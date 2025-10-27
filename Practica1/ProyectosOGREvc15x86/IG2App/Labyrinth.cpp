@@ -212,25 +212,20 @@ void Labyrinth::updateHero()
     Vector3 realPos = _hero->getPosition();
     _heroPos = vectorToMap(realPos);
 
-    bool turn = checkMove(_heroPos, dirToMove);
-    bool movable = checkForward(_heroPos, dirMoving, realPos);
-    bool centered = checkCentered(_heroPos, _hero);
-
     _heroPos.first += dirMoving.first;
     _heroPos.second += dirMoving.second;
 
-    pair<int, int> nextPos = { _heroPos.first + dirToMove.first ,_heroPos.first + dirToMove.second };
-
-    if (centered)
+    if (checkCentered(_heroPos, _hero))
     {
-        if (turn)
+        if (checkMove(_heroPos, dirToMove))
         {
+            pair<int, int> nextPos = { _heroPos.first + dirToMove.first ,_heroPos.first + dirToMove.second };
             _heroPos = nextPos;
             if (isMoving != Vector3(0, 0, 0))
                 _heroNode->rotate(_hero->quaternionRotateCharacter());
             _hero->moveCharacter();
         }
-        else if (!movable)
+        else if (!checkForward(_heroPos, dirMoving, realPos))
             _hero->stopCharacter();
     }
 }
@@ -249,7 +244,7 @@ void Labyrinth::updateEnemies()
     {
         // TODO: gestionar muertes
 
-        _enemiesPos[i] = vectorToMap(e->getPosition());
+        _enemiesPos[i] = vectorToMap(e->getPosition()); // actualiza posicion
 
         if (checkCentered(_enemiesPos[i], _enemies[i]))
         {
