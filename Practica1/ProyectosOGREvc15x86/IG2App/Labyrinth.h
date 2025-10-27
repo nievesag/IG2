@@ -93,7 +93,6 @@ public:
 	void readFile(string fileName); // leer el fichero
 
 	void registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox); // registra UI
-	void registerLights(Ogre::Light* light, Ogre::SceneNode* mLightNode); // registra luces
 
 	virtual void frameRendered(const Ogre::FrameEvent& evt); // update
 

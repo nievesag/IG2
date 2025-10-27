@@ -4,7 +4,6 @@ Enemy::Enemy(Vector3 a, SceneNode* b, SceneManager* c, String mesh)
 	: Character(a, b, c, mesh)
 {
 	currentDirection = this->getOrientation();
-	cout << "CURRENT COJONES:  !!!!!!!!!!!!!!! " << currentDirection << endl;
 	lastPosibleDirection = this->getOrientation();
 }
 

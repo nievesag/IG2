@@ -2,7 +2,7 @@
 19
 Muro
 Suelo
-spotlight
+point
 xxxxxxxxxxxxxxxxxxx
 xhoooooooxooooooovx
 xoxxoxxxoxoxxxoxxox

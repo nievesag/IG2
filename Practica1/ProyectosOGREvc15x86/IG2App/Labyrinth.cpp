@@ -107,12 +107,6 @@ void Labyrinth::registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox)
     infoTextBox = textbox;
 }
 
-void Labyrinth::registerLights(Ogre::Light* light, Ogre::SceneNode* mLightNode)
-{
-    _light = light;
-    _lightNode = mLightNode;
-}
-
 void Labyrinth::createFloor()
 {
     MeshManager::getSingleton().createPlane("floor",
@@ -253,10 +247,10 @@ void Labyrinth::updateEnemies()
     int i = 0;
     for (auto e : _enemies)
     {
-        cout << "current direction z: " << e->getCurrentDirection().z << endl;
         // TODO: gestionar muertes
-        pair<int, int> nextDir = checkCrossroads(_enemiesPos[i], { e->getCurrentDirection().x, e->getCurrentDirection().z });
-        e->setLastPosibleDirection({ Ogre::Real(nextDir.first), 0, Ogre::Real(nextDir.second) });
+        pair<int, int> nextDir = checkCrossroads(vectorToMap(e->getPosition()), { e->getCurrentDirection().x, e->getCurrentDirection().z });
+
+    	e->setLastPosibleDirection({ Ogre::Real(nextDir.first), 0, Ogre::Real(nextDir.second) });
 
         Vector3 wantToMove = e->getLastPosibleDirection();
         pair<int, int> dirToMove = { wantToMove.x, wantToMove.z };
@@ -283,7 +277,7 @@ void Labyrinth::updateEnemies()
                 _enemiesPos[i] = nextPos;
                 if (isMoving != Vector3(0, 0, 0))
                     _enemiesNode[i]->rotate(e->quaternionRotateCharacter());
-                cout << "NEXT DIR: !!!!!!!!!!!!!!!!!!!!!!!!!" << nextDir.second << endl;
+					
                 e->moveCharacter();
             }
             else if (!movable)
@@ -325,18 +319,15 @@ bool Labyrinth::checkMove(pair<int, int> pos, pair<int, int> dir)
 
 bool Labyrinth::checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 realPos)
 {
-    float worldSize = Constants::mapSize;
-    Vector3 squareCenter(pos.first * worldSize + worldSize / 2, 0, pos.second * worldSize + worldSize / 2);
-
     if (!checkMove(pos, dir))
     {
-        if (dir.first > 0) // se está moviendo hacia la derecha y
+        if (dir.first > 0) // se está moviendo hacia la derecha
             return false;
-        if (dir.first < 0) // se está moviendo hacia la izquierda y
+        if (dir.first < 0) // se está moviendo hacia la izquierda
             return false;
-        if (dir.second > 0) // se está moviendo hacia abajo y
+        if (dir.second > 0) // se está moviendo hacia abajo
             return false;
-        if (dir.second < 0) // se está moviendo hacia abajo y 
+        if (dir.second < 0) // se está moviendo hacia abajo
             return false;
     }
 
@@ -391,16 +382,16 @@ std::pair<int, int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int
     int xAr = pos.first + Vector3::NEGATIVE_UNIT_Z.x;
     int zAr = pos.second + Vector3::NEGATIVE_UNIT_Z.z;
 
+    //cout << dir.second << endl;
+    //cout << pos.first << " + " << Vector3::NEGATIVE_UNIT_Z.x << " = " << xAr << endl;
+    //cout << pos.second << " + " << Vector3::NEGATIVE_UNIT_Z.z << " = " << zAr << endl; 
+
     if (zAr > 0 // si no se sale
         && dir.second != 1  // si no es el giro de 180 (no vas hacia abajo)
         && map[zAr][xAr]->isEmpty()) // y esta vacia
     {
-        cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" << endl;
-        cout << "zAr: " << zAr << endl;
-        cout << "dir.second: " << (dir.second) << endl;
-        cout << "dir.second NO es 1: " << (dir.second != 1) << endl;
-        cout << "empty: " << (map[zAr][xAr]->isEmpty()) << endl;
-        cout << "ARRIBA!!! ME ENCANTA GIRAR!!!!" << endl;
+        //cout << "ARRIBA OPT " << zAr << " " << dir.second << " " << map[zAr][xAr]->isEmpty() << endl;
+
         // arriba como posible direccion
         posibleDirections.push_back({ Vector3::NEGATIVE_UNIT_Z.x , Vector3::NEGATIVE_UNIT_Z.z });
     }
@@ -413,6 +404,8 @@ std::pair<int, int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int
         && dir.second != -1  // si no es el giro de 180 (no vas hacia arriba)
         && map[zAb][xAb]->isEmpty()) // y esta vacia
     {
+        //cout << "ABJ OPT " << zAr << " " << dir.second << " " << map[zAr][xAr]->isEmpty() << endl;
+
         // abajo como posible direccion
         posibleDirections.push_back({ Vector3::UNIT_Z.x , Vector3::UNIT_Z.z });
     }
@@ -421,10 +414,16 @@ std::pair<int, int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int
     int xIz = pos.first + Vector3::NEGATIVE_UNIT_X.x;
     int zIz = pos.second + Vector3::NEGATIVE_UNIT_X.z;
 
+
+    //cout << dir.second << endl;
+    //cout << pos.first << " + " << Vector3::NEGATIVE_UNIT_Z.x << " = " << xAr << endl;
+    //cout << pos.second << " + " << Vector3::NEGATIVE_UNIT_Z.z << " = " << zAr << endl; 
+
     if (xIz > 0 // si no se sale
         && dir.first != 1  // si no es el giro de 180 (no vas hacia derecha)
         && map[zIz][xIz]->isEmpty()) // y esta vacia
     {
+        //cout << "IZQ OPT " << zAr << " " << dir.second << " " << map[zAr][xAr]->isEmpty() << endl;
         // izquierda como posible direccion
         posibleDirections.push_back({ Vector3::NEGATIVE_UNIT_X.x , Vector3::NEGATIVE_UNIT_X.z });
     }
@@ -446,15 +445,18 @@ std::pair<int, int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int
 
     if (posibleDirections.size() > 1) // si hay mas de una direccion posible
     {
+        //cout << "!!! ALEATORIA" << endl;
         int randDir = rand() % posibleDirections.size(); // aleatoria
         nextDir = posibleDirections[randDir];
     }
     else if (posibleDirections.size() == 0) // si se queda en una encrucijada
     {
+        //cout << "!!! ENCRUCIJADA" << endl;
         nextDir = { -dir.first, -dir.second }; // giro 180
     }
     else // si solo hay una direccion posible
     {
+        //cout << "!!! RECTO" << endl;
         nextDir = posibleDirections.front(); // es esa
     }
 
