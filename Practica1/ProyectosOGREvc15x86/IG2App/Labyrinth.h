@@ -77,6 +77,7 @@ private:
 	bool checkMove(pair<int, int> pos, pair<int, int> dir); // si delante tiene empty
 	bool checkForward(pair<int, int> pos, pair<int, int> dir);
 	bool checkCentered(pair<int, int> pos, Character* c);
+	bool checkCentered2(pair<int, int> pos, Character * c);
 	bool checkCollision();
 	std::pair<int,int> checkCrossroads(pair<int, int> pos, pair<int, int> dir);
 

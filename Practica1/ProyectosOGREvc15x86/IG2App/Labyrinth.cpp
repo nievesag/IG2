@@ -221,8 +221,10 @@ void Labyrinth::updateHero()
 
     pair<int, int> nextPos = { _heroPos.first + dirToMove.first ,_heroPos.first + dirToMove.second };
 
+    std::cout << _heroPos.first << " " << _heroPos.second << " adios" << endl;
     if (centered)
     {
+        std::cout << _heroPos.first << " " << _heroPos.second << " hol" << endl;
         if (canMove)
         {
             _heroPos = nextPos;
@@ -249,9 +251,9 @@ void Labyrinth::updateEnemies()
     {
         // TODO: gestionar muertes
 
-        _enemiesPos[i] = vectorToMap(e->getPosition());
+        //_enemiesPos[i] = vectorToMap(e->getPosition());
 
-        if (checkCentered(_enemiesPos[i], _enemies[i]))
+        if (checkCentered2(_enemiesPos[i], _enemies[i]))
         {
             // calcula la nueva direccion
             pair<int, int> nextDir = checkCrossroads(vectorToMap(e->getPosition()), { e->getCurrentDirection().x, e->getCurrentDirection().z });
@@ -328,6 +330,60 @@ bool Labyrinth::checkCentered(pair<int, int> pos, Character* c)
     int zH = c->getPosition().z;
 
     return ((xS < xH + 5) && (xS > xH - 5)) && ((zS < zH + 5) && (zS > zH - 5));
+}
+
+bool Labyrinth::checkCentered2(pair<int, int> pos, Character* c)
+{
+    // si se esta moviendo (currentDir != 0) y sabemos cual es la ultima posicion en la que calculamos que está
+    // y su direccion sabemos cual es la casilla target, calculamos si en ese update has pasado la mitad de 
+    // la casilla target
+
+    bool centered = false;
+    if (c->getCurrentDirection() != Vector3::ZERO)
+    {
+        int xTarget = pos.first + c->getCurrentDirection().x;
+        int zTarget = pos.first + c->getCurrentDirection().x;
+        std::pair<int, int> targetSquare = { xTarget, zTarget }; // posicion de la casilla target
+        Vector3 targetCenter(targetSquare.first * Constants::mapSize, 0, pos.second * Constants::mapSize); // centro casilla target
+
+        if (c->getCurrentDirection() == Vector3::NEGATIVE_UNIT_Z)   // arriba
+        {
+            if (c->getPosition().z < targetCenter.z) 
+            {
+                centered = true;
+            }
+        }
+
+        if (c->getCurrentDirection() == Vector3::UNIT_Z)            // abajo
+        {
+            if (c->getPosition().z > targetCenter.z)
+            {
+                centered = true;
+            }
+        }
+
+        if (c->getCurrentDirection() == Vector3::NEGATIVE_UNIT_X)   // izquierda
+        {
+            if (c->getPosition().x < targetCenter.x)
+            {
+                centered = true;
+            }
+        }
+
+        if(c->getCurrentDirection() == Vector3::UNIT_X)             // derecha
+        {
+            if (c->getPosition().x > targetCenter.x)
+            {
+                centered = true;
+            }
+        }
+    }
+    else 
+    {
+        centered = true;
+    }
+
+    return centered;
 }
 
 bool Labyrinth::checkCollision()
