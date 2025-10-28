@@ -221,10 +221,8 @@ void Labyrinth::updateHero()
 
     pair<int, int> nextPos = { _heroPos.first + dirToMove.first ,_heroPos.first + dirToMove.second };
 
-    std::cout << _heroPos.first << " " << _heroPos.second << " adios" << endl;
     if (centered)
     {
-        std::cout << _heroPos.first << " " << _heroPos.second << " hol" << endl;
         if (canMove)
         {
             _heroPos = nextPos;
@@ -251,10 +249,11 @@ void Labyrinth::updateEnemies()
     {
         // TODO: gestionar muertes
 
-        //_enemiesPos[i] = vectorToMap(e->getPosition());
-
-        if (checkCentered2(_enemiesPos[i], _enemies[i]))
+        _enemiesPos[i] = vectorToMap(e->getPosition());
+        if (checkCentered(_enemiesPos[i], _enemies[i]))
         {
+            cout << _enemiesPos[i].first << " " << _enemiesPos[i].second << endl;
+
             // calcula la nueva direccion
             pair<int, int> nextDir = checkCrossroads(vectorToMap(e->getPosition()), { e->getCurrentDirection().x, e->getCurrentDirection().z });
             e->setLastPosibleDirection({ Ogre::Real(nextDir.first), 0, Ogre::Real(nextDir.second) });
