@@ -212,9 +212,9 @@ void Labyrinth::updateHero()
     Vector3 realPos = _hero->getPosition();
     _heroPos = vectorToMap(realPos);
 
-    bool turn = checkMove(_heroPos, dirToMove);
-    bool movable = checkForward(_heroPos, dirMoving, realPos);
-    bool centered = checkCentered(_heroPos, _hero);
+    bool canMove = checkMove(_heroPos, dirToMove);      // si se puede mover hacia delante
+    bool movable = checkForward(_heroPos, dirMoving);   // si se puede mover
+    bool centered = checkCentered(_heroPos, _hero);     // si esta centrado
 
     _heroPos.first += dirMoving.first;
     _heroPos.second += dirMoving.second;
@@ -223,7 +223,7 @@ void Labyrinth::updateHero()
 
     if (centered)
     {
-        if (turn)
+        if (canMove)
         {
             _heroPos = nextPos;
             if (isMoving != Vector3(0, 0, 0))
@@ -299,7 +299,7 @@ bool Labyrinth::checkMove(pair<int, int> pos, pair<int, int> dir)
     return map[z][x]->isEmpty();
 }
 
-bool Labyrinth::checkForward(pair<int, int> pos, pair<int, int> dir, Vector3 realPos)
+bool Labyrinth::checkForward(pair<int, int> pos, pair<int, int> dir)
 {
     if (!checkMove(pos, dir))
     {
