@@ -1,0 +1,1 @@
+comprobar si en ese update (en ese delta, tiempo que ha transcurrido) has cruzado la mitad del cubo

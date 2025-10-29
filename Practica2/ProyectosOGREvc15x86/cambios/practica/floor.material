@@ -1,0 +1,13 @@
+material Suelo
+{
+    technique
+    {
+        pass
+        {
+            texture_unit 
+            {
+                texture terr_dirt-grass.jpg
+            }
+        }
+    }
+}
