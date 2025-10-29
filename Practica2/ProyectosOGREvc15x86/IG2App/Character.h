@@ -19,12 +19,21 @@ public:
 	Vector3 getCurrentDirection() { return currentDirection; }
 
 	void moveCharacter();
-	void stopCharacter();
+	virtual void stopCharacter();
 	Quaternion quaternionRotateCharacter();
 
 	bool checkCharacterCollision(const AxisAlignedBox& b);
+
+	void setActive(bool a) { active = a; }
+	bool getActive() { return active; }
+
+	Vector3 getLastPos() { return lastPos; }
 	
 protected:
 	Vector3 lastPosibleDirection; // ultima "posible" direccion
 	Vector3 currentDirection; // hacia donde mira
+
+	Vector3 lastPos;
+
+	bool active = true; // para saber cuando actualizar
 };

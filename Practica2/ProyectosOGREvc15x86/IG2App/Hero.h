@@ -14,8 +14,17 @@ public:
 	int getLives() { return lives; }
 	void decreaseLives() { lives--; }
 
+	virtual void stopCharacter() override;
+
 private:
 	char lastPressed = ' ';
 	int lives = 3;
 	Vector3 keyToDirection(char x);
+
+	// estados de animacion
+	Ogre::AnimationState* animationStateRunBase;
+	Ogre::AnimationState* animationStateRunTop;
+
+	// control de animacion
+	bool isRunning = false;
 };

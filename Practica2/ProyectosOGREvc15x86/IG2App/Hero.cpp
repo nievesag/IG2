@@ -5,38 +5,70 @@
 Hero::Hero(Vector3 a, SceneNode* b, SceneManager* c, String mesh)
 	: Character(a,b,c,mesh)
 {
-    
+    animationStateRunBase = entity->getAnimationState("RunBase");
+    animationStateRunBase->setLoop(true);
+
+    animationStateRunTop = entity->getAnimationState("RunTop");
+    animationStateRunTop->setLoop(true);
 }
 
 bool Hero::keyPressed(const OgreBites::KeyboardEvent& evt) 
 {
-    if (evt.keysym.sym == SDLK_UP) 
+    if (active)
     {
-        lastPressed = 'u';
-    }
-    else if (evt.keysym.sym == SDLK_DOWN) 
-    {
-        lastPressed = 'd';
-    }
-    else if (evt.keysym.sym == SDLK_LEFT) 
-    {
-        lastPressed = 'l';
-    }
-    else if (evt.keysym.sym == SDLK_RIGHT) 
-    {
-        lastPressed = 'r';
-    }
+        if (evt.keysym.sym == SDLK_UP)
+        {
+            
 
-    if (lastPressed == 'u' || lastPressed == 'd' || lastPressed == 'l' || lastPressed == 'r') 
-    { lastPosibleDirection = keyToDirection(lastPressed); }
+            lastPressed = 'u';
+        }
+        else if (evt.keysym.sym == SDLK_DOWN)
+        {
+            lastPressed = 'd';
+        }
+        else if (evt.keysym.sym == SDLK_LEFT)
+        {
+            lastPressed = 'l';
+        }
+        else if (evt.keysym.sym == SDLK_RIGHT)
+        {
+            lastPressed = 'r';
+        }
+
+        if (lastPressed == 'u' || lastPressed == 'd' || lastPressed == 'l' || lastPressed == 'r')
+        {
+            animationStateRunBase->setEnabled(true);
+            animationStateRunTop->setEnabled(true);
+
+            lastPosibleDirection = keyToDirection(lastPressed);
+        }
+    }
 
     return true;
 }
 
 void Hero::frameRendered(const Ogre::FrameEvent& evt) 
 {
-    Vector3 toMove(currentDirection * evt.timeSinceLastFrame * Constants::heroSpeed);
-    move(toMove);
+    // solo actualizar si esta activo en la escena
+    if (active) 
+    {
+        Vector3 toMove(currentDirection * evt.timeSinceLastFrame * Constants::heroSpeed);
+        lastPos = mNode->getPosition();
+        move(toMove);
+
+        if (lastPosibleDirection != Vector3::ZERO) 
+        {
+            animationStateRunBase->addTime(evt.timeSinceLastFrame);
+            animationStateRunTop->addTime(evt.timeSinceLastFrame);
+        }
+    }
+}
+
+void Hero::stopCharacter()
+{
+    Character::stopCharacter();
+    animationStateRunBase->setEnabled(false);
+    animationStateRunTop->setEnabled(false);
 }
 
 Vector3 Hero::keyToDirection(char x)

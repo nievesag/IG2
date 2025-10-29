@@ -149,27 +149,30 @@ Fisher::~Fisher()
 
 void Fisher::frameRendered(const Ogre::FrameEvent& evt)
 {
-	Enemy::frameRendered(evt);
+	if (active) 
+	{
+		Enemy::frameRendered(evt);
 
-	current += evt.timeSinceLastEvent;
+		current += evt.timeSinceLastEvent;
 
-	if (current > M_PI * 2)
-		current -= M_PI * 2;
+		if (current > M_PI * 2)
+			current -= M_PI * 2;
 
-	float tilt = cos(current) * 0.25;
+		float tilt = cos(current) * 0.25;
 
-	mPaloEmpt->pitch(Angle(tilt));
-	mNudoEmpt->pitch(Angle(-tilt));
-	mPaloEmpt2->pitch(Angle(-tilt));
-	mNudoEmpt2->pitch(Angle(tilt));
+		mPaloEmpt->pitch(Angle(tilt));
+		mNudoEmpt->pitch(Angle(-tilt));
+		mPaloEmpt2->pitch(Angle(-tilt));
+		mNudoEmpt2->pitch(Angle(tilt));
 
-	// animacion
-	mPez1Node->yaw(Ogre::Angle(3));
-	mPez2Node->yaw(Ogre::Angle(-4));
-	mPez3Node->yaw(Ogre::Angle(5));
-	mPez1Node2->yaw(Ogre::Angle(-3));
-	mPez2Node2->yaw(Ogre::Angle(4));
-	mPez3Node2->yaw(Ogre::Angle(-5));
+		// animacion
+		mPez1Node->yaw(Ogre::Angle(3));
+		mPez2Node->yaw(Ogre::Angle(-4));
+		mPez3Node->yaw(Ogre::Angle(5));
+		mPez1Node2->yaw(Ogre::Angle(-3));
+		mPez2Node2->yaw(Ogre::Angle(4));
+		mPez3Node2->yaw(Ogre::Angle(-5));
 
-	mCabezaSerpNode->yaw(Angle(tilt * 0.5));
+		mCabezaSerpNode->yaw(Angle(tilt * 0.5));
+	}
 }

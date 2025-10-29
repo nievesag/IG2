@@ -10,7 +10,6 @@ public:
 	virtual void frameRendered(const Ogre::FrameEvent& evt);
 
 	bool getAlive() { return alive; }
-	Vector3 getRandomDirection();
 
 	void setLastPosibleDirection(Vector3 _lastPosibleDirection) 
 	{

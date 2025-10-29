@@ -8,7 +8,8 @@ using namespace std;
 bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
         
     // ESC key finished the rendering...
-    if (evt.keysym.sym == SDLK_ESCAPE){
+    if (evt.keysym.sym == SDLK_ESCAPE)
+    {
         getRoot()->queueEndRendering();
     }
     
@@ -58,7 +59,7 @@ void IG2App::setupScene(void)
     cam->setFarClipDistance(10000);
     cam->setAutoAspectRatio(true);
     //cam->setPolygonMode(Ogre::PM_WIREFRAME);
-            
+           
     mCamNode = mSM->getRootSceneNode()->createChildSceneNode("nCam");
     mCamNode->attachObject(cam);
 

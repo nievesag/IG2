@@ -150,8 +150,6 @@ void Labyrinth::createLuz()
         _light->setType(Ogre::Light::LT_DIRECTIONAL);
         _lightNode->setDirection(Ogre::Vector3(-0.5, -0.5, -0.5));
     }
-
-
 }
 
 void Labyrinth::DebugMap()
@@ -214,7 +212,7 @@ void Labyrinth::updateHero()
 
     bool canMove = checkMove(_heroPos, dirToMove);      // si se puede mover hacia delante
     bool movable = checkForward(_heroPos, dirMoving);   // si se puede mover
-    bool centered = checkCentered(_heroPos, _hero);     // si esta centrado
+    bool centered = checkCentered3(_heroPos, _hero);     // si esta centrado
 
     _heroPos.first += dirMoving.first;
     _heroPos.second += dirMoving.second;
@@ -226,7 +224,7 @@ void Labyrinth::updateHero()
         if (canMove)
         {
             _heroPos = nextPos;
-            if (isMoving != Vector3(0, 0, 0))
+            if (wantToMove != Vector3(0, 0, 0))
                 _heroNode->rotate(_hero->quaternionRotateCharacter());
             _hero->moveCharacter();
         }
@@ -250,10 +248,8 @@ void Labyrinth::updateEnemies()
         // TODO: gestionar muertes
 
         _enemiesPos[i] = vectorToMap(e->getPosition());
-        if (checkCentered(_enemiesPos[i], _enemies[i]))
+        if (checkCentered3(_enemiesPos[i], _enemies[i]))
         {
-            cout << _enemiesPos[i].first << " " << _enemiesPos[i].second << endl;
-
             // calcula la nueva direccion
             pair<int, int> nextDir = checkCrossroads(vectorToMap(e->getPosition()), { e->getCurrentDirection().x, e->getCurrentDirection().z });
             e->setLastPosibleDirection({ Ogre::Real(nextDir.first), 0, Ogre::Real(nextDir.second) });
@@ -341,9 +337,9 @@ bool Labyrinth::checkCentered2(pair<int, int> pos, Character* c)
     if (c->getCurrentDirection() != Vector3::ZERO)
     {
         int xTarget = pos.first + c->getCurrentDirection().x;
-        int zTarget = pos.first + c->getCurrentDirection().x;
+        int zTarget = pos.second + c->getCurrentDirection().z;
         std::pair<int, int> targetSquare = { xTarget, zTarget }; // posicion de la casilla target
-        Vector3 targetCenter(targetSquare.first * Constants::mapSize, 0, pos.second * Constants::mapSize); // centro casilla target
+        Vector3 targetCenter(xTarget * Constants::mapSize, 0, zTarget * Constants::mapSize); // centro casilla target
 
         if (c->getCurrentDirection() == Vector3::NEGATIVE_UNIT_Z)   // arriba
         {
@@ -376,6 +372,37 @@ bool Labyrinth::checkCentered2(pair<int, int> pos, Character* c)
                 centered = true;
             }
         }
+    }
+    else 
+    {
+        centered = true;
+    }
+
+    return centered;
+}
+
+bool Labyrinth::checkCentered3(pair<int, int> pos, Character* c)
+{
+    bool centered = false;
+    Vector3 dir = c->getCurrentDirection();
+
+    if (c->getCurrentDirection() != Vector3::ZERO)
+    {
+        Vector3 targetCenter = Vector3(pos.first, 0, pos.second) * Constants::mapSize;
+        Vector3 lastPos = c->getLastPos();
+        Vector3 position = c->getPosition();
+
+        if (lastPos.x < targetCenter.x && targetCenter.x < position.x && dir == Vector3::UNIT_X)
+            centered = true;
+
+        if (lastPos.z < targetCenter.z && targetCenter.z < position.z && dir == Vector3::UNIT_Z)
+            centered = true;
+
+        if (lastPos.x > targetCenter.x && targetCenter.x > position.x && dir == Vector3::NEGATIVE_UNIT_X)
+            centered = true;
+
+        if (lastPos.z > targetCenter.z && targetCenter.z > position.z && dir == Vector3::NEGATIVE_UNIT_Z)
+            centered = true;
     }
     else 
     {

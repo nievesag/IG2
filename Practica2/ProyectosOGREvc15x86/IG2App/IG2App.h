@@ -47,6 +47,8 @@ protected:
     std::vector<Enemy*> mEnemies;
     std::vector<SceneNode*> mEnemiesNode;
     int enemyCount = 1; // ENEMIGOS QUE VA A HABER EN EL MAPA
+
+    bool initGame = false;
 };
 
 #endif

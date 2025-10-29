@@ -78,6 +78,7 @@ private:
 	bool checkForward(pair<int, int> pos, pair<int, int> dir);
 	bool checkCentered(pair<int, int> pos, Character* c);
 	bool checkCentered2(pair<int, int> pos, Character * c); // intento de mejorar checkCentered
+	bool checkCentered3(pair<int, int> pos, Character * c); // intento de mejorar checkCentered por ultima vez
 	bool checkCollision();
 	std::pair<int,int> checkCrossroads(pair<int, int> pos, pair<int, int> dir);
 

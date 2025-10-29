@@ -252,8 +252,6 @@ void Labyrinth::updateEnemies()
         _enemiesPos[i] = vectorToMap(e->getPosition());
         if (checkCentered(_enemiesPos[i], _enemies[i]))
         {
-            cout << _enemiesPos[i].first << " " << _enemiesPos[i].second << endl;
-
             // calcula la nueva direccion
             pair<int, int> nextDir = checkCrossroads(vectorToMap(e->getPosition()), { e->getCurrentDirection().x, e->getCurrentDirection().z });
             e->setLastPosibleDirection({ Ogre::Real(nextDir.first), 0, Ogre::Real(nextDir.second) });
