@@ -63,8 +63,8 @@ void IG2App::setupScene(void)
     mCamNode = mSM->getRootSceneNode()->createChildSceneNode("nCam");
     mCamNode->attachObject(cam);
 
-    mCamNode->setPosition(950, 2500, 1900);
-    mCamNode->lookAt(Ogre::Vector3(950, 0, 950), Ogre::Node::TS_WORLD);
+    mCamNode->setPosition(100, 100, 300);
+    mCamNode->lookAt(Ogre::Vector3(100, 0, -100), Ogre::Node::TS_WORLD);
     
     // and tell it to render into the main window
     Viewport* vp = getRenderWindow()->addViewport(cam);
@@ -98,7 +98,7 @@ void IG2App::setupScene(void)
 
     // -- Laberinto
     mLab = new Labyrinth();
-    mLab->setupLabyrinth(mSM, mHero, nodeHero, mEnemies, mEnemiesNode);
+    mLab->setupLabyrinth(mSM, mHero, nodeHero, mEnemies, mEnemiesNode, mCamNode);
     mLab->readFile("stage1.txt");
     mLab->registerUI(stageLabel, infoTextBox);
     addInputListener(mLab);

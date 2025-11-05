@@ -9,18 +9,19 @@ using namespace std;
 // --------- INIT
 void Labyrinth::setupLabyrinth(SceneManager* mSM,
     Hero* hero, SceneNode* heroscn,
-    std::vector<Enemy*> enemies, std::vector<SceneNode*> enemiesNode)
+    std::vector<Enemy*> enemies, std::vector<SceneNode*> enemiesNode,
+    SceneNode* cam)
 {
     _mSM = mSM; // manager
     _labyrinthNode = _mSM->getRootSceneNode()->createChildSceneNode("nLabMain"); // nodo laberinto
 
     _hero = hero;           // objeto hero
-    _heroNode = heroscn;    // nodo heroe
 
     _enemies = enemies;
-    //_enemiesNode = enemiesNode;
 
     playingAnim = true;
+
+    mCamNode = cam;
 }
 
 void Labyrinth::readFile(string fileName)
@@ -334,6 +335,9 @@ void Labyrinth::activateGame()
     }
 
     playingAnim = false;
+
+    mCamNode->setPosition(950, 2500, 1900);
+    mCamNode->lookAt(Ogre::Vector3(950, 0, 950), Ogre::Node::TS_WORLD);
 }
 
 // --------- AUX

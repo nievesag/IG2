@@ -73,6 +73,12 @@ private:
 	int stage = 1;
 	int points = 0;
 
+	// Camara
+	SceneNode* mCamNode;
+
+	// Estado
+	bool playingAnim;
+
 	// METODOS
 	// --- Update
 	void update();
@@ -84,7 +90,6 @@ private:
 	void clearMap();
 
 	// --- Animación Inicial
-	bool playingAnim;
 	void updateAnim();
 	void activateGame();
 
@@ -113,7 +118,7 @@ private:
 public:
 	Labyrinth() = default;
 
-	void setupLabyrinth(SceneManager* mSM, Hero* hero, SceneNode* heroscn, std::vector<Enemy*> enemies, std::vector<SceneNode*> enemiesNode);
+	void setupLabyrinth(SceneManager* mSM, Hero* hero, SceneNode* heroscn, std::vector<Enemy*> enemies, std::vector<SceneNode*> enemiesNode, SceneNode* cam);
 	void readFile(string fileName); // leer el fichero
 
 	void registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox); // registra UI
