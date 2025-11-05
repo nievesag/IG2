@@ -7,6 +7,7 @@
 #include <OgreMath.h>
 #include <OgreFrameListener.h>
 #include <OgreMeshManager.h>
+#include <OgreParticleSystem.h>
 #include <SDL_keycode.h>
 #include <iostream>
 #include <vector>
@@ -46,8 +47,13 @@ private:
 	int enemyCount = 0;
 
 	// --- Bombs
+	int currentBombs = 0;
 	std::vector<Bomb*> _bombs; // vector de bombas
 	std::vector<std::pair<int, int>> _affectedTiles; // casillas afectadas en este update
+	std::queue<SceneNode*> smokePSysPool; // pool de sistemas de particulas de humo
+	void initPSPool(); // inicializa la pool de sistemas de particulas ((4 dir * x casillas por dir)*maxBombas)
+	void placeBomb(Vector3 pos);
+	void placeSmoke(std::vector<std::pair<int, int>> affectedTiles);
 
 	// --- Textures
 	std::string matwall;
@@ -88,6 +94,9 @@ private:
 	bool checkCentered3(pair<int, int> pos, Character * c); // intento de mejorar checkCentered por ultima vez
 	bool checkCollision();
 	std::pair<int,int> checkCrossroads(pair<int, int> pos, pair<int, int> dir);
+
+	// --- Bombas
+	void setAffectedTiles(pair<int, int> bombPos);
 
 	// --- Suelo
 	void createFloor();

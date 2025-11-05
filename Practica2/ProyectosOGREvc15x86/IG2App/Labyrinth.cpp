@@ -171,6 +171,8 @@ void Labyrinth::frameRendered(const Ogre::FrameEvent& evt)
     update();
 }
 
+
+
 void Labyrinth::update()
 {
     bool heroHit = checkCollision();
@@ -283,17 +285,58 @@ void Labyrinth::updateLuz()
 
 void Labyrinth::updateBombs()
 {
-    for (auto b : _bombs) 
+    for (auto b : _bombs)
     {
         if (b->getExploded()) 
         {
             // marca las casillas como afectadas
+            setAffectedTiles(vectorToMap(b->getPosition()));
 
-
-            // elimina la bomba del vector
+            // elimina la bomba
+            auto it = find(_bombs.begin(), _bombs.end(), b);
             delete b;
-            //_bombs.erase();
+            _bombs.erase(it);
         }
+    }
+}
+
+// --------- AUX
+void Labyrinth::setAffectedTiles(pair<int, int> bombPos)
+{
+   
+}
+
+void Labyrinth::initPSPool()
+{
+    // pool size = ((4 dir * x casillas por dir)*maxBombs)
+    int size = ((4 * Constants::bombReach) * Constants::maxBombs);
+    for (int i = 0; i < size; i++) 
+    {
+        Ogre::ParticleSystem* pSys = _mSM->createParticleSystem("psSmoke" + i, "Examples/Smoke");
+        Ogre::SceneNode* mPSNode = _mSM->getRootSceneNode()->createChildSceneNode();
+        mPSNode->attachObject(pSys);
+        pSys->setEmitting(false);
+        smokePSysPool.push(mPSNode);
+    }
+}
+
+void Labyrinth::placeBomb(Vector3 pos)
+{
+    if (currentBombs < Constants::maxBombs) // se pueden poner bombas 
+    {
+        SceneNode* node = _labyrinthNode->createChildSceneNode("bomb" + currentBombs);
+        Bomb* bomb = new Bomb(pos, node, _mSM);
+        _bombs.push_back(bomb);
+        currentBombs++;
+    }
+}
+
+void Labyrinth::placeSmoke(std::vector<std::pair<int, int>> affectedTiles)
+{
+    for (auto t : affectedTiles) 
+    {
+
+        
     }
 }
 
@@ -303,7 +346,6 @@ void Labyrinth::clearMap()
     _affectedTiles.clear();
 }
 
-// --------- AUX
 pair<int, int> Labyrinth::vectorToMap(Vector3 pos)
 {
     return pair<int, int>(round(pos.x / Constants::mapSize), round(pos.z / Constants::mapSize));
@@ -531,3 +573,4 @@ std::pair<int, int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int
 
     return nextDir;
 }
+
