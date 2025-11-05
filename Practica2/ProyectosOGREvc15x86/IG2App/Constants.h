@@ -14,6 +14,7 @@
 
 namespace Constants
 {
+	// teclas
 	enum KEYS : OgreBites::Keycode
 	{
 		SDLK_UP,
@@ -22,15 +23,23 @@ namespace Constants
 		SDLK_RIGHT
 	};
 
-	 static const double heroSpeed = 200;
-	 static const double enemySpeed = 150;
+	// velocidad objetos
+	static const double heroSpeed = 200;
+	static const double enemySpeed = 150;
 
-	 static const int mapSize = 100;
-	 static const int characterSize = 100;
+	// objects size
+	static const int mapSize = 100;
+	static const int characterSize = 100;
 	 
-	 static const float sptInner = 5.0f;
-	 static const float sptOuter = 17.0f;
-	 static const float sptFalloff = 0.0f;
-};
+	// spot light
+	static const float sptInner = 5.0f;
+	static const float sptOuter = 17.0f;
+	static const float sptFalloff = 0.0f;
+
+	// bombas
+	static const int maxBombs = 5;	// bombas maximas que se pueden colocar
+	static const int bombReach = 3;	// alcance de las bombas
+	static const int bombTick = 20;	// tiempo que tarda en explotar
+}
 
 
