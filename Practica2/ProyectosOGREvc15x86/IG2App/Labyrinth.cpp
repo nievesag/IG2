@@ -18,7 +18,9 @@ void Labyrinth::setupLabyrinth(SceneManager* mSM,
     _heroNode = heroscn;    // nodo heroe
 
     _enemies = enemies;
-    _enemiesNode = enemiesNode;
+    //_enemiesNode = enemiesNode;
+
+    playingAnim = true;
 }
 
 void Labyrinth::readFile(string fileName)
@@ -172,13 +174,20 @@ bool Labyrinth::keyPressed(const OgreBites::KeyboardEvent& evt)
     {
         placeBomb(_hero->getPosition());
     }
+    if (evt.keysym.sym == SDLK_l)
+    {
+        activateGame();
+    }
 
     return true;
 }
 
 void Labyrinth::frameRendered(const Ogre::FrameEvent& evt)
 {
-    update();
+    if (!playingAnim)
+        update();
+    else
+        updateAnim();
 }
 
 void Labyrinth::update()
@@ -237,7 +246,7 @@ void Labyrinth::updateHero()
         {
             _heroPos = nextPos;
             if (wantToMove != Vector3(0, 0, 0))
-                _heroNode->rotate(_hero->quaternionRotateCharacter());
+                _hero->yaw(_hero->yawDirection());
             _hero->moveCharacter();
         }
         else if (!movable)
@@ -271,7 +280,7 @@ void Labyrinth::updateEnemies()
             _enemiesPos[i] = nextPos;
 
             // rota y mueve
-            _enemiesNode[i]->rotate(e->quaternionRotateCharacter());
+            _enemies[i]->yaw(e->yawDirection());
             e->moveCharacter();
         }
 
@@ -310,6 +319,23 @@ void Labyrinth::updateBombs()
     }
 }
 
+void Labyrinth::updateAnim()
+{
+
+}
+
+void Labyrinth::activateGame()
+{
+    _hero->setActive(true);
+
+    for (auto ene : _enemies)
+    {
+        ene->setActive(true);
+    }
+
+    playingAnim = false;
+}
+
 // --------- AUX
 void Labyrinth::setAffectedTiles(pair<int, int> bombPos)
 {
@@ -340,7 +366,7 @@ void Labyrinth::placeBomb(Vector3 pos)
         Bomb* bomb = new Bomb(pos, node, _mSM);
         _bombs.push_back(bomb);
         currentBombs++;
-        _mSM->addListener(bomb);
+        //_mSM->addListener(bomb);
     }
 }
 

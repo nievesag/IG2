@@ -15,6 +15,11 @@ Quaternion Character::quaternionRotateCharacter()
 	return this->getOrientation().getRotationTo(lastPosibleDirection);
 }
 
+Radian Character::yawDirection()
+{
+	return quaternionRotateCharacter().getYaw();
+}
+
 bool Character::checkCharacterCollision(const AxisAlignedBox& b)
 {
 	bool choque = this->getAABB().intersects(b);

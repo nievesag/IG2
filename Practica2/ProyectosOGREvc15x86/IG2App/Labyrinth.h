@@ -36,13 +36,11 @@ private:
 
 	// --- Hero
 	Hero* _hero = nullptr; // objeto hero
-	SceneNode* _heroNode = nullptr; // nodo en escena
 	std::pair<int, int> _heroInitPos = { 1,1 }; // posicion inicial para moverle al perder
 	std::pair<int, int> _heroPos = { 1,1 }; // posicion del hero en coordenadas de bloques
 
 	// --- Enemies
 	std::vector<Enemy*> _enemies; // vector de objetos enemigo
-	std::vector<SceneNode*> _enemiesNode; // vector de nodos enemigo
 	std::vector<std::pair<int, int>> _enemiesPos; // posicion de los enemigos en coordenadas de bloques
 	int enemyCount = 0;
 
@@ -84,6 +82,11 @@ private:
 	void updateLuz();
 	void updateBombs();
 	void clearMap();
+
+	// --- Animación Inicial
+	bool playingAnim;
+	void updateAnim();
+	void activateGame();
 
 	// --- Auxiliares
 	void DebugMap();

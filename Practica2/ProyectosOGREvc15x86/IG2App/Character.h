@@ -21,6 +21,7 @@ public:
 	void moveCharacter();
 	virtual void stopCharacter();
 	Quaternion quaternionRotateCharacter();
+	Radian yawDirection();
 
 	bool checkCharacterCollision(const AxisAlignedBox& b);
 
@@ -35,5 +36,5 @@ protected:
 
 	Vector3 lastPos;
 
-	bool active = true; // para saber cuando actualizar
+	bool active = false; // para saber cuando actualizar
 };
