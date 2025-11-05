@@ -166,15 +166,25 @@ void Labyrinth::DebugMap()
 }
 
 // --------- UPDATE
+bool Labyrinth::keyPressed(const OgreBites::KeyboardEvent& evt) 
+{
+    if (evt.keysym.sym == SDLK_b) // darle a la b
+    {
+        placeBomb(_hero->getPosition());
+    }
+
+    return true;
+}
+
 void Labyrinth::frameRendered(const Ogre::FrameEvent& evt)
 {
     update();
 }
 
-
-
 void Labyrinth::update()
 {
+    updateBombs();
+
     bool heroHit = checkCollision();
     if (heroHit)
     {
@@ -303,7 +313,7 @@ void Labyrinth::updateBombs()
 // --------- AUX
 void Labyrinth::setAffectedTiles(pair<int, int> bombPos)
 {
-   
+    _affectedTiles.push_back(bombPos);
 }
 
 void Labyrinth::initPSPool()
@@ -324,10 +334,13 @@ void Labyrinth::placeBomb(Vector3 pos)
 {
     if (currentBombs < Constants::maxBombs) // se pueden poner bombas 
     {
+        cout << "bomba" << endl;
+
         SceneNode* node = _labyrinthNode->createChildSceneNode("bomb" + currentBombs);
         Bomb* bomb = new Bomb(pos, node, _mSM);
         _bombs.push_back(bomb);
         currentBombs++;
+        _mSM->addListener(bomb);
     }
 }
 
@@ -335,8 +348,19 @@ void Labyrinth::placeSmoke(std::vector<std::pair<int, int>> affectedTiles)
 {
     for (auto t : affectedTiles) 
     {
-
         
+    }
+}
+
+void Labyrinth::explodeCharacter(Character* c)
+{
+    // colision hero-enemigos
+    for (auto e : _bombs)
+    {
+        if (c->checkCharacterCollision(e->getAABB()))
+        {
+            
+        }
     }
 }
 

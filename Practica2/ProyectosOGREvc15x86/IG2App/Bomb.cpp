@@ -4,7 +4,7 @@
 Bomb::Bomb(Vector3 a, SceneNode* b, SceneManager* c)
 	: Object(a, b, c, true)
 {
-
+	
 }
 
 Bomb::~Bomb()
@@ -14,6 +14,8 @@ Bomb::~Bomb()
 
 void Bomb::frameRendered(const Ogre::FrameEvent& evt)
 {
+	cout << "hola" << endl;
+
 	// si aun no ha explotado
 	if (!exploded) 
 	{
@@ -21,6 +23,7 @@ void Bomb::frameRendered(const Ogre::FrameEvent& evt)
 
 		if (current > Constants::bombTick)
 		{
+			cout << "explota" << endl;
 			exploded = true;
 		}
 	}

@@ -18,8 +18,6 @@ bool Hero::keyPressed(const OgreBites::KeyboardEvent& evt)
     {
         if (evt.keysym.sym == SDLK_UP)
         {
-            
-
             lastPressed = 'u';
         }
         else if (evt.keysym.sym == SDLK_DOWN)
@@ -49,6 +47,7 @@ bool Hero::keyPressed(const OgreBites::KeyboardEvent& evt)
 
 void Hero::frameRendered(const Ogre::FrameEvent& evt) 
 {
+    
     // solo actualizar si esta activo en la escena
     if (active) 
     {
