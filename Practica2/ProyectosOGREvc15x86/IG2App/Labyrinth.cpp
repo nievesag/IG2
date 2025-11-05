@@ -281,6 +281,28 @@ void Labyrinth::updateLuz()
     }
 }
 
+void Labyrinth::updateBombs()
+{
+    for (auto b : _bombs) 
+    {
+        if (b->getExploded()) 
+        {
+            // marca las casillas como afectadas
+
+
+            // elimina la bomba del vector
+            delete b;
+            //_bombs.erase();
+        }
+    }
+}
+
+void Labyrinth::clearMap()
+{
+    // despues de afectar a quien tenga que afectar se resetea
+    _affectedTiles.clear();
+}
+
 // --------- AUX
 pair<int, int> Labyrinth::vectorToMap(Vector3 pos)
 {

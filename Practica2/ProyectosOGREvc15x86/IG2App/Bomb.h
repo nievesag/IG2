@@ -5,8 +5,20 @@
 
 class Bomb : public Object
 {
-	Bomb(Vector3 a, SceneNode* b, SceneManager* c) : Object(a, b, c, true) {}
+public:
+	Bomb(Vector3 a, SceneNode* b, SceneManager* c);
+	~Bomb();
 
+	virtual void frameRendered(const Ogre::FrameEvent& evt);
 
+	bool getExploded() { return exploded; }
+
+private:
+	Ogre::SceneNode* mCuerpoNode = nullptr; // cuerpo
+	Ogre::SceneNode* mMechaNode = nullptr;  // mecha
+
+	float current = 0; // para controlar cuando explota
+
+	bool exploded = false;
 };
 

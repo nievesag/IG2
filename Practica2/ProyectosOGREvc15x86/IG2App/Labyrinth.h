@@ -13,6 +13,7 @@
 #include "Character.h"
 #include "Hero.h"
 #include "Enemy.h"
+#include "Bomb.h"
 
 #include "IG2Object.h"
 #include "Object.h"
@@ -44,6 +45,10 @@ private:
 	std::vector<std::pair<int, int>> _enemiesPos; // posicion de los enemigos en coordenadas de bloques
 	int enemyCount = 0;
 
+	// --- Bombs
+	std::vector<Bomb*> _bombs; // vector de bombas
+	std::vector<std::pair<int, int>> _affectedTiles; // casillas afectadas en este update
+
 	// --- Textures
 	std::string matwall;
 	std::string matfloor;
@@ -68,6 +73,8 @@ private:
 	void updateUI();
 	void updateEnemies();
 	void updateLuz();
+	void updateBombs();
+	void clearMap();
 
 	// --- Auxiliares
 	void DebugMap();
