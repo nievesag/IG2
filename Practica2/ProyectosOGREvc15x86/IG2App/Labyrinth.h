@@ -15,6 +15,7 @@
 #include "Hero.h"
 #include "Enemy.h"
 #include "Bomb.h"
+#include "Animation.h"
 
 #include "IG2Object.h"
 #include "Object.h"
@@ -76,8 +77,10 @@ private:
 	// Camara
 	SceneNode* mCamNode;
 
-	// Estado
+	// --- Animacion
 	bool playingAnim;
+	Animative* mAnim;
+
 
 	// METODOS
 	// --- Update

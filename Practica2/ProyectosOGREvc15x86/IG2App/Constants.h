@@ -40,6 +40,9 @@ namespace Constants
 	static const int maxBombs = 5;	// bombas maximas que se pueden colocar
 	static const int bombReach = 3;	// alcance de las bombas
 	static const int bombTick = 20;	// tiempo que tarda en explotar
+
+	//Animation
+	static const Ogre::Vector3 animPos(0, -20, -200);
 }
 
 
