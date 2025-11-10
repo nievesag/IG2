@@ -43,6 +43,10 @@ namespace Constants
 
 	//Animation
 	static const Ogre::Vector3 animPos(0, -20, -200);
+	static const Ogre::Real moveStep = 4;
+	static const Ogre::Real turnStep = 2;
+	static const Ogre::Real danceStep = 5;
+	static const Ogre::Real loopTime = moveStep * 2 + turnStep * 3 + danceStep;
 }
 
 

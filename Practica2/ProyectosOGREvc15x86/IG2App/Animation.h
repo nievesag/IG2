@@ -7,7 +7,7 @@ public:
 	Animative(Vector3 a, SceneNode* b, SceneManager* c, String mesh);
 	~Animative();
 
-	virtual void frameRendered(const Ogre::FrameEvent& evt);
+	void updateAnime(Real t);
 
 private:
 	// -- OBJECTS --
@@ -20,8 +20,14 @@ private:
 	IG2Object* villain;
 
 	// -- ANIMATIONS --
+	Animation* animation;
+	NodeAnimationTrack* track;
+	AnimationState* heroMoveAnim;
 	AnimationState* dance;
 	AnimationState* runTop;
 	AnimationState* runBot;
+
+	// -- TIMING --
+	Real time;
 };
 

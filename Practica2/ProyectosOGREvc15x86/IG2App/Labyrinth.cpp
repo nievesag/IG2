@@ -190,7 +190,7 @@ void Labyrinth::frameRendered(const Ogre::FrameEvent& evt)
     if (!playingAnim)
         update();
     else
-        updateAnim();
+        updateAnim(evt.timeSinceLastFrame);
 }
 
 void Labyrinth::update()
@@ -322,9 +322,9 @@ void Labyrinth::updateBombs()
     }
 }
 
-void Labyrinth::updateAnim()
+void Labyrinth::updateAnim(Real t)
 {
-
+    mAnim->updateAnime(t);
 }
 
 void Labyrinth::activateGame()

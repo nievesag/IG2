@@ -93,7 +93,7 @@ private:
 	void clearMap();
 
 	// --- Animación Inicial
-	void updateAnim();
+	void updateAnim(Real t);
 	void activateGame();
 
 	// --- Auxiliares
