@@ -200,6 +200,7 @@ void Labyrinth::update()
     bool heroHit = checkCollision();
     if (heroHit)
     {
+        _hero->stopCharacter();
         _hero->decreaseLives();
 
         if (_hero->getLives() > 0)

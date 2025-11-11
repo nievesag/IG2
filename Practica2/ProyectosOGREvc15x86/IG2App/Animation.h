@@ -20,9 +20,8 @@ private:
 	IG2Object* villain;
 
 	// -- ANIMATIONS --
-	Animation* animation;
-	NodeAnimationTrack* track;
 	AnimationState* heroMoveAnim;
+	AnimationState* villainMoveAnim;
 	AnimationState* dance;
 	AnimationState* runTop;
 	AnimationState* runBot;
