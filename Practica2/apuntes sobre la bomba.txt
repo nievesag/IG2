@@ -1,0 +1,20 @@
+guardar las constantes de tamaño original y tamaño maximo 
+ya que el scale se hace respecto al tamaño anterior
+
+Atributos en la clase:
+Vector3 originalSize
+Vector3 smallSize
+Vector3 bigSize
+
+Si no hay explosion todavia calculamos la animacion
+
+flag para saber si la tengo que agrandar
+
+translate sistema de la mecha
+
+
+LA DOCUMENTACION DE OGRE DICE QUE NO RECOMIENDA ELIMINAR NADA QUE HAYA CREADO EL SCENEMANAGER, 
+siempre las mismas 3 bombas que reposicionas, los humos igual
+
+hacer un metodo que resetee las bombas para cuando explote prepararla para volver a usar
+si haces clear a un sistema de particulas se borra todo lo que haya emitido, la bomba tiene de atributos el sistema de la mecha y el de su humo
