@@ -6,12 +6,15 @@
 class Bomb : public Object
 {
 public:
-	Bomb(Vector3 a, SceneNode* b, SceneManager* c);
+	Bomb(Vector3 a, SceneNode* b, SceneManager* c, String name);
 	~Bomb();
 
 	bool getExploded() { return exploded; }
 
 	void update(Real t);
+
+	void setActive(bool a) { active = a; }
+	bool getActive() const { return active; }
 
 private:
 	Ogre::SceneNode* mCuerpoNode = nullptr; // cuerpo
@@ -25,6 +28,8 @@ private:
 	float current = 0; // para controlar cuando explota
 
 	bool exploded = false;
+
+	bool active = false;
 
 	void clearBomb();
 };

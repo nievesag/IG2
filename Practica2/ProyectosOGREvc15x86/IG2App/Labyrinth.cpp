@@ -308,21 +308,29 @@ void Labyrinth::updateLuz()
 
 void Labyrinth::updateBombs(Real t)
 {
+    int actives = 0;
+
     for (auto b : _bombs)
     {
-        b->update(t);
-
-        if (b->getExploded())
+        if (b->getActive())
         {
-            // marca las casillas como afectadas
-            setAffectedTiles(vectorToMap(b->getPosition()));
+            actives++;
+	        b->update(t);
 
-            // elimina la bomba
-            auto it = find(_bombs.begin(), _bombs.end(), b);
-            delete b;
-            _bombs.erase(it);
+	        if (b->getExploded())
+	        {
+	            // marca las casillas como afectadas
+	            setAffectedTiles(vectorToMap(b->getPosition()));
+
+	            // elimina la bomba
+	            auto it = find(_bombs.begin(), _bombs.end(), b);
+	            delete b;
+	            _bombs.erase(it);
+	        }
         }
     }
+
+    currentBombs = actives;
 }
 
 void Labyrinth::updateAnim(Real t)
@@ -343,6 +351,9 @@ void Labyrinth::activateGame()
 
     mCamNode->setPosition(950, 2500, 1900);
     mCamNode->lookAt(Ogre::Vector3(950, 0, 950), Ogre::Node::TS_WORLD);
+
+    generateBombs();
+    generateSmokes();
 }
 
 // --------- AUX
@@ -379,30 +390,41 @@ void Labyrinth::setAffectedTiles(pair<int, int> bombPos)
     }
 }
 
-void Labyrinth::initPSPool()
-{
-    // pool size = ((4 dir * x casillas por dir)*maxBombs)
-    int size = ((4 * Constants::bombReach) * Constants::maxBombs);
-    for (int i = 0; i < size; i++) 
-    {
-        Ogre::ParticleSystem* pSys = _mSM->createParticleSystem("psSmoke" + i, "Examples/Smoke");
-        Ogre::SceneNode* mPSNode = _mSM->getRootSceneNode()->createChildSceneNode();
-        mPSNode->attachObject(pSys);
-        pSys->setEmitting(false);
-        smokePSysPool.push(mPSNode);
-    }
-}
-
 void Labyrinth::placeBomb(Vector3 pos)
 {
     if (currentBombs < Constants::maxBombs) // se pueden poner bombas 
     {
-        cout << "bomba" << endl;
+        _bombsPool.front()->setPosition(pos);
+        _bombsPool.front()->setVisible(true);
+        _bombsPool.front()->setActive(true);
+        _bombsPool.push(_bombsPool.front());
+        _bombsPool.pop();
+    }
+}
 
-        SceneNode* node = _labyrinthNode->createChildSceneNode("bomb" + currentBombs);
-        Bomb* bomb = new Bomb(pos, node, _mSM);
+void Labyrinth::generateBombs()
+{
+    for (int i = 0; i < Constants::maxBombs; i++)
+    {
+        SceneNode* node = _labyrinthNode->createChildSceneNode("bomb" + std::to_string(i));
+        Bomb* bomb = new Bomb({0,0,0}, node, _mSM, "sys" + std::to_string(i));
+        _bombsPool.push(bomb);
         _bombs.push_back(bomb);
-        currentBombs++;
+        bomb->setVisible(false);
+    }
+}
+
+void Labyrinth::generateSmokes()
+{
+    // pool size = ((4 dir * x casillas por dir)*maxBombs)
+    int size = ((4 * Constants::bombReach) * Constants::maxBombs);
+    for (int i = 0; i < size; i++)
+    {
+        Ogre::ParticleSystem* pSys = _mSM->createParticleSystem("psSmoke" + std::to_string(i), "Examples/Smoke");
+        Ogre::SceneNode* mPSNode = _mSM->getRootSceneNode()->createChildSceneNode();
+        mPSNode->attachObject(pSys);
+        pSys->setEmitting(false);
+        smokePSysPool.push(mPSNode);
     }
 }
 

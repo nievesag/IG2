@@ -48,15 +48,19 @@ private:
 	// --- Bombs
 	int currentBombs = 0;
 	std::vector<Bomb*> _bombs; // vector de bombas
+	std::queue<Bomb*> _bombsPool; // pool de bombas
+
 	std::vector<std::pair<int, int>> _affectedTiles; // casillas afectadas en este update
-	std::queue<SceneNode*> smokePSysPool; // pool de sistemas de particulas de humo
-	// ?????????????? mejor una pila
+	std::queue<SceneNode*> smokePSysPool; // pool de sistemas de particulas de humo (? una pila)
 	Ogre::ParticleSystem* sysHumo = nullptr;
-	// mirar clase pool de ogre
-	void initPSPool(); // inicializa la pool de sistemas de particulas ((4 dir * x casillas por dir)*maxBombas)
+
 	void placeBomb(Vector3 pos);
 	void placeSmoke(std::vector<std::pair<int, int>> affectedTiles);
 	void explodeCharacter(Character* c);
+
+	// inicializar pools
+	void generateBombs();
+	void generateSmokes();
 
 	// --- Textures
 	std::string matwall;

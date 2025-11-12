@@ -45,7 +45,7 @@ namespace Constants
 	static const float sptFalloff = 0.0f;
 
 	// bombas
-	static const int maxBombs = 3;	// bombas maximas que se pueden colocar
+	static const int maxBombs = 3;	// bombas maximas que se pueden colocar de manera simultanea
 	static const int bombReach = 4;	// alcance de las bombas
 	static const float bombTick = 0.3f;	// tiempo que tarda en explotar
 

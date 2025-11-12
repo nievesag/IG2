@@ -4,7 +4,7 @@
 
 #include "Constants.h"
 
-Bomb::Bomb(Vector3 a, SceneNode* b, SceneManager* c)
+Bomb::Bomb(Vector3 a, SceneNode* b, SceneManager* c, String name)
 	: Object(a, b, c, true)
 {
 	Ogre::Entity* bomba = mSM->createEntity("sphere.mesh");
@@ -19,7 +19,7 @@ Bomb::Bomb(Vector3 a, SceneNode* b, SceneManager* c)
 	mMechaNode->attachObject(mecha);
 
 	// sistemas de particulas
-	sysHumo = mSM->createParticleSystem("psSmokeSphere", "Examples/Smoke");
+	sysHumo = mSM->createParticleSystem(name, "Examples/Smoke");
 	b->attachObject(sysHumo);
 	sysHumo->setEmitting(true);
 }
@@ -31,22 +31,28 @@ Bomb::~Bomb()
 
 void Bomb::update(Real t)
 {
-	// si aun no ha explotado
-	if (!exploded)
+	// si esta activa
+	if (active)
 	{
-		current += t;
-
-		if (current > Constants::bombTick)
+		// si aun no ha explotado
+		if (!exploded)
 		{
-			exploded = true;
-			sysHumo->setEmitting(false);
-			//clearBomb();
+			current += t;
+
+			if (current > Constants::bombTick)
+			{
+				exploded = true;
+				sysHumo->setEmitting(false);
+				active = false;
+				//clearBomb();
+			}
 		}
 	}
 }
 
 void Bomb::clearBomb()
 {
+	active = false;
 	current = 0;
 	exploded = false;
 	sysHumo->setEmitting(false);
