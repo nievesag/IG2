@@ -23,6 +23,14 @@ namespace Constants
 		SDLK_RIGHT
 	};
 
+	// direcciones
+	static const std::array<Ogre::Vector3, 4> DirectionsArray = {
+		Ogre::Vector3::NEGATIVE_UNIT_Z,	// ARRIBA
+		Ogre::Vector3::UNIT_Z,			// ABAJO
+		Ogre::Vector3::NEGATIVE_UNIT_X,	// IZQ
+		Ogre::Vector3::UNIT_X				// DER
+	};
+
 	// velocidad objetos
 	static const double heroSpeed = 200;
 	static const double enemySpeed = 150;
@@ -37,9 +45,9 @@ namespace Constants
 	static const float sptFalloff = 0.0f;
 
 	// bombas
-	static const int maxBombs = 5;	// bombas maximas que se pueden colocar
-	static const int bombReach = 3;	// alcance de las bombas
-	static const int bombTick = 20;	// tiempo que tarda en explotar
+	static const int maxBombs = 3;	// bombas maximas que se pueden colocar
+	static const int bombReach = 4;	// alcance de las bombas
+	static const float bombTick = 0.3f;	// tiempo que tarda en explotar
 
 	//Animation
 	static const Ogre::Vector3 animPos(0, -20, -200);

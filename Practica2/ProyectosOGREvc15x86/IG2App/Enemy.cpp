@@ -7,6 +7,13 @@ Enemy::Enemy(Vector3 a, SceneNode* b, SceneManager* c, String mesh)
 	lastPosibleDirection = this->getOrientation();
 }
 
+Enemy::Enemy(Vector3 a, SceneNode* b, SceneManager* c)
+	: Character(a, b, c)
+{
+	currentDirection = this->getOrientation();
+	lastPosibleDirection = this->getOrientation();
+}
+
 void Enemy::frameRendered(const Ogre::FrameEvent& evt)
 {
 	if (active)

@@ -49,8 +49,9 @@ private:
 	int currentBombs = 0;
 	std::vector<Bomb*> _bombs; // vector de bombas
 	std::vector<std::pair<int, int>> _affectedTiles; // casillas afectadas en este update
-	std::queue<SceneNode*> smokePSysPool; // pool de sistemas de particulas de humo 
+	std::queue<SceneNode*> smokePSysPool; // pool de sistemas de particulas de humo
 	// ?????????????? mejor una pila
+	Ogre::ParticleSystem* sysHumo = nullptr;
 	// mirar clase pool de ogre
 	void initPSPool(); // inicializa la pool de sistemas de particulas ((4 dir * x casillas por dir)*maxBombas)
 	void placeBomb(Vector3 pos);
@@ -84,12 +85,12 @@ private:
 
 	// METODOS
 	// --- Update
-	void update();
+	void update(Real t);
 	void updateHero();
 	void updateUI();
 	void updateEnemies();
 	void updateLuz();
-	void updateBombs();
+	void updateBombs(Real t);
 	void clearMap();
 
 	// --- Animación Inicial
@@ -99,13 +100,12 @@ private:
 	// --- Auxiliares
 	void DebugMap();
 	pair<int, int> vectorToMap(Vector3 pos); // para pasar a coordenadas de bloques
+	Vector3 mapToVector(pair<int, int>  pos); // para pasar a coordenadas de mundo
 
 	// --- Check...
 	bool checkMove(pair<int, int> pos, pair<int, int> dir); // si delante tiene empty
 	bool checkForward(pair<int, int> pos, pair<int, int> dir);
-	bool checkCentered(pair<int, int> pos, Character* c);
-	bool checkCentered2(pair<int, int> pos, Character * c); // intento de mejorar checkCentered
-	bool checkCentered3(pair<int, int> pos, Character * c); // intento de mejorar checkCentered por ultima vez
+	bool checkCentered(pair<int, int> pos, Character * c); // saber si estas en el centro
 	bool checkCollision();
 	std::pair<int,int> checkCrossroads(pair<int, int> pos, pair<int, int> dir);
 

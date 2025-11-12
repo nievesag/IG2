@@ -188,14 +188,14 @@ bool Labyrinth::keyPressed(const OgreBites::KeyboardEvent& evt)
 void Labyrinth::frameRendered(const Ogre::FrameEvent& evt)
 {
     if (!playingAnim)
-        update();
+        update(evt.timeSinceLastEvent);
     else
         updateAnim(evt.timeSinceLastFrame);
 }
 
-void Labyrinth::update()
+void Labyrinth::update(Real t)
 {
-    updateBombs();
+    updateBombs(t);
 
     bool heroHit = checkCollision();
     if (heroHit)
@@ -237,7 +237,7 @@ void Labyrinth::updateHero()
 
     bool canMove = checkMove(_heroPos, dirToMove);      // si se puede mover hacia delante
     bool movable = checkForward(_heroPos, dirMoving);   // si se puede mover
-    bool centered = checkCentered3(_heroPos, _hero);     // si esta centrado
+    bool centered = checkCentered(_heroPos, _hero);     // si esta centrado
 
     _heroPos.first += dirMoving.first;
     _heroPos.second += dirMoving.second;
@@ -273,7 +273,7 @@ void Labyrinth::updateEnemies()
         // TODO: gestionar muertes
 
         _enemiesPos[i] = vectorToMap(e->getPosition());
-        if (checkCentered3(_enemiesPos[i], _enemies[i]))
+        if (checkCentered(_enemiesPos[i], _enemies[i]))
         {
             // calcula la nueva direccion
             pair<int, int> nextDir = checkCrossroads(vectorToMap(e->getPosition()), { e->getCurrentDirection().x, e->getCurrentDirection().z });
@@ -306,11 +306,13 @@ void Labyrinth::updateLuz()
     }
 }
 
-void Labyrinth::updateBombs()
+void Labyrinth::updateBombs(Real t)
 {
     for (auto b : _bombs)
     {
-        if (b->getExploded()) 
+        b->update(t);
+
+        if (b->getExploded())
         {
             // marca las casillas como afectadas
             setAffectedTiles(vectorToMap(b->getPosition()));
@@ -346,7 +348,35 @@ void Labyrinth::activateGame()
 // --------- AUX
 void Labyrinth::setAffectedTiles(pair<int, int> bombPos)
 {
-    _affectedTiles.push_back(bombPos);
+    for (int i = 0; i < 4; i++) // recorrer las 4 direcciones
+    {
+        pair<int, int> searching = bombPos;
+        int tilesSearched = 0;
+
+        bool continueSearch = true;
+	    while (continueSearch &&
+            tilesSearched < Constants::bombReach)  // mientras puedas en esa direccion y queden casillas
+	    {
+            // si no puedo seguir
+            if (!checkMove(searching, { Constants::DirectionsArray[i].x , Constants::DirectionsArray[i].z }))
+            {
+                continueSearch = false;
+            }
+            // si puedo seguir
+            else
+            {
+                // avanzo a la siguiente a buscar
+                searching.first += Constants::DirectionsArray[i].x;
+                searching.second += Constants::DirectionsArray[i].z;
+
+                /*_affectedTiles.push_back(searching);
+                sysHumo = _mSM->createParticleSystem("psSmokeSphere", "Examples/Smoke");
+                sysHumo->setEmitting(true);*/
+
+                tilesSearched++;
+            }
+	    }
+    }
 }
 
 void Labyrinth::initPSPool()
@@ -373,7 +403,6 @@ void Labyrinth::placeBomb(Vector3 pos)
         Bomb* bomb = new Bomb(pos, node, _mSM);
         _bombs.push_back(bomb);
         currentBombs++;
-        //_mSM->addListener(bomb);
     }
 }
 
@@ -408,6 +437,11 @@ pair<int, int> Labyrinth::vectorToMap(Vector3 pos)
     return pair<int, int>(round(pos.x / Constants::mapSize), round(pos.z / Constants::mapSize));
 }
 
+Vector3 Labyrinth::mapToVector(pair<int, int> pos)
+{
+    return { (Real)pos.first * Constants::mapSize,0 ,(Real)pos.second * Constants::mapSize };
+}
+
 // --------- CHECKS
 bool Labyrinth::checkMove(pair<int, int> pos, pair<int, int> dir)
 {
@@ -435,74 +469,6 @@ bool Labyrinth::checkForward(pair<int, int> pos, pair<int, int> dir)
 }
 
 bool Labyrinth::checkCentered(pair<int, int> pos, Character* c)
-{
-    float worldSize = Constants::mapSize;
-    Vector3 squareCenter(pos.first * worldSize, 0, pos.second * worldSize);
-
-    float xS = squareCenter.x;
-    int xH = c->getPosition().x;
-
-    float zS = squareCenter.z;
-    int zH = c->getPosition().z;
-
-    return ((xS < xH + 5) && (xS > xH - 5)) && ((zS < zH + 5) && (zS > zH - 5));
-}
-
-bool Labyrinth::checkCentered2(pair<int, int> pos, Character* c)
-{
-    // si se esta moviendo (currentDir != 0) y sabemos cual es la ultima posicion en la que calculamos que está
-    // y su direccion sabemos cual es la casilla target, calculamos si en ese update has pasado la mitad de 
-    // la casilla target
-
-    bool centered = false;
-    if (c->getCurrentDirection() != Vector3::ZERO)
-    {
-        int xTarget = pos.first + c->getCurrentDirection().x;
-        int zTarget = pos.second + c->getCurrentDirection().z;
-        std::pair<int, int> targetSquare = { xTarget, zTarget }; // posicion de la casilla target
-        Vector3 targetCenter(xTarget * Constants::mapSize, 0, zTarget * Constants::mapSize); // centro casilla target
-
-        if (c->getCurrentDirection() == Vector3::NEGATIVE_UNIT_Z)   // arriba
-        {
-            if (c->getPosition().z < targetCenter.z) 
-            {
-                centered = true;
-            }
-        }
-
-        if (c->getCurrentDirection() == Vector3::UNIT_Z)            // abajo
-        {
-            if (c->getPosition().z > targetCenter.z)
-            {
-                centered = true;
-            }
-        }
-
-        if (c->getCurrentDirection() == Vector3::NEGATIVE_UNIT_X)   // izquierda
-        {
-            if (c->getPosition().x < targetCenter.x)
-            {
-                centered = true;
-            }
-        }
-
-        if(c->getCurrentDirection() == Vector3::UNIT_X)             // derecha
-        {
-            if (c->getPosition().x > targetCenter.x)
-            {
-                centered = true;
-            }
-        }
-    }
-    else 
-    {
-        centered = true;
-    }
-
-    return centered;
-}
-
-bool Labyrinth::checkCentered3(pair<int, int> pos, Character* c)
 {
     bool centered = false;
     Vector3 dir = c->getCurrentDirection();

@@ -14,7 +14,13 @@ public:
 	Character(Vector3 a, SceneNode* b, SceneManager* c, String mesh) : IG2Object(a, b, c, mesh) 
 	{
 		currentDirection = Vector3(0, 0, 0);
-	};
+	}
+
+	Character(Vector3 a, SceneNode* b, SceneManager* c) : IG2Object(a, b, c)
+	{
+		currentDirection = Vector3(0, 0, 0);
+	}
+
 	Vector3 getLastPosibleDirection() { return lastPosibleDirection; }
 	Vector3 getCurrentDirection() { return currentDirection; }
 

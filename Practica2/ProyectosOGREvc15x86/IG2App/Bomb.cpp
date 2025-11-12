@@ -1,10 +1,27 @@
 #include "Bomb.h"
+
+#include <OgreParticleSystem.h>
+
 #include "Constants.h"
 
 Bomb::Bomb(Vector3 a, SceneNode* b, SceneManager* c)
 	: Object(a, b, c, true)
 {
-	
+	Ogre::Entity* bomba = mSM->createEntity("sphere.mesh");
+	mCuerpoNode = b->createChildSceneNode();
+	mCuerpoNode->attachObject(bomba);
+	mCuerpoNode->scale(Ogre::Vector3(0.5, 0.5, 0.5));
+
+	Ogre::Entity* mecha = mSM->createEntity("Barrel.mesh");
+	mMechaNode = mCuerpoNode->createChildSceneNode();
+	mMechaNode->scale(Ogre::Vector3(2, 20, 2));
+	mMechaNode->setPosition(Ogre::Vector3(0, 100, 5));
+	mMechaNode->attachObject(mecha);
+
+	// sistemas de particulas
+	sysHumo = mSM->createParticleSystem("psSmokeSphere", "Examples/Smoke");
+	b->attachObject(sysHumo);
+	sysHumo->setEmitting(true);
 }
 
 Bomb::~Bomb()
@@ -12,19 +29,28 @@ Bomb::~Bomb()
 
 }
 
-void Bomb::frameRendered(const Ogre::FrameEvent& evt)
+void Bomb::update(Real t)
 {
-	cout << "hola" << endl;
-
 	// si aun no ha explotado
-	if (!exploded) 
+	if (!exploded)
 	{
-		current += evt.timeSinceLastEvent;
+		current += t;
 
 		if (current > Constants::bombTick)
 		{
-			cout << "explota" << endl;
 			exploded = true;
+			sysHumo->setEmitting(false);
+			//clearBomb();
 		}
 	}
+}
+
+void Bomb::clearBomb()
+{
+	current = 0;
+	exploded = false;
+	sysHumo->setEmitting(false);
+	sysHumo->clear();
+	sysMecha->setEmitting(false);
+	sysMecha->clear();
 }
