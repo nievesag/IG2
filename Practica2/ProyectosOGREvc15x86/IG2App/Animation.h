@@ -28,5 +28,6 @@ private:
 
 	// -- TIMING --
 	Real time;
+	bool run = false;
 };
 

@@ -138,6 +138,11 @@ class IG2Object : public OgreBites::InputListener {
          * @return Vector representing the size of the AABB
          */
         Vector3 calculateBoxSize ();    
+
+        Entity* getEntity() 
+        {
+            return entity;
+        }
           
                         
     protected:

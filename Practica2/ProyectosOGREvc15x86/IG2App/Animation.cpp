@@ -172,6 +172,16 @@ Animative::Animative(Vector3 a, SceneNode* b, SceneManager* c, String mesh) : IG
 	villainMoveAnim->setLoop(true);
 	villainMoveAnim->setEnabled(true);
 #pragma endregion
+
+	runBot = hero->getEntity()->getAnimationState("RunBase");
+	runBot->setLoop(true);
+
+	runTop = hero->getEntity()->getAnimationState("RunTop");
+	runTop->setLoop(true);
+
+	dance = hero->getEntity()->getAnimationState("Dance");
+	dance->setLoop(true);
+	dance->setEnabled(true);
 }
 
 Animative::~Animative()
@@ -186,9 +196,29 @@ void Animative::updateAnime(Real t)
 	heroMoveAnim->addTime(t);
 	villainMoveAnim->addTime(t);
 
+	dance->addTime(t);
+	runTop->addTime(t);
+	runBot->addTime(t);
+
+	if (time > Constants::danceStep && !run)
+	{
+		run = true;
+
+		dance->setEnabled(false);
+		runBot->setEnabled(true);
+		runBot->setTimePosition(0.0); 
+		runTop->setEnabled(true);
+		runTop->setTimePosition(0.0);
+	}
 	if (time > Constants::loopTime)
 	{
-		time - Constants::loopTime;
+		time -= Constants::loopTime;
+		run = false;
+
+		dance->setEnabled(true);
+		dance->setTimePosition(0.0);
+		runBot->setEnabled(false);
+		runTop->setEnabled(false);
 	}
 }
 
