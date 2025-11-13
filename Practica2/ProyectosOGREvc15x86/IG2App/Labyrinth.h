@@ -47,7 +47,7 @@ private:
 
 	// --- Bombs
 	int currentBombs = 0;
-	std::vector<Bomb*> _bombs; // vector de bombas
+	//std::vector<Bomb*> _bombs; // vector de bombas
 	std::queue<Bomb*> _bombsPool; // pool de bombas
 
 	std::vector<std::pair<int, int>> _affectedTiles; // casillas afectadas en este update

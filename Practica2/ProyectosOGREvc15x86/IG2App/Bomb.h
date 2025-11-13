@@ -16,6 +16,9 @@ public:
 	void setActive(bool a) { active = a; }
 	bool getActive() const { return active; }
 
+	void clearBomb();
+	void createBomb();
+
 private:
 	Ogre::SceneNode* mCuerpoNode = nullptr; // cuerpo
 	Ogre::SceneNode* mMechaNode = nullptr;  // mecha
@@ -31,5 +34,4 @@ private:
 
 	bool active = false;
 
-	void clearBomb();
 };

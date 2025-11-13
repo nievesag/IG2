@@ -19,9 +19,9 @@ Bomb::Bomb(Vector3 a, SceneNode* b, SceneManager* c, String name)
 	mMechaNode->attachObject(mecha);
 
 	// sistemas de particulas
-	sysHumo = mSM->createParticleSystem(name, "Examples/Smoke");
-	b->attachObject(sysHumo);
-	sysHumo->setEmitting(true);
+	sysMecha = mSM->createParticleSystem(name, "Examples/Smoke");
+	b->attachObject(sysMecha);
+	sysMecha->setEmitting(true);
 }
 
 Bomb::~Bomb()
@@ -42,7 +42,7 @@ void Bomb::update(Real t)
 			if (current > Constants::bombTick)
 			{
 				exploded = true;
-				sysHumo->setEmitting(false);
+				sysMecha->setEmitting(false);
 				active = false;
 				//clearBomb();
 			}
@@ -55,8 +55,18 @@ void Bomb::clearBomb()
 	active = false;
 	current = 0;
 	exploded = false;
-	sysHumo->setEmitting(false);
-	sysHumo->clear();
+	//sysHumo->setEmitting(false);
+	//sysHumo->clear();
 	sysMecha->setEmitting(false);
 	sysMecha->clear();
+	setVisible(false);
+}
+
+void Bomb::createBomb()
+{
+	active = true;
+	current = 0;
+	exploded = false;
+	sysMecha->setEmitting(true);
+	setVisible(true);
 }

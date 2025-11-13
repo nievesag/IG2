@@ -310,24 +310,34 @@ void Labyrinth::updateBombs(Real t)
 {
     int actives = 0;
 
-    for (auto b : _bombs)
+    for (int i = 0; i < Constants::maxBombs; ++i) 
     {
+        Bomb* b = _bombsPool.front();
+
         if (b->getActive())
         {
             actives++;
-	        b->update(t);
+            b->update(t);
 
-	        if (b->getExploded())
-	        {
-	            // marca las casillas como afectadas
-	            setAffectedTiles(vectorToMap(b->getPosition()));
+            if (b->getExploded())
+            {
+                // marca las casillas como afectadas
+                setAffectedTiles(vectorToMap(b->getPosition()));
 
-	            // elimina la bomba
-	            auto it = find(_bombs.begin(), _bombs.end(), b);
-	            delete b;
-	            _bombs.erase(it);
-	        }
+                // elimina la bomba
+                /*
+                auto it = find(_bombs.begin(), _bombs.end(), b);
+                delete b;
+                _bombs.erase(it);
+				*/
+
+                //b->setVisible(false);
+                b->clearBomb();
+            }
         }
+
+        _bombsPool.pop();
+        _bombsPool.push(b);
     }
 
     currentBombs = actives;
@@ -394,10 +404,10 @@ void Labyrinth::placeBomb(Vector3 pos)
 {
     if (currentBombs < Constants::maxBombs) // se pueden poner bombas 
     {
+        Bomb* b = _bombsPool.front();
+        _bombsPool.push(b);
         _bombsPool.front()->setPosition(pos);
-        _bombsPool.front()->setVisible(true);
-        _bombsPool.front()->setActive(true);
-        _bombsPool.push(_bombsPool.front());
+        _bombsPool.front()->createBomb();
         _bombsPool.pop();
     }
 }
@@ -409,7 +419,7 @@ void Labyrinth::generateBombs()
         SceneNode* node = _labyrinthNode->createChildSceneNode("bomb" + std::to_string(i));
         Bomb* bomb = new Bomb({0,0,0}, node, _mSM, "sys" + std::to_string(i));
         _bombsPool.push(bomb);
-        _bombs.push_back(bomb);
+        //_bombs.push_back(bomb);
         bomb->setVisible(false);
     }
 }
@@ -439,6 +449,7 @@ void Labyrinth::placeSmoke(std::vector<std::pair<int, int>> affectedTiles)
 void Labyrinth::explodeCharacter(Character* c)
 {
     // colision hero-enemigos
+    /*
     for (auto e : _bombs)
     {
         if (c->checkCharacterCollision(e->getAABB()))
@@ -446,6 +457,7 @@ void Labyrinth::explodeCharacter(Character* c)
             
         }
     }
+	*/
 }
 
 void Labyrinth::clearMap()
