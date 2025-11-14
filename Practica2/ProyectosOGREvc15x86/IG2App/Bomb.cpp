@@ -21,7 +21,7 @@ Bomb::Bomb(Vector3 a, SceneNode* b, SceneManager* c, String name)
 	// sistemas de particulas
 	sysMecha = mSM->createParticleSystem(name, "Examples/Smoke");
 	b->attachObject(sysMecha);
-	sysMecha->setEmitting(true);
+	sysMecha->setEmitting(false);
 }
 
 Bomb::~Bomb()

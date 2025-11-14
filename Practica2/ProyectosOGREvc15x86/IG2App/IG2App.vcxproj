@@ -132,6 +132,7 @@
     <ClInclude Include="IG2Object.h" />
     <ClInclude Include="Labyrinth.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="SmokeZone.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +150,7 @@
     <ClCompile Include="IG2Object.cpp" />
     <ClCompile Include="Labyrinth.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="SmokeZone.cpp" />
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

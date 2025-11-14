@@ -323,15 +323,6 @@ void Labyrinth::updateBombs(Real t)
             {
                 // marca las casillas como afectadas
                 setAffectedTiles(vectorToMap(b->getPosition()));
-
-                // elimina la bomba
-                /*
-                auto it = find(_bombs.begin(), _bombs.end(), b);
-                delete b;
-                _bombs.erase(it);
-				*/
-
-                //b->setVisible(false);
                 b->clearBomb();
             }
         }
@@ -419,7 +410,6 @@ void Labyrinth::generateBombs()
         SceneNode* node = _labyrinthNode->createChildSceneNode("bomb" + std::to_string(i));
         Bomb* bomb = new Bomb({0,0,0}, node, _mSM, "sys" + std::to_string(i));
         _bombsPool.push(bomb);
-        //_bombs.push_back(bomb);
         bomb->setVisible(false);
     }
 }
@@ -430,11 +420,9 @@ void Labyrinth::generateSmokes()
     int size = ((4 * Constants::bombReach) * Constants::maxBombs);
     for (int i = 0; i < size; i++)
     {
-        Ogre::ParticleSystem* pSys = _mSM->createParticleSystem("psSmoke" + std::to_string(i), "Examples/Smoke");
-        Ogre::SceneNode* mPSNode = _mSM->getRootSceneNode()->createChildSceneNode();
-        mPSNode->attachObject(pSys);
-        pSys->setEmitting(false);
-        smokePSysPool.push(mPSNode);
+        SceneNode* node = _labyrinthNode->createChildSceneNode("zone" + std::to_string(i));
+        SmokeZone* z = new SmokeZone({ 0,0,0 }, node, _mSM, "smoke" + std::to_string(i));
+        smokePSysPool.push(z);
     }
 }
 
@@ -630,4 +618,3 @@ std::pair<int, int> Labyrinth::checkCrossroads(pair<int, int> pos, pair<int, int
 
     return nextDir;
 }
-

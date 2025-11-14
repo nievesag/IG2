@@ -19,6 +19,7 @@
 
 #include "IG2Object.h"
 #include "Object.h"
+#include "SmokeZone.h"
 
 using namespace Ogre;
 using namespace std;
@@ -51,7 +52,7 @@ private:
 	std::queue<Bomb*> _bombsPool; // pool de bombas
 
 	std::vector<std::pair<int, int>> _affectedTiles; // casillas afectadas en este update
-	std::queue<SceneNode*> smokePSysPool; // pool de sistemas de particulas de humo (? una pila)
+	std::queue<SmokeZone*> smokePSysPool; // pool de sistemas de particulas de humo (? una pila)
 	Ogre::ParticleSystem* sysHumo = nullptr;
 
 	void placeBomb(Vector3 pos);
