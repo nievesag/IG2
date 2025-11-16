@@ -40,6 +40,7 @@ private:
 	Hero* _hero = nullptr; // objeto hero
 	std::pair<int, int> _heroInitPos = { 1,1 }; // posicion inicial para moverle al perder
 	std::pair<int, int> _heroPos = { 1,1 }; // posicion del hero en coordenadas de bloques
+	void manageHeroDeath();
 
 	// --- Enemies
 	std::vector<Enemy*> _enemies; // vector de objetos enemigo
@@ -57,7 +58,7 @@ private:
 
 	void placeBomb(Vector3 pos);
 	void placeSmoke(std::vector<std::pair<int, int>> affectedTiles);
-	void explodeCharacter(Character* c);
+	void explodeCharacters();
 
 	// inicializar pools
 	void generateBombs();

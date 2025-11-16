@@ -201,16 +201,7 @@ void Labyrinth::update(Real t)
     bool heroHit = checkCollision();
     if (heroHit)
     {
-        _hero->stopCharacter();
-        _hero->decreaseLives();
-
-        if (_hero->getLives() > 0)
-        {
-            _heroPos.first = _heroInitPos.first;
-            _heroPos.second = _heroInitPos.second;
-
-            _hero->setPosition(Vector3(_heroPos.first * Constants::mapSize, 0, _heroPos.second * Constants::mapSize));
-        }
+        manageHeroDeath();
     }
 
     updateHero();
@@ -271,24 +262,24 @@ void Labyrinth::updateEnemies()
     int i = 0;
     for (auto e : _enemies)
     {
-        // TODO: gestionar muertes
-
-        _enemiesPos[i] = vectorToMap(e->getPosition());
-        if (checkCentered(_enemiesPos[i], _enemies[i]))
+        if (e->getAlive())
         {
-            // calcula la nueva direccion
-            pair<int, int> nextDir = checkCrossroads(vectorToMap(e->getPosition()), { e->getCurrentDirection().x, e->getCurrentDirection().z });
-            e->setLastPosibleDirection({ Ogre::Real(nextDir.first), 0, Ogre::Real(nextDir.second) });
-            
-            // calcula la nueva posicion
-            pair<int, int> nextPos = { _enemiesPos[i].first + nextDir.first ,_enemiesPos[i].first + nextDir.second };
-            _enemiesPos[i] = nextPos;
+            _enemiesPos[i] = vectorToMap(e->getPosition());
+            if (checkCentered(_enemiesPos[i], _enemies[i]))
+            {
+                // calcula la nueva direccion
+                pair<int, int> nextDir = checkCrossroads(vectorToMap(e->getPosition()), { e->getCurrentDirection().x, e->getCurrentDirection().z });
+                e->setLastPosibleDirection({ Ogre::Real(nextDir.first), 0, Ogre::Real(nextDir.second) });
 
-            // rota y mueve
-            _enemies[i]->yaw(e->yawDirection());
-            e->moveCharacter();
+                // calcula la nueva posicion
+                pair<int, int> nextPos = { _enemiesPos[i].first + nextDir.first ,_enemiesPos[i].first + nextDir.second };
+                _enemiesPos[i] = nextPos;
+
+                // rota y mueve
+                _enemies[i]->yaw(e->yawDirection());
+                e->moveCharacter();
+            }
         }
-
         ++i; // seguir buscando
     }
 }
@@ -325,6 +316,7 @@ void Labyrinth::updateBombs(Real t)
                 // marca las casillas como afectadas
                 setAffectedTiles(vectorToMap(b->getPosition()));
                 b->clearBomb();
+                explodeCharacters();
             }
         }
 
@@ -403,9 +395,7 @@ void Labyrinth::setAffectedTiles(pair<int, int> bombPos)
                 searching.first += Constants::DirectionsArray[i].x;
                 searching.second += Constants::DirectionsArray[i].z;
 
-                /*_affectedTiles.push_back(searching);
-                sysHumo = _mSM->createParticleSystem("psSmokeSphere", "Examples/Smoke");
-                sysHumo->setEmitting(true);*/
+                _affectedTiles.push_back(searching);
 
                 SmokeZone* z = smokesPool.front();
                 smokesPool.pop();
@@ -416,6 +406,20 @@ void Labyrinth::setAffectedTiles(pair<int, int> bombPos)
                 tilesSearched++;
             }
 	    }
+    }
+}
+
+void Labyrinth::manageHeroDeath()
+{
+    _hero->stopCharacter();
+    _hero->decreaseLives();
+
+    if (_hero->getLives() > 0)
+    {
+        _heroPos.first = _heroInitPos.first;
+        _heroPos.second = _heroInitPos.second;
+
+        _hero->setPosition(Vector3(_heroPos.first * Constants::mapSize, 0, _heroPos.second * Constants::mapSize));
     }
 }
 
@@ -462,18 +466,30 @@ void Labyrinth::placeSmoke(std::vector<std::pair<int, int>> affectedTiles)
     }
 }
 
-void Labyrinth::explodeCharacter(Character* c)
+void Labyrinth::explodeCharacters()
 {
-    // colision hero-enemigos
-    /*
-    for (auto e : _bombs)
+    // colision hero-bomba
+    auto it = find(_affectedTiles.begin(), _affectedTiles.end(), _heroPos);
+    if (it != _affectedTiles.end())
     {
-        if (c->checkCharacterCollision(e->getAABB()))
+        cout << "explota heroe" << endl;
+        manageHeroDeath();
+    }
+
+    // colision enemigos-bomba
+    for (int i = 0; i < _enemiesPos.size(); i++)
+    {
+        auto it = find(_affectedTiles.begin(), _affectedTiles.end(), _enemiesPos[i]);
+        if (it != _affectedTiles.end())
         {
-            
+            cout << "explota enemigo " << i << endl;
+
+            _enemies[i]->setActive(false);
+            _enemies[i]->setVisible(false);
         }
     }
-	*/
+
+    _affectedTiles.clear();
 }
 
 void Labyrinth::clearMap()
@@ -554,9 +570,12 @@ bool Labyrinth::checkCollision()
     // colision hero-enemigos
     for (auto e : _enemies)
     {
-        if (e->checkCharacterCollision(_hero->getAABB()))
+        if (e->getActive())
         {
-            return true;
+            if (e->checkCharacterCollision(_hero->getAABB()))
+            {
+                return true;
+            }
         }
     }
 
