@@ -52,7 +52,7 @@ private:
 	std::queue<Bomb*> _bombsPool; // pool de bombas
 
 	std::vector<std::pair<int, int>> _affectedTiles; // casillas afectadas en este update
-	std::queue<SmokeZone*> smokePSysPool; // pool de sistemas de particulas de humo (? una pila)
+	std::queue<SmokeZone*> smokesPool; // pool de sistemas de particulas de humo (? una pila)
 	Ogre::ParticleSystem* sysHumo = nullptr;
 
 	void placeBomb(Vector3 pos);
@@ -96,6 +96,7 @@ private:
 	void updateEnemies();
 	void updateLuz();
 	void updateBombs(Real t);
+	void updateSmokeZones(Real t);
 	void clearMap();
 
 	// --- Animación Inicial

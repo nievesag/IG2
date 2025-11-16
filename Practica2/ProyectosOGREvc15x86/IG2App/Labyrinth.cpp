@@ -196,6 +196,7 @@ void Labyrinth::frameRendered(const Ogre::FrameEvent& evt)
 void Labyrinth::update(Real t)
 {
     updateBombs(t);
+    updateSmokeZones(t);
 
     bool heroHit = checkCollision();
     if (heroHit)
@@ -334,6 +335,27 @@ void Labyrinth::updateBombs(Real t)
     currentBombs = actives;
 }
 
+void Labyrinth::updateSmokeZones(Real t)
+{
+    for (int i = 0; i < Constants::maxSmokes; ++i)
+    {
+        SmokeZone* z = smokesPool.front();
+
+        if (z->getActive())
+        {
+            z->update(t);
+
+            if (z->getExpired())
+            {
+                z->clearSmoke();
+            }
+        }
+
+        smokesPool.pop();
+        smokesPool.push(z);
+    }
+}
+
 void Labyrinth::updateAnim(Real t)
 {
     mAnim->updateAnime(t);
@@ -385,6 +407,12 @@ void Labyrinth::setAffectedTiles(pair<int, int> bombPos)
                 sysHumo = _mSM->createParticleSystem("psSmokeSphere", "Examples/Smoke");
                 sysHumo->setEmitting(true);*/
 
+                SmokeZone* z = smokesPool.front();
+                smokesPool.pop();
+                smokesPool.push(z);
+                z->createSmoke();
+                z->setPosition(mapToVector(searching));
+
                 tilesSearched++;
             }
 	    }
@@ -417,12 +445,12 @@ void Labyrinth::generateBombs()
 void Labyrinth::generateSmokes()
 {
     // pool size = ((4 dir * x casillas por dir)*maxBombs)
-    int size = ((4 * Constants::bombReach) * Constants::maxBombs);
+    int size = Constants::maxSmokes;
     for (int i = 0; i < size; i++)
     {
         SceneNode* node = _labyrinthNode->createChildSceneNode("zone" + std::to_string(i));
         SmokeZone* z = new SmokeZone({ 0,0,0 }, node, _mSM, "smoke" + std::to_string(i));
-        smokePSysPool.push(z);
+        smokesPool.push(z);
     }
 }
 

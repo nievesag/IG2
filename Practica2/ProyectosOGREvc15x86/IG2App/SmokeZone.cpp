@@ -20,11 +20,36 @@ SmokeZone::~SmokeZone()
 
 void SmokeZone::update(Real t)
 {
+	// si esta activa
+	if (active)
+	{
+		// si aun no ha expirado
+		if (!expired)
+		{
+			current += t;
 
+			if (current > Constants::smokeTime)
+			{
+				expired = true;
+				//sysMecha->setEmitting(false);
+				//active = false;
+				clearSmoke();
+			}
+		}
+	}
 }
 
 void SmokeZone::clearSmoke()
 {
 	active = false;
 	sysHumo->clear();
+	sysHumo->setEmitting(false);
+}
+
+void SmokeZone::createSmoke()
+{
+	active = true;
+	current = 0;
+	expired = false;
+	sysHumo->setEmitting(true);
 }
