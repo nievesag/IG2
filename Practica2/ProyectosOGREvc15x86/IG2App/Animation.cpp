@@ -10,15 +10,13 @@ Animative::Animative(Vector3 a, SceneNode* b, SceneManager* c, String mesh) : IG
 	SceneNode* villainNode = mNode->createChildSceneNode("villainAnimNode");
 	floor = new IG2Object(Vector3(0, 50, 0), mNode->createChildSceneNode("floorNode"), c, "cube.mesh");
 	hero = new IG2Object(Vector3(0, 100, 0), heroNode, c, "Sinbad.mesh");
-	sword1 = new IG2Object(Vector3(-50, 100, 0), mNode->createChildSceneNode("sword1Node"), c, "Sword.mesh");
-	sword2 = new IG2Object(Vector3(50, 100, 0), mNode->createChildSceneNode("sword2Node"), c, "Sword.mesh");
+	sw1 = mSM->createEntity("Sword.mesh");
+	sw2 = mSM->createEntity("Sword.mesh");
 	villain = new IG2Object(Vector3(0, 100, -300), villainNode, c, "ogrehead.mesh");
 	
 	floor->setScale(Vector3(5, 0.5, 5));
 	floor->setMaterialName("Muro");
 	hero->setScale(Vector3(10, 10, 10));
-	sword1->setScale(Vector3(5, 5, 5));
-	sword2->setScale(Vector3(5, 5, 5));
 
 	//Preparando animacion
 
@@ -210,15 +208,25 @@ void Animative::updateAnime(Real t)
 		runTop->setEnabled(true);
 		runTop->setTimePosition(0.0);
 	}
+	if (time > Constants::danceStep + Constants::turnStep / 2 + 3 * Constants::moveStep / 4 && !sword)
+	{
+		sword = true;
+
+		hero->getEntity()->attachObjectToBone("Handle.R", sw1);
+		hero->getEntity()->attachObjectToBone("Handle.L", sw2);
+	}
 	if (time > Constants::loopTime)
 	{
 		time -= Constants::loopTime;
 		run = false;
+		sword = false;
 
 		dance->setEnabled(true);
 		dance->setTimePosition(0.0);
 		runBot->setEnabled(false);
 		runTop->setEnabled(false);
+		hero->getEntity()->detachObjectFromBone(sw1);
+		hero->getEntity()->detachObjectFromBone(sw2);
 	}
 }
 

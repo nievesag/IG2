@@ -14,8 +14,8 @@ private:
 	IG2Object* floor;
 
 	IG2Object* hero;
-	IG2Object* sword1;
-	IG2Object* sword2;
+	Entity* sw1;
+	Entity* sw2;
 
 	IG2Object* villain;
 
@@ -29,5 +29,6 @@ private:
 	// -- TIMING --
 	Real time;
 	bool run = false;
+	bool sword = false;
 };
 
