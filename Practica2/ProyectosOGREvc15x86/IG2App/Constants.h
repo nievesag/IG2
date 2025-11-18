@@ -50,9 +50,10 @@ namespace Constants
 	static const float smokeTime = 0.2f;	// tiempo que tarda en expirar el humo
 	static const int maxSmokes = ((4 * bombReach) * maxBombs); // humos maximos en partida
 	static const float bombTick = 0.3f;	// tiempo que tarda en explotar
-	static const Ogre::Vector3 bigBombSize = {120,120,120};
+	static const Ogre::Vector3 bigBombSize = {130,130,130};
+	static const Ogre::Vector3 normalBombSize = {100,100,100};
 	static const Ogre::Vector3 smallBombSize = {80,80,80};
-	static const float bombAnimTransTime = 0.05f; // tiempo transicion entre big y small
+	static const float bombAnimTransTime = 0.2f; // tiempo transicion entre big y small
 
 	//Animation
 	static const Ogre::Vector3 animPos(0, -20, -200);

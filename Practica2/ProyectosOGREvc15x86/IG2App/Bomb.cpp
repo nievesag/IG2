@@ -15,7 +15,7 @@ Bomb::Bomb(Vector3 a, SceneNode* b, SceneManager* c, String name)
 	mecha = mSM->createEntity("Barrel.mesh");
 	mMechaNode = mCuerpoNode->createChildSceneNode();
 	mMechaNode->scale(Ogre::Vector3(2, 20, 2));
-	mMechaNode->setPosition(Ogre::Vector3(0, 100, 5));
+	mMechaNode->setPosition(Ogre::Vector3(0, 150, 5));
 	mMechaNode->attachObject(mecha);
 
 	// sistemas de particulas
@@ -23,7 +23,7 @@ Bomb::Bomb(Vector3 a, SceneNode* b, SceneManager* c, String name)
 	sysMechaNode = b->createChildSceneNode();
 	sysMechaNode->attachObject(sysMecha);
 	sysMecha->setEmitting(false);
-	sysMechaNode->setPosition(0,80,0);
+	sysMechaNode->setPosition(0,100,0);
 }
 
 Bomb::~Bomb()
@@ -40,11 +40,54 @@ void Bomb::update(Real t)
 		if (!exploded)
 		{
 			current += t;
-			sysMechaNode->translate(0,-1,0);
+			currentAnim += t;
 
-			//mCuerpoNode->scale(1.05,1.05,1.05);
-			Vector3 maxSize = mCuerpoNode->_getWorldAABB().getSize();
-			std::cout << maxSize << std::endl;
+			Vector3 trans = { 0,-current,0};
+			sysMechaNode->translate(trans);
+
+			float currSize = mCuerpoNode->_getWorldAABB().getSize().x;
+			std::cout << currSize << std::endl;
+
+			if (increasing) // si se esta haciendo grande
+			{
+				if (currSize < Constants::bigBombSize.x)
+				{
+					/*Ogre::Real scaleFactor = ((Constants::bigBombSize.x - currSize.x) / currSize.x) / Constants::bombAnimTransTime;
+					std::cout << scaleFactor << std::endl;
+					std::cout << Constants::bigBombSize << " - " << currSize << std::endl;*/
+
+					float newSize = Ogre::Math::lerp(Constants::normalBombSize.x, Constants::bigBombSize.x, currentAnim/Constants::bombAnimTransTime);
+					float factor = (Constants::bigBombSize.x / newSize);
+					std::cout << "aumentando: " << factor << std::endl;
+					mCuerpoNode->scale(factor,factor,factor);
+				}
+				else
+				{
+					increasing = false;
+					currentAnim = 0;
+				}
+			}
+			else // si se esta haciendo pequena
+			{
+				if (currSize > Constants::smallBombSize.x)
+				{
+					/*Ogre::Real scaleFactor = ((Constants::bigBombSize.x - currSize) / currSize) / Constants::bombAnimTransTime;
+					std::cout << scaleFactor << std::endl;
+					std::cout << Constants::bigBombSize << " - " << currSize << std::endl;
+
+					mCuerpoNode->setScale(scaleFactor, scaleFactor, scaleFactor);*/
+
+					float newSize = Ogre::Math::lerp(Constants::normalBombSize.x, Constants::smallBombSize.x, currentAnim / Constants::bombAnimTransTime);
+					float factor = (Constants::smallBombSize.x / newSize);
+					std::cout << "disminuyendo: " << factor << std::endl;
+					mCuerpoNode->scale(factor, factor, factor);
+				}
+				else
+				{
+					increasing = true;
+					currentAnim = 0;
+				}
+			}
 
 			if (current > Constants::bombTick)
 			{

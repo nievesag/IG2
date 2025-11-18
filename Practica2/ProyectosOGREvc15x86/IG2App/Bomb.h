@@ -38,6 +38,7 @@ private:
 
 	bool active = false;
 
-	bool increasing = true;
-	bool decreasing = false;
+	float currentAnim = 0;
+	bool increasing = true; // true si se hace grande / false si se hace pequeña
+	bool sentido = 1;
 };
