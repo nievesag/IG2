@@ -40,8 +40,9 @@ void Bomb::update(Real t)
 		if (!exploded)
 		{
 			current += t;
+			sysMechaNode->translate(0,-1,0);
 
-			mCuerpoNode->scale(1.05,1.05,1.05);
+			//mCuerpoNode->scale(1.05,1.05,1.05);
 			Vector3 maxSize = mCuerpoNode->_getWorldAABB().getSize();
 			std::cout << maxSize << std::endl;
 

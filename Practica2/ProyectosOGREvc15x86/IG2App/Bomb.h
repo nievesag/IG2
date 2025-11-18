@@ -38,4 +38,6 @@ private:
 
 	bool active = false;
 
+	bool increasing = true;
+	bool decreasing = false;
 };
