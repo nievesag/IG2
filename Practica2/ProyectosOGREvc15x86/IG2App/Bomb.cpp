@@ -40,25 +40,20 @@ void Bomb::update(Real t)
 		if (!exploded)
 		{
 			current += t;
-			currentAnim += t;
 
+			//float vel = mMechaNode->_getWorldAABB().getSize().y;
 			Vector3 trans = { 0,-current,0};
 			sysMechaNode->translate(trans);
 
 			float currSize = mCuerpoNode->_getWorldAABB().getSize().x;
-			std::cout << currSize << std::endl;
+			currentAnim += t;
 
 			if (increasing) // si se esta haciendo grande
 			{
 				if (currSize < Constants::bigBombSize.x)
 				{
-					/*Ogre::Real scaleFactor = ((Constants::bigBombSize.x - currSize.x) / currSize.x) / Constants::bombAnimTransTime;
-					std::cout << scaleFactor << std::endl;
-					std::cout << Constants::bigBombSize << " - " << currSize << std::endl;*/
-
-					float newSize = Ogre::Math::lerp(Constants::normalBombSize.x, Constants::bigBombSize.x, currentAnim/Constants::bombAnimTransTime);
-					float factor = (Constants::bigBombSize.x / newSize);
-					std::cout << "aumentando: " << factor << std::endl;
+					float newSize = Ogre::Math::lerp(Constants::normalBombSize.x, Constants::bigBombSize.x, (currentAnim/Constants::bombAnimTransTime));
+					float factor = (newSize / currSize);
 					mCuerpoNode->scale(factor,factor,factor);
 				}
 				else
@@ -71,15 +66,8 @@ void Bomb::update(Real t)
 			{
 				if (currSize > Constants::smallBombSize.x)
 				{
-					/*Ogre::Real scaleFactor = ((Constants::bigBombSize.x - currSize) / currSize) / Constants::bombAnimTransTime;
-					std::cout << scaleFactor << std::endl;
-					std::cout << Constants::bigBombSize << " - " << currSize << std::endl;
-
-					mCuerpoNode->setScale(scaleFactor, scaleFactor, scaleFactor);*/
-
 					float newSize = Ogre::Math::lerp(Constants::normalBombSize.x, Constants::smallBombSize.x, currentAnim / Constants::bombAnimTransTime);
-					float factor = (Constants::smallBombSize.x / newSize);
-					std::cout << "disminuyendo: " << factor << std::endl;
+					float factor = (newSize / currSize);
 					mCuerpoNode->scale(factor, factor, factor);
 				}
 				else
@@ -94,7 +82,6 @@ void Bomb::update(Real t)
 				exploded = true;
 				sysMecha->setEmitting(false);
 				active = false;
-				//clearBomb();
 			}
 		}
 	}
