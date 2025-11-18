@@ -7,12 +7,12 @@
 Bomb::Bomb(Vector3 a, SceneNode* b, SceneManager* c, String name)
 	: Object(a, b, c, true)
 {
-	Ogre::Entity* bomba = mSM->createEntity("sphere.mesh");
+	bomba = mSM->createEntity("sphere.mesh");
 	mCuerpoNode = b->createChildSceneNode();
 	mCuerpoNode->attachObject(bomba);
 	mCuerpoNode->scale(Ogre::Vector3(0.5, 0.5, 0.5));
 
-	Ogre::Entity* mecha = mSM->createEntity("Barrel.mesh");
+	mecha = mSM->createEntity("Barrel.mesh");
 	mMechaNode = mCuerpoNode->createChildSceneNode();
 	mMechaNode->scale(Ogre::Vector3(2, 20, 2));
 	mMechaNode->setPosition(Ogre::Vector3(0, 100, 5));
@@ -20,8 +20,10 @@ Bomb::Bomb(Vector3 a, SceneNode* b, SceneManager* c, String name)
 
 	// sistemas de particulas
 	sysMecha = mSM->createParticleSystem(name, "Examples/Smoke");
-	b->attachObject(sysMecha);
+	sysMechaNode = b->createChildSceneNode();
+	sysMechaNode->attachObject(sysMecha);
 	sysMecha->setEmitting(false);
+	sysMechaNode->setPosition(0,80,0);
 }
 
 Bomb::~Bomb()
@@ -38,6 +40,10 @@ void Bomb::update(Real t)
 		if (!exploded)
 		{
 			current += t;
+
+			mCuerpoNode->scale(1.05,1.05,1.05);
+			Vector3 maxSize = mCuerpoNode->_getWorldAABB().getSize();
+			std::cout << maxSize << std::endl;
 
 			if (current > Constants::bombTick)
 			{

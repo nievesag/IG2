@@ -49,7 +49,9 @@ namespace Constants
 	static const int bombReach = 4;	// alcance de las bombas
 	static const float bombTick = 0.3f;	// tiempo que tarda en explotar
 	static const float smokeTime = 0.2f;	// tiempo que tarda en expirar
-	static const int maxSmokes = ((4 * bombReach) * maxBombs);
+	static const int maxSmokes = ((4 * bombReach) * maxBombs); // humos maximos en partida
+	static const Ogre::Vector3 bigBombSize = {100,100,100};
+	static const Ogre::Vector3 smallBombSize = {100,100,100};
 
 	//Animation
 	static const Ogre::Vector3 animPos(0, -20, -200);

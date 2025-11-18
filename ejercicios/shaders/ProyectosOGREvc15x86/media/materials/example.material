@@ -1,0 +1,26 @@
+material example/stonesFloor{
+    technique {
+	pass {
+	    texture_unit {
+			texture BeachStones.jpg
+	    }
+	}
+    }
+}
+
+material example/sky{
+ technique{
+        pass{
+            
+            lighting off
+            
+            texture_unit {
+                texture spaceSky.jpg
+            }
+        }
+    }
+}
+
+
+
+

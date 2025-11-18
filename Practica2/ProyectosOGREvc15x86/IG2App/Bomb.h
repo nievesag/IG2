@@ -21,9 +21,13 @@ public:
 
 private:
 	Ogre::SceneNode* mCuerpoNode = nullptr; // cuerpo
+	Ogre::Entity* bomba = nullptr;
 	Ogre::SceneNode* mMechaNode = nullptr;  // mecha
+	Ogre::Entity* mecha = nullptr;
 
 	Ogre::ParticleSystem* sysMecha = nullptr;
+	Ogre::SceneNode* sysMechaNode = nullptr;
+
 	Ogre::SceneNode* nodeMecha = nullptr;
 	Ogre::ParticleSystem* sysHumo = nullptr; // para el humo propio no el que se propaga
 	Ogre::SceneNode* nodeHumo = nullptr;

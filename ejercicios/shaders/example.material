@@ -1,0 +1,25 @@
+vertex_program example/MyFirstShaderVS glsl {
+    source MyFirstShaderVS.glsl
+
+    default_params {
+        param_named_auto modelViewProjMat worldviewproj_matrix
+    }
+}
+
+fragment_program example/MyFirstShaderFS glsl {
+    source MyFirstShaderFS.glsl
+    default_params {}
+}
+
+material example/orangeShader{
+    technique{
+        pass{
+            vertex_program_ref example/MyFirstShaderVS {
+            }
+            fragment_program_ref example/MyFirstShaderFS {
+            }
+
+            // unidades de textura se define en el material 
+        }
+    }
+}
