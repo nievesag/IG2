@@ -8,7 +8,7 @@ SmokeZone::SmokeZone(Vector3 a, SceneNode* b, SceneManager* c, String name)
 	: Object(a, b, c, true)
 {
 	// sistemas de particulas
-	sysHumo = mSM->createParticleSystem(name, "Examples/Smoke");
+	sysHumo = mSM->createParticleSystem(name, "Examples/BombTrail");
 	b->attachObject(sysHumo);
 	sysHumo->setEmitting(false);
 }
