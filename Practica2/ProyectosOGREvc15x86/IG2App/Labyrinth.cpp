@@ -127,6 +127,14 @@ void Labyrinth::createFloor()
     plane->setMaterialName(matfloor);
 }
 
+void Labyrinth::createSky()
+{
+    Ogre::Plane plane;
+    plane.d = 20;
+    plane.normal = Ogre::Vector3::UNIT_Z + Ogre::Vector3::UNIT_Y;
+    _mSM->setSkyPlane(true, plane, "Examples/SpaceSkyPlane", 1, 1, true, 1.5, 50, 50);
+}
+
 void Labyrinth::createLuz()
 {
     _light = _mSM->createLight("Luzmap");
@@ -363,9 +371,12 @@ void Labyrinth::activateGame()
     }
 
     playingAnim = false;
+    mAnim->setActive(false);
 
     mCamNode->setPosition(950, 2500, 1900);
     mCamNode->lookAt(Ogre::Vector3(950, 0, 950), Ogre::Node::TS_WORLD);
+
+    createSky();
 
     generateBombs();
     generateSmokes();
@@ -455,14 +466,6 @@ void Labyrinth::generateSmokes()
         SceneNode* node = _labyrinthNode->createChildSceneNode("zone" + std::to_string(i));
         SmokeZone* z = new SmokeZone({ 0,0,0 }, node, _mSM, "smoke" + std::to_string(i));
         smokesPool.push(z);
-    }
-}
-
-void Labyrinth::placeSmoke(std::vector<std::pair<int, int>> affectedTiles)
-{
-    for (auto t : affectedTiles) 
-    {
-        
     }
 }
 

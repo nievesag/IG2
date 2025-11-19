@@ -49,7 +49,6 @@ private:
 
 	// --- Bombs
 	int currentBombs = 0;
-	//std::vector<Bomb*> _bombs; // vector de bombas
 	std::queue<Bomb*> _bombsPool; // pool de bombas
 
 	std::vector<std::pair<int, int>> _affectedTiles; // casillas afectadas en este update
@@ -57,7 +56,6 @@ private:
 	Ogre::ParticleSystem* sysHumo = nullptr;
 
 	void placeBomb(Vector3 pos);
-	void placeSmoke(std::vector<std::pair<int, int>> affectedTiles);
 	void explodeCharacters();
 
 	// inicializar pools
@@ -121,6 +119,9 @@ private:
 
 	// --- Suelo
 	void createFloor();
+
+	// --- Cielo
+	void createSky();
 
 	// --- Luces
 	void createLuz();

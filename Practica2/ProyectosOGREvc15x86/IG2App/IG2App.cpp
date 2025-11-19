@@ -64,18 +64,18 @@ void IG2App::setupScene(void)
     mCamNode->attachObject(cam);
 
     mCamNode->setPosition(0, 100, -100);
-    mCamNode->lookAt(Ogre::Vector3(0, 0, -400), Ogre::Node::TS_WORLD);
+    mCamNode->lookAt(Constants::cameraLookat, Ogre::Node::TS_WORLD);
     
     // and tell it to render into the main window
     Viewport* vp = getRenderWindow()->addViewport(cam);
     vp->setBackgroundColour(ColourValue(0, 0, 0, 1));
     
     // >> descomentar para usar eventos de teclado para mover la camara
-    
+    /*
     mCamMgr = new OgreBites::CameraMan(mCamNode);
     addInputListener(mCamMgr);
     mCamMgr->setStyle(OgreBites::CS_ORBIT);
-    
+    */
     // <<
     
     // ---------------- OBJETOS ESCENA

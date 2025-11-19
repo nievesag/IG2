@@ -11,3 +11,22 @@ material Suelo
         }
     }
 }
+
+material SueloAnim
+{
+    technique
+    {
+        pass
+        {
+            texture_unit 
+            {
+                texture terr_rock6.jpg
+                colour_op modulate
+            }
+            texture_unit {
+                texture lightMap.jpg
+                colour_op modulate
+            }
+        }
+    }
+}

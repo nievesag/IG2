@@ -15,7 +15,7 @@ Animative::Animative(Vector3 a, SceneNode* b, SceneManager* c, String mesh) : IG
 	villain = new IG2Object(Vector3(0, 100, -300), villainNode, c, "ogrehead.mesh");
 	
 	floor->setScale(Vector3(5, 0.5, 5));
-	floor->setMaterialName("Muro");
+	floor->setMaterialName("practica/wavesShader");
 	hero->setScale(Vector3(10, 10, 10));
 
 	//Preparando animacion

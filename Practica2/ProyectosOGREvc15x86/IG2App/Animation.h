@@ -9,6 +9,8 @@ public:
 
 	void updateAnime(Real t);
 
+	void setActive(bool f) { mNode->setVisible(f); }
+
 private:
 	// -- OBJECTS --
 	IG2Object* floor;
