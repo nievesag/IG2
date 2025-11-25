@@ -1,0 +1,1 @@
+sintime -1 2pi -> de -1 a 1
