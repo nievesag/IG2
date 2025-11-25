@@ -21,6 +21,8 @@ private:
 
 	IG2Object* villain;
 
+	IG2Object* corrodedSphere;
+
 	// -- ANIMATIONS --
 	AnimationState* heroMoveAnim;
 	AnimationState* villainMoveAnim;

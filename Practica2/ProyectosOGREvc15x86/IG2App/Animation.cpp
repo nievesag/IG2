@@ -13,13 +13,19 @@ Animative::Animative(Vector3 a, SceneNode* b, SceneManager* c, String mesh) : IG
 	sw1 = mSM->createEntity("Sword.mesh");
 	sw2 = mSM->createEntity("Sword.mesh");
 	villain = new IG2Object(Vector3(0, 100, -300), villainNode, c, "ogrehead.mesh");
-	
+
+	// ---- Objetos con shader
+	// Ondas
 	floor->setScale(Vector3(5, 0.5, 5));
 	floor->setMaterialName("practica/wavesShader");
 	hero->setScale(Vector3(10, 10, 10));
+	// Esfera
+	SceneNode* sphereNode = mNode->createChildSceneNode("corrodedSphereNode");
+	sphereNode->setScale(0.5, 0.5, 0.5);
+	corrodedSphere = new IG2Object(Vector3(0,130, -120), sphereNode, c, "uv_sphere.mesh");
+	corrodedSphere->setMaterialName("practica/sphere");
 
-	//Preparando animacion
-
+	// ---- Preparando animacion
 #pragma region HeroAnim
 	Animation* animation = mSM->createAnimation("heroWalk", Constants::loopTime);
 	animation->setInterpolationMode(Ogre::Animation::IM_LINEAR);

@@ -41,7 +41,9 @@ void Bomb::update(Real t)
 		{
 			current += t;
 
-			//float vel = mMechaNode->_getWorldAABB().getSize().y;
+			float newPos = Ogre::Math::lerp(sysMechaNode->getPosition().y, mCuerpoNode->getPosition().y, (current / Constants::bombTick));
+			std::cout << sysMechaNode->getPosition().y - newPos << std::endl;
+
 			Vector3 trans = { 0,-current,0};
 			sysMechaNode->translate(trans);
 

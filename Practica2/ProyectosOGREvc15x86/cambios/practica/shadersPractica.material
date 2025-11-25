@@ -1,3 +1,4 @@
+// ---- WAVES SHADER
 vertex_program wavesShaderVS glsl {
     source wavesShaderVS.glsl
 
@@ -26,6 +27,46 @@ material practica/wavesShader
             texture_unit 
             {
                 texture Water02.jpg 2d
+            }
+        }
+    }
+}
+
+// ---- SPHERE SHADER
+vertex_program sphereVS glsl {
+    source sphereVS.glsl
+
+    default_params {
+        param_named_auto modelViewProjMat worldviewproj_matrix
+    }
+}
+
+fragment_program sphereFS glsl {
+    source sphereFS.glsl
+    default_params 
+    {
+        param_named texName int 0
+        // para saber que cara del fragmeto estamos procesando (-1 o 1)
+        param_named_auto flipping render_target_flipping
+    }
+}
+
+material practica/sphere
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            cull_hardware none
+            cull_software none
+
+            vertex_program_ref sphereVS {}
+            fragment_program_ref sphereFS {}
+
+            texture_unit 
+            {
+                texture corrosion.jpg 2d
             }
         }
     }
