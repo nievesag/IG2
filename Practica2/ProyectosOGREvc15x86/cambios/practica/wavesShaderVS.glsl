@@ -1,24 +1,26 @@
 #version 330 core
-#include <math.h>
-
-in vec2 Uv0;
-in vec4 vertex;
 
 uniform mat4 modelViewProjMat;
-uniform float waveTime;
-uniform vec3 coor;
+uniform float time;
 
-uniform float a;
-uniform float b;
+in vec2 uv0;
+in vec3 position;
 
-out vec2 Uv0;
+out vec2 vTexCoorVS;
 
 void main()
 {
-    float distanceCenter = sqrt(pow((vertex.x-coor.x), 2) + pow((vertex.y-coor.y), 2) + pow((vertex.z-coor.z), 2));
-    vertex.y += sin(vertex.x + (waveTime*a)) * b + sin(vertex.z + (distanceCenter) + (waveTime*a)) * b;
+    vec3 vertexCoord = position;
 
-    gl_Position = vertex;
+    vec3 center = vec3(0.0,0.0,0.0);
+    float distanceCenter = length(vertexCoord.xz - center.xz); 
 
-    Uv0 = uv0;
+    float a = 10.0f;
+    float b = 1.0f;
+
+    vertexCoord.y += sin(vertexCoord.x + (time*a)) * b + sin(vertexCoord.z + (distanceCenter) + (time*a)) * b;
+
+    vTexCoorVS = uv0;
+
+    gl_Position = modelViewProjMat * vec4(vertexCoord, 1.0);
 }

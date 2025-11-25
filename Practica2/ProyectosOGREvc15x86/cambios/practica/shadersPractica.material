@@ -1,16 +1,13 @@
-vertex_program example/wavesShaderVS glsl {
+vertex_program wavesShaderVS glsl {
     source wavesShaderVS.glsl
 
     default_params {
         param_named_auto modelViewProjMat worldviewproj_matrix
-        param_named waveTime time_0_1 10
-        param_named coor float3 200 0 200
-        param_named a float 1
-        param_named b float -1
+        param_named_auto time time_0_1 3
     }
 }
 
-fragment_program example/wavesShaderFS glsl {
+fragment_program wavesShaderFS glsl {
     source wavesShaderFS.glsl
     default_params 
     {
@@ -24,13 +21,11 @@ material practica/wavesShader
     {
         pass
         {
-            vertex_program_ref example/wavesShaderVS {
-            }
-            fragment_program_ref example/wavesShaderFS {
-            }
+            vertex_program_ref wavesShaderVS {}
+            fragment_program_ref wavesShaderFS {}
             texture_unit 
             {
-                texture Water02.jpg
+                texture Water02.jpg 2d
             }
         }
     }
