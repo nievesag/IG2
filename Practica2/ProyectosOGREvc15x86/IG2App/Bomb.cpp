@@ -41,12 +41,11 @@ void Bomb::update(Real t)
 		{
 			current += t;
 
-			float newPos = Ogre::Math::lerp(sysMechaNode->getPosition().y, mCuerpoNode->getPosition().y, (current / Constants::bombTick));
-			std::cout << sysMechaNode->getPosition().y - newPos << std::endl;
+			// -- Cambio de posicion
+			float newPos = Ogre::Math::lerp(initMechaPos, initBombaPos, (current/Constants::bombTick));
+			sysMechaNode->setPosition(sysMechaNode->getPosition().x, newPos, sysMechaNode->getPosition().z);
 
-			Vector3 trans = { 0,-current,0};
-			sysMechaNode->translate(trans);
-
+			// -- Cambio de escala
 			float currSize = mCuerpoNode->_getWorldAABB().getSize().x;
 			currentAnim += t;
 
@@ -103,6 +102,8 @@ void Bomb::clearBomb()
 
 void Bomb::createBomb()
 {
+	initMechaPos = sysMechaNode->getPosition().y;
+	initBombaPos = mCuerpoNode->getPosition().y;
 	active = true;
 	current = 0;
 	exploded = false;

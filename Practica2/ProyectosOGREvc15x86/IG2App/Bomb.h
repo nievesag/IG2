@@ -40,4 +40,7 @@ private:
 
 	float currentAnim = 0;
 	bool increasing = true; // true si se hace grande / false si se hace pequeña
+
+	float initMechaPos = 0; // posicion inicial de la Mecha en Y
+	float initBombaPos = 0; // posicion inicial de la Bomba en Y
 };

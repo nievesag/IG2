@@ -16,7 +16,7 @@ particle_system Examples/BombTrail
 		angle 70
 		colour 1 1 1 0.5
 		emission_rate 15
-		time_to_live 4
+		time_to_live 2
 		direction 0 1 0
 		velocity_min 50
 		velocity_max 80    	

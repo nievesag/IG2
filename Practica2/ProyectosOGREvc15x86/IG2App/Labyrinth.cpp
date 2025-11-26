@@ -385,6 +385,13 @@ void Labyrinth::activateGame()
 // --------- AUX
 void Labyrinth::setAffectedTiles(pair<int, int> bombPos)
 {
+    // Humo de la bomba
+    SmokeZone* z = smokesPool.front();
+    smokesPool.pop();
+    smokesPool.push(z);
+    z->createSmoke();
+    z->setPosition(mapToVector(bombPos));
+
     for (int i = 0; i < 4; i++) // recorrer las 4 direcciones
     {
         pair<int, int> searching = bombPos;
@@ -408,6 +415,7 @@ void Labyrinth::setAffectedTiles(pair<int, int> bombPos)
 
                 _affectedTiles.push_back(searching);
 
+                // Coloca humos
                 SmokeZone* z = smokesPool.front();
                 smokesPool.pop();
                 smokesPool.push(z);
@@ -459,7 +467,7 @@ void Labyrinth::generateBombs()
 
 void Labyrinth::generateSmokes()
 {
-    // pool size = ((4 dir * x casillas por dir)*maxBombs)
+    // pool size = ((4 dir * x casillas por dir)*maxBombs) + 1(pos bomba)
     int size = Constants::maxSmokes;
     for (int i = 0; i < size; i++)
     {

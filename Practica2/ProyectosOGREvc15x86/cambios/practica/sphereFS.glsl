@@ -22,6 +22,6 @@ void main()
     else
     {
         // !!! falta gestion de mapa de normales en el interior de la esfera
-        fFragColor = vec4(0.0, 0.0, 1.0, 1.0); // lo pone naranja de momento por poner algo
+        fFragColor = vec4(0.0, 0.0, 1.0, 1.0); // lo pone azul de momento por poner algo
     }
 }
