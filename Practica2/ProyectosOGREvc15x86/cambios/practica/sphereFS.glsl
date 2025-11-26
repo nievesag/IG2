@@ -4,6 +4,7 @@ uniform sampler2D texName;
 uniform float flipping; // pregunta si se ha invertido el orden de los vertices (-1 invertido; 1 no invertido)
 
 in vec2 vUv0; 
+in vec3 vBackColor;
 
 out vec4 fFragColor;
 
@@ -22,6 +23,6 @@ void main()
     else
     {
         // !!! falta gestion de mapa de normales en el interior de la esfera
-        fFragColor = vec4(0.0, 0.0, 1.0, 1.0); // lo pone azul de momento por poner algo
+        fFragColor = vec4(vBackColor, 1.0); // lo pone azul de momento por poner algo
     }
 }
