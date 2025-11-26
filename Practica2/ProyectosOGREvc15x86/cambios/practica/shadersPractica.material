@@ -37,7 +37,9 @@ vertex_program sphereVS glsl {
     source sphereVS.glsl
 
     default_params {
+        param_named_auto modelViewMat worldview_matrix
         param_named_auto modelViewProjMat worldviewproj_matrix
+        param_named_auto normalMat normal_matrix
     }
 }
 
@@ -46,8 +48,15 @@ fragment_program sphereFS glsl {
     default_params 
     {
         param_named texName int 0
-        // para saber que cara del fragmeto estamos procesando (-1 o 1)
         param_named_auto flipping render_target_flipping
+
+        //Parámetros de la luz. Como las viewMatrix, nos los da ogre y por eso están en _auto
+        param_named_auto lightAmbient ambient_light_colour;     //[IN PROGRESS] no se pilla bien y hace que sea vector de 0s
+        param_named_auto lightDiffuse light_diffuse_colour 0;   //Color de luz difusa, en vector4
+        param_named_auto lightPosition light_position 0;        //Posicion de la luz (w define si es posicion o direccion)
+
+        //Parametro que define la cantida de luz que refleja el material
+        param_named materialDiffuse float3 0.7 0.7 0.7;
     }
 }
 

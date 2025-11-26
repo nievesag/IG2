@@ -137,8 +137,9 @@ void Labyrinth::createSky()
 
 void Labyrinth::createLuz()
 {
+    _mSM->setAmbientLight(ColourValue(0.5, 0.5, 0.5, 1.0));
     _light = _mSM->createLight("Luzmap");
-    _light->setDiffuseColour(0.75, 0.75, 0.75);
+    _light->setDiffuseColour(0.9, 0.9, 0.9);
     _lightNode = _mSM->getRootSceneNode()->createChildSceneNode("nLuzmap");
     _lightNode->attachObject(_light);
 
