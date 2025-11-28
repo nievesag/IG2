@@ -103,7 +103,7 @@ void Labyrinth::readFile(string fileName)
     createFloor();
     createLuz();
 
-    mAnim = new Animative(Constants::animPos, _mSM->getRootSceneNode()->createChildSceneNode("animNode"), _mSM, "cube.mesh");
+    mAnim = new Animative(Constants::animPos, _mSM->getRootSceneNode()->createChildSceneNode("animNode"), _mSM);
 }
 
 void Labyrinth::registerUI(OgreBites::Label* label, OgreBites::TextBox* textbox)

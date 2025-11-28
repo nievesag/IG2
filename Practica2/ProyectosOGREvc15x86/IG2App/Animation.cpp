@@ -4,11 +4,17 @@
 #include "OgreAnimation.h"
 #include "OgreKeyFrame.h"
 
-Animative::Animative(Vector3 a, SceneNode* b, SceneManager* c, String mesh) : IG2Object(a, b, c, mesh)
+Animative::Animative(Vector3 a, SceneNode* b, SceneManager* c) : IG2Object(a, b, c)
 {
+	MeshManager::getSingleton().createPlane("wave",
+		ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		Plane(Vector3::UNIT_Y, 0),
+		2 * Constants::mapSize, 2 * Constants::mapSize, 50, 50,
+		true, 1, 1.0, 1.0, Vector3::UNIT_Z);
+
 	SceneNode* heroNode = mNode->createChildSceneNode("heroAnimNode");
 	SceneNode* villainNode = mNode->createChildSceneNode("villainAnimNode");
-	floor = new IG2Object(Vector3(0, 50, 0), mNode->createChildSceneNode("floorNode"), c, "cube.mesh");
+	floor = new IG2Object(Vector3(0, 70, 0), mNode->createChildSceneNode("floorNode"), c, "wave");
 	hero = new IG2Object(Vector3(0, 100, 0), heroNode, c, "Sinbad.mesh");
 	sw1 = mSM->createEntity("Sword.mesh");
 	sw2 = mSM->createEntity("Sword.mesh");

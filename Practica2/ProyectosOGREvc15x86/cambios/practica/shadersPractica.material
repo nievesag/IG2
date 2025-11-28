@@ -4,7 +4,8 @@ vertex_program wavesShaderVS glsl {
 
     default_params {
         param_named_auto modelViewProjMat worldviewproj_matrix
-        param_named_auto time time_0_1 3
+        param_named_auto timeWave sintime_0_2pi 6
+        param_named center float2 200 200
     }
 }
 
@@ -51,7 +52,6 @@ fragment_program sphereFS glsl {
         param_named_auto flipping render_target_flipping
 
         //Parámetros de la luz. Como las viewMatrix, nos los da ogre y por eso están en _auto
-        param_named_auto lightAmbient ambient_light_colour;     //[IN PROGRESS] no se pilla bien y hace que sea vector de 0s
         param_named_auto lightDiffuse light_diffuse_colour 0;   //Color de luz difusa, en vector4
         param_named_auto lightPosition light_position 0;        //Posicion de la luz (w define si es posicion o direccion)
 

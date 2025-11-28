@@ -4,7 +4,7 @@
 class Animative : public IG2Object
 {
 public:
-	Animative(Vector3 a, SceneNode* b, SceneManager* c, String mesh);
+	Animative(Vector3 a, SceneNode* b, SceneManager* c);
 	~Animative();
 
 	void updateAnime(Real t);

@@ -3,7 +3,6 @@
 uniform sampler2D texName;
 uniform float flipping; // pregunta si se ha invertido el orden de los vertices (-1 invertido; 1 no invertido)
 
-uniform vec3 lightAmbient;      // Intensidad de la luz ambiente
 uniform vec4 lightDiffuse;      // Intensidad de la luz difusa
 uniform vec4 lightPosition;     // Datos de la fuente de luz en view space
                                 // lightPosition.w == 0 -> directional light
@@ -34,11 +33,6 @@ void main()
     // Para calcular los componentes de la luz hay dos pasos. 
     // Primero usas el componente ambiental, que te da la luz que un vertice siempre va a tener,
     // pues la luz ambiental se aplica igual a todos los vertices renderizables 
-    // [IN PROGRESS] - No funciona porque no pilla bien lightAmbient.
-
-    //Luz ambiente
-    vec3 ambient = lightAmbient * materialDiffuse;
-
 
     // Despues de calcular la luz ambiental calcula la luz difusa, 
     // la cual SI depende de la posicion de la luz y orientacion del vertice.
@@ -47,13 +41,11 @@ void main()
 
     //Difusa (front)
     vec3 diffuse = diff(vxVertex, vxNormal) * lightDiffuse.xyz * materialDiffuse;
-    vec3 vFrontColor = ambient + diffuse;
+    vec3 vFrontColor = diffuse;
 
     //Difusa (back)
     diffuse = diff(vxVertex, -vxNormal) * lightDiffuse.xyz * materialDiffuse;
-    vec3 vBackColor = ambient + diffuse;
-
-
+    vec3 vBackColor = diffuse;
 
     //Aplicar colores y eso
 
@@ -70,6 +62,6 @@ void main()
     }
     else
     {
-        fFragColor = vec4(vxNormal * vBackColor, 1.0); 
+        fFragColor = vec4(-vxNormal * vBackColor, 1.0); 
     }
 }
