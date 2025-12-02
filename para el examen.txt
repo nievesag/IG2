@@ -1,1 +1,29 @@
 sintime -1 2pi -> de -1 a 1
+
+si para el shader pone un vídeo en el cambia el color del objeto al mover la cámara hay que convertir a eyespace!!!
+la normal te la da en espacio objeto, normalmattrix es para pasarlo al eyespace
+
+opciones para el examen: pasar la normal de espacio vista a espacio objeto, producto escalar, un max
+
+shader del seno:
+variable del tiempo de -1 a 1 para que cuando llegue a 1 vuelva a -1
+para hacer el triangulo ir cogiendo desde el centro hasta el extremo derecho y del centro al extremo izquiero y vas subiendo y bajando los vértices de manera gradual para hacer como una tienda de campaña
+
+
+vertexCoord = vertex;
+wavePosition = time * (size/2.0); // size = tamaño del plano
+
+if(vertexCoord.x >= wavePosition-20 && vertexCoord.x <= wavePosition+20)
+{
+	if(wavePosition >= vertexCoord.x)
+	{
+		vertexCoord.y = abs(vertexCoord.x - (wavePosition-20))
+	}
+	else
+	{
+		vertexCoord.y = abs((wavePosition+20) - vertexCoord.x)
+	}
+}
+
+vUv0 = uv0;
+gl_position = modelViewProjMat * vertexCoord;
