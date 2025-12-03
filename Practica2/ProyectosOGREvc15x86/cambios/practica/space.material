@@ -1,0 +1,19 @@
+material SpaceSky
+{
+    technique
+    {
+        pass
+        {
+            texture_unit 
+            {
+                texture spaceSky.jpg
+                colour_op modulate
+                scroll_anim 0.02 0.0
+            }
+            texture_unit {
+                texture lightMap.jpg
+                colour_op modulate
+            }
+        }
+    }
+}
