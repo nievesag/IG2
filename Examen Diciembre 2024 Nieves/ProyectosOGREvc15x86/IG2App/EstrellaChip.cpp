@@ -33,7 +33,7 @@ void EstrellaChip::frameRendered(const Ogre::FrameEvent& evt)
 
 		if (count >= DataSizes::TIME_ENGINE_START)
 		{
-			rocketsRack->yaw(Ogre::Angle(DataSizes::SHIP_ROTATION));
+			rocketsRack->yaw(Ogre::Angle(DataSizes::SHIP_ROTATION * evt.timeSinceLastFrame));
 		}
 	}
 }
