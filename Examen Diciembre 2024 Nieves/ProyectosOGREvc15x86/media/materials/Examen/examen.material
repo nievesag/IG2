@@ -151,3 +151,35 @@ material exam/waveShader
         }
     }
 }
+
+vertex_program coloredRocketVS glsl
+{
+    source coloredRocketVS.glsl
+
+    default_params
+    {
+        param_named_auto modelViewProjMat worldviewproj_matrix
+    }
+}
+
+fragment_program coloredRocketFS glsl
+{
+    source coloredRocketFS.glsl
+
+    default_params
+    {
+        param_named_auto timeColour sintime_0_2pi 6
+    }
+}
+
+material exam/coloredRocket
+{
+    technique
+    {
+        pass
+        {
+            vertex_program_ref coloredRocketVS {}
+            fragment_program_ref coloredRocketFS {}
+        }
+    }
+}

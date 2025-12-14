@@ -1,0 +1,245 @@
+///////////////////////////////////////////////////////
+//// Fresnel rim highlight that brightens silhouettes
+///////////////////////////////////////////////////////
+
+vertex_program coolShaders/fresnelRimVS glsl {
+    source fresnelRimVS.glsl
+    default_params {
+        param_named_auto modelViewProjMat worldviewproj_matrix
+        param_named_auto worldViewMat worldview_matrix
+        param_named_auto normalMatrix normal_matrix
+    }
+}
+
+fragment_program coolShaders/fresnelRimFS glsl {
+    source fresnelRimFS.glsl
+    default_params {
+        param_named rimPower float 5.0              // Lower (e.g., 1.5-2.5): wider, softer rim. Higher (e.g., 4-6): tighter, sharper rim.           
+        //param_named rimColor float3 0.2 0.8 1.0     // Rim color        
+        param_named rimColor float3 0.0 1.0 0.0     // Rim color        
+        param_named baseColor float3 0.05 0.05 0.08 // Base color
+    }}
+
+
+// Fresnel rim highlight and brightens silhouettes by boosting color where the view direction is nearly perpendicular to the surface normal.
+// Highlights edges (rims) facing away from the camera using a Fresnel-like term: fres = (1 − N·V)^rimPower.
+// Final color = baseColor + rimColor * fres.
+material coolShaders/fresnelRim {
+    technique {
+        pass {
+            lighting off
+            vertex_program_ref coolShaders/fresnelRimVS { }
+            fragment_program_ref coolShaders/fresnelRimFS { }
+        }
+    }
+}
+
+
+///////////////////////////////////////////////////////
+//// Cell shading
+///////////////////////////////////////////////////////
+
+vertex_program coolShaders/cellShadingVS glsl {
+    source cellShadingVS.glsl
+    default_params {
+        param_named_auto modelViewProjMat worldviewproj_matrix
+        param_named_auto normalMatrix normal_matrix
+    }
+}
+
+fragment_program coolShaders/cellShadingFS glsl {
+    source cellShadingFS.glsl
+    default_params {
+
+        // Light direction in view space
+        param_named_auto lightDirVS light_direction_view_space 0
+
+        // Colors for bands: darkest to brightest
+        param_named shade0 float3 0.05 0.05 0.06
+        param_named shade1 float3 0.12 0.12 0.16
+        param_named shade2 float3 0.25 0.25 0.30
+        param_named shade3 float3 0.60 0.60 0.70
+        param_named edgeThreshold float 0.1
+    }
+}
+
+material coolShaders/cellShading {
+    technique {
+        pass {
+            lighting off
+            vertex_program_ref coolShaders/cellShadingVS { }
+            fragment_program_ref coolShaders/cellShadingFS { }
+        }
+    }
+}
+
+
+///////////////////////////////////////////////////////
+//// Wobble
+///////////////////////////////////////////////////////
+
+vertex_program coolShaders/wobbleVS glsl {
+    source wobbleVS.glsl
+    default_params {
+        
+        param_named_auto modelViewProjMat worldviewproj_matrix                
+        param_named_auto time time
+        
+        param_named amp  float 1.20     // Wobble amplitude
+        param_named freq float 4.0      // Wobble frequency          
+    }
+}
+
+fragment_program coolShaders/wobbleFS glsl {
+    source wobbleFS.glsl
+    default_params {
+        param_named texture0 int 0
+    }
+}
+
+material coolShaders/wobble {
+    technique {
+        pass {
+            lighting off                        
+            cull_hardware none
+
+            vertex_program_ref   coolShaders/wobbleVS { }
+            fragment_program_ref coolShaders/wobbleFS {}
+
+            texture_unit texture0 {
+                texture corrosion.jpg 2d
+            }
+        }
+    }
+}
+
+///////////////////////////////////////////////////////
+//// Hologram
+///////////////////////////////////////////////////////
+
+vertex_program coolShaders/hologramVS glsl {
+    source hologramVS.glsl
+    default_params {
+        param_named_auto modelViewProjMat worldviewproj_matrix
+        param_named_auto worldViewMat worldview_matrix
+        param_named_auto normalMatrix normal_matrix
+    }
+}
+
+fragment_program coolShaders/hologramFS glsl {
+    source hologramFS.glsl
+    default_params {
+        
+        param_named_auto time time
+
+        // Default hologram tint
+        param_named holoColor float3 0.00, 0.75, 1.00
+        
+        // Scanline controls
+        param_named lineDensity float 300.0     // Lines per UV unit
+        param_named lineScroll  float 5.0       // Scroll speed
+    }
+}
+
+material coolShaders/hologram {
+    technique {
+        pass {
+            lighting off
+            scene_blend alpha_blend
+            depth_write off
+            vertex_program_ref coolShaders/hologramVS { }
+            fragment_program_ref coolShaders/hologramFS { }
+        }
+    }
+}
+
+
+///////////////////////////////////////////////////////
+//// Burn (glowing dissolve edge)
+///////////////////////////////////////////////////////
+
+vertex_program coolShaders/burnVS glsl {
+    source burnVS.glsl
+    default_params {
+        param_named_auto modelViewProjMat worldviewproj_matrix
+        param_named_auto normalMatrix    normal_matrix
+    }
+}
+
+fragment_program coolShaders/burnFS glsl {
+    source burnFS.glsl
+    default_params {
+        
+        // Animate threshold 0..1 every 5 seconds
+        param_named_auto threshold time_0_1 5
+                        
+        // Set edge glow color (orange)
+        param_named edgeColor float3 1.0 0.5 0.1
+
+        // Texture unit 0
+        param_named noiseTex int 0
+    }
+}
+
+material coolShaders/burn {
+    technique {
+        pass {
+                lighting off
+                
+                // Use alpha blend so the rim is visible on dark backgrounds
+                scene_blend alpha_blend
+                depth_write off
+                cull_hardware none
+
+                vertex_program_ref   coolShaders/burnVS { }
+                fragment_program_ref coolShaders/burnFS {
+            }
+
+            texture_unit texture0 {
+                texture corrosion.jpg 2d
+            }
+        }
+    }
+}
+
+
+///////////////////////////////////////////////////////
+//// Dissolve
+///////////////////////////////////////////////////////
+
+vertex_program coolShaders/dissolveVS glsl {
+    source dissolveVS.glsl
+    default_params {
+        param_named_auto modelViewProjMat worldviewproj_matrix
+    }
+}
+
+fragment_program coolShaders/dissolveFS glsl {
+    source dissolveFS.glsl
+    default_params {
+        
+        param_named_auto timeVal time           // Elapsed time in seconds
+        param_named speed float 0.5             // Dissolve speed multiplier       
+        param_named threshold float 0.75        // Dissolve threshold (0-1)
+        param_named softness float 0.23         // Edge softness   
+        param_named tint float3 1.0 0.0 0.0     // Edge tint color
+        
+        // Bind sampler to TU0 where our corrosion texture is bound
+        param_named texture0 int 0
+    }
+}
+
+material coolShaders/dissolve {
+    technique {
+        pass {
+            lighting off
+            
+            vertex_program_ref coolShaders/dissolveVS { }
+            fragment_program_ref coolShaders/dissolveFS { }
+
+            texture_unit texture0 {
+                texture corrosion.jpg 2d
+            }
+        }
+    }
+}

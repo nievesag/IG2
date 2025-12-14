@@ -133,4 +133,10 @@ void IG2App::setupScene(void){
     sky.d = 20;
     sky.normal = Ogre::Vector3::UNIT_Z + Ogre::Vector3::UNIT_Y;
     mSM->setSkyPlane(true, sky, "Sky", 1, 1, true, 1.5, 50, 50);
+
+    Ogre::Entity* bola = mSM->createEntity("uv_sphere.mesh");
+    Ogre::SceneNode* nodeBola = mSM->getRootSceneNode()->createChildSceneNode("bola");
+    nodeBola->attachObject(bola);
+    nodeBola->setPosition({-300, 0,0});
+    bola->setMaterialName("exam/coloredRocket");
 }
