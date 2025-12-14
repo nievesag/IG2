@@ -9,6 +9,10 @@ bool IG2App::keyPressed(const OgreBites::KeyboardEvent& evt){
     if (evt.keysym.sym == SDLK_ESCAPE){
         getRoot()->queueEndRendering();
     }
+    if (evt.keysym.sym == SDLK_e)
+    {
+        estrella->Takeoff();
+    }
     
   return true;
 }
@@ -84,7 +88,7 @@ void IG2App::setupScene(void){
     mLightNode = mSM->getRootSceneNode()->createChildSceneNode("nLuz");
     //mLightNode = mCamNode->createChildSceneNode("nLuz");
     mLightNode->attachObject(luz);
-    mLightNode->setDirection(Ogre::Vector3(0, 0, -1));
+    mLightNode->setDirection(Ogre::Vector3(0, -1, -1));
 
     /*
     //------------------------------------------------------------------------
@@ -107,6 +111,26 @@ void IG2App::setupScene(void){
     //mSinbadNode->setVisible(false);    
 	*/
 
-    SceneNode* estrellaChipNode = mSM->getRootSceneNode()->createChildSceneNode("estrella");
-    EstrellaChip* estrella = new EstrellaChip({ 0,0,0 }, estrellaChipNode, mSM);
+    estrellaChipNode = mSM->getRootSceneNode()->createChildSceneNode("estrella");
+    estrella = new EstrellaChip({ 0,0,0 }, estrellaChipNode, mSM);
+
+    addInputListener(estrella);
+    
+    MeshManager::getSingleton().createPlane("floor",
+        ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+        Plane(Vector3::UNIT_Y, 0),
+        1500, 1500, 200, 200,
+        true, 1, 1.0, 1.0, Vector3::UNIT_Z);
+
+    Ogre::Entity* plane = mSM->createEntity("floor");
+    SceneNode* nodePlane = mSM->getRootSceneNode()->createChildSceneNode("floor");
+    nodePlane->attachObject(plane);
+    nodePlane->setPosition({0,-400,0});
+    //plane->setMaterialName("Suelo");
+    plane->setMaterialName("exam/waveShader");
+
+    Ogre::Plane sky;
+    sky.d = 20;
+    sky.normal = Ogre::Vector3::UNIT_Z + Ogre::Vector3::UNIT_Y;
+    mSM->setSkyPlane(true, sky, "Sky", 1, 1, true, 1.5, 50, 50);
 }

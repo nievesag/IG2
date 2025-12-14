@@ -41,7 +41,8 @@ protected:
     Ogre::SceneNode* mCamNode = nullptr;
     OgreBites::CameraMan* mCamMgr = nullptr;
 
-
+    SceneNode* estrellaChipNode = nullptr;
+    EstrellaChip* estrella = nullptr;
 };
 
 #endif

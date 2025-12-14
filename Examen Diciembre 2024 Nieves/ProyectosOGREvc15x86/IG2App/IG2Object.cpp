@@ -91,7 +91,7 @@ void IG2Object::removeEntity (){
 
 Vector3 IG2Object::calculateBoxSize (){
         
-    Vector3 result;    
+    Vector3 result;
     
     if (mNode->getAttachedObjects().size() > 0){
         Entity* mEntity = static_cast<Entity*>(mNode->getAttachedObject(0));

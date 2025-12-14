@@ -4,7 +4,7 @@
 class Rocket : public IG2Object
 {
 public:
-	Rocket(Vector3 initPos, SceneNode* node, SceneManager* sceneMng);
+	Rocket(Vector3 initPos, SceneNode* node, SceneManager* sceneMng, int i);
 	~Rocket() {}
 
 private:
@@ -13,5 +13,6 @@ private:
 
 	Entity* rocketCubeEnt = nullptr;
 	SceneNode* rocketCubeNod = nullptr;
-};
 
+	Ogre::ParticleSystem* rocketSys = nullptr;
+};

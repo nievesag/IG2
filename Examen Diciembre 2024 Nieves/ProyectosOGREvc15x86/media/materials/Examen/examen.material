@@ -1,0 +1,153 @@
+material Cuerpo 
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture corrosion.jpg
+            }
+        }
+    }
+}
+
+material Motor
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            
+            texture_unit 
+            {
+                texture MtlPlat2.jpg
+            }
+        }
+    }
+}
+
+material Cubo
+{
+    technique
+    {
+        pass
+        {
+            texture_unit 
+            {
+                texture BumpyMetal.jpg
+            }
+        }
+    }
+}
+
+material Esfera
+{
+    technique
+    {
+        pass
+        {
+            texture_unit 
+            {
+                texture MtlPlat2.jpg
+            }
+        }
+    }
+}
+
+material Suelo
+{
+    technique
+    {
+        pass
+        {
+            texture_unit 
+            {
+                texture Noise.png
+                colour_op modulate
+                scroll_anim 0.05 0.0
+            }
+            texture_unit 
+            {
+                colour_op modulate
+                texture Water02.jpg
+            }
+        }
+    }
+}
+
+material Sky
+{
+    technique
+    {
+        pass
+        {
+            texture_unit 
+            {
+                texture spaceSky.jpg
+                scroll_anim 0.001 0.0
+            }
+        }
+    }
+}
+
+material RocketSmoke
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+			scene_blend alpha_blend
+			depth_write off
+			diffuse vertexcolour
+
+            texture_unit 
+            {
+                texture smoke.png
+                tex_address_mode clamp
+            }
+        }
+    }
+}
+
+vertex_program waveShaderVS glsl
+{
+    source waveShaderVS.glsl
+
+    default_params
+    {
+        param_named_auto modelViewProjMat worldviewproj_matrix
+        param_named_auto timeWave sintime_0_2pi 100
+        param_named centro float 750
+    }
+}
+
+fragment_program waveShaderFS glsl
+{
+    source waveShaderFS.glsl
+
+    default_params
+    {
+        param_named texName int 0
+    }
+}
+
+material exam/waveShader
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            vertex_program_ref waveShaderVS {}
+            fragment_program_ref waveShaderFS {}
+
+            texture_unit
+            {
+                texture Water02.jpg 2d
+            }
+        }
+    }
+}

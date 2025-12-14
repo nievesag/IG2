@@ -28,20 +28,5 @@ void main()
     }
 
     vTexCoorVS = uv0;
-    gl_position = modelViewProjMat * vertexCoord;
-
-/*
-    vec3 vertexCoord = position;
-
-    float distanceCenter = length(vertexCoord.xz - cent); 
-
-    float a = 10.0f; // lo rapido que va
-    float b = 2.0f;  // lo alto que sube
-
-    vertexCoord.y += sin(vertexCoord.x + (timeWave*a)) * b + sin(vertexCoord.z + (distanceCenter) + (timeWave*a)) * b;
-
-    vTexCoorVS = uv0;
-
-    gl_Position = modelViewProjMat * vec4(vertexCoord, 1.0);
-    */
+    gl_Position = modelViewProjMat * vertexCoord;
 }

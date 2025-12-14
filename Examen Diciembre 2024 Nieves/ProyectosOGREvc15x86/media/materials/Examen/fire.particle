@@ -1,0 +1,36 @@
+particle_system Fire
+{
+    material        	RocketSmoke
+	particle_width  	35
+	particle_height 	35
+	quota           	500
+	billboard_type  	point
+    
+	// Area emitter
+	emitter Point
+	{
+		position 0 0 0
+		angle 15
+		colour .55 .45 .0 0.5
+		emission_rate 50
+		time_to_live 6
+		direction 0 -1 0
+		velocity_min 150
+		velocity_max 180
+	}
+
+    affector ColourFader2
+    {
+        red1 0.2
+        green1 -0.1
+        blue1 -0.1
+        alpha1 0.0
+
+		red2 -0.3
+        green2 -0.3
+        blue2 -0.3
+        alpha2 -0.06
+
+		state_change 4
+    }
+}
