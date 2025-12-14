@@ -119,8 +119,8 @@ vertex_program waveShaderVS glsl
     default_params
     {
         param_named_auto modelViewProjMat worldviewproj_matrix
-        param_named_auto timeWave sintime_0_2pi 100
-        param_named centro float 750
+        param_named_auto timeWave sintime_0_2pi 80
+        param_named size float 1500
     }
 }
 
@@ -140,7 +140,7 @@ material exam/waveShader
     {
         pass
         {
-            lighting off
+            //lighting off
             vertex_program_ref waveShaderVS {}
             fragment_program_ref waveShaderFS {}
 
