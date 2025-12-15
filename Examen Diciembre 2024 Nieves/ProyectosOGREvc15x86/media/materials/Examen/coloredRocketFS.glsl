@@ -7,5 +7,5 @@ out vec4 fFragColor;
 
 void main()
 {
-    fFragColor = vec4(abs(timeColour), vUv0.x, timeColour, 1.0);
+    fFragColor = vec4(abs(timeColour), vUv0.t, timeColour, 1.0);
 }
