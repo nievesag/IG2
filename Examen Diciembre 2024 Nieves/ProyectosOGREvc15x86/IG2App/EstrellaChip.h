@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "IG2Object.h"
 #include "SpaceShip.h"
+#include <OgreTimer.h>
 
 class EstrellaChip : public IG2Object
 {
@@ -26,4 +27,6 @@ private:
 	float count = 0;
 
 	bool active = false;
+
+	Timer* timer = nullptr;
 };

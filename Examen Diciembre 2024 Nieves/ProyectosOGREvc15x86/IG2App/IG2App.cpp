@@ -139,4 +139,6 @@ void IG2App::setupScene(void){
     nodeBola->attachObject(bola);
     nodeBola->setPosition({-300, 0,0});
     bola->setMaterialName("exam/coloredRocket");
+
+    
 }

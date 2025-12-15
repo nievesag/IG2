@@ -1,14 +1,14 @@
 #version 330 core
 
-uniform mat4 modelViewProjMat;
-
+in vec4 vertex;
 in vec2 uv0; // Coordenadas de textura
-in vec3 position;
-
+uniform mat4 modelViewProjMat;
 out vec2 vUv0;
+
+//in vec3 position;
 
 void main()
 {
-    vec3 vertexCoord = position;
-    gl_Position = modelViewProjMat * vec4(vertexCoord, 1.0);
+    vUv0 = uv0;
+    gl_Position = modelViewProjMat * vertex;
 }

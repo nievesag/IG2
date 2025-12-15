@@ -23,6 +23,8 @@ EstrellaChip::EstrellaChip(Vector3 initPos, SceneNode* node, SceneManager* scene
 
 		std::cout << r->getAABB().getSize() << std::endl;
 	}
+
+	timer = new Ogre::Timer();
 }
 
 void EstrellaChip::frameRendered(const Ogre::FrameEvent& evt)
