@@ -27,6 +27,7 @@ protected:
     virtual void setup();
     virtual void shutdown();
     virtual void setupScene();
+    virtual void frameRendered(const Ogre::FrameEvent& evt);
     
     
     Ogre::SceneNode* mSinbadNode = nullptr;
@@ -43,6 +44,12 @@ protected:
 
     SceneNode* estrellaChipNode = nullptr;
     EstrellaChip* estrella = nullptr;
+
+    Ogre::SceneNode* bolaFather = nullptr;
+
+    Ogre::SceneNode* nodeBola = nullptr;
+
+
 };
 
 #endif

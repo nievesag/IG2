@@ -8,7 +8,7 @@ EstrellaChip::EstrellaChip(Vector3 initPos, SceneNode* node, SceneManager* scene
 	spaceShip = new SpaceShip({0,0,0}, node, mSM);
 	engine = new Engine( {0,20,0},node,sceneMng);
 
-	rocketsRack = mSM->getRootSceneNode()->createChildSceneNode();
+	rocketsRack = node->createChildSceneNode();
 
 	Real angleStep = (2 * Math::PI) / DataSizes::NUM_ROCKETS;
 	for (int i = 0; i < DataSizes::NUM_ROCKETS; ++i)

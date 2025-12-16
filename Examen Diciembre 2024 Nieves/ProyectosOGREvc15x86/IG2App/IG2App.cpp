@@ -1,5 +1,9 @@
 #include "IG2App.h"
 
+#include "DataSizes.h"
+#include "OgreAnimation.h"
+#include "OgreKeyFrame.h"
+
 using namespace Ogre;
 using namespace std;
 
@@ -134,11 +138,54 @@ void IG2App::setupScene(void){
     sky.normal = Ogre::Vector3::UNIT_Z + Ogre::Vector3::UNIT_Y;
     mSM->setSkyPlane(true, sky, "Sky", 1, 1, true, 1.5, 50, 50);
 
+    bolaFather = mSM->getRootSceneNode()->createChildSceneNode("bolaPadre");
+    bolaFather->setPosition(0, 0, 0);
+    
+
     Ogre::Entity* bola = mSM->createEntity("uv_sphere.mesh");
-    Ogre::SceneNode* nodeBola = mSM->getRootSceneNode()->createChildSceneNode("bola");
+    nodeBola = bolaFather->createChildSceneNode("bola");
     nodeBola->attachObject(bola);
     nodeBola->setPosition({-300, 0,0});
     bola->setMaterialName("exam/coloredRocket");
 
-    
+    Ogre::Entity* bola1 = mSM->createEntity("uv_sphere.mesh");
+    SceneNode* bola1node = nodeBola->createChildSceneNode("bolahola");
+    bola1node->scale(0.3, 0.3, 0.3);
+    bola1node->attachObject(bola1);
+    bola1->setMaterialName("exam/coloredRocket");
+    bola1node->setPosition({ 100,0,0 });
+
+    Animation* animation = mSM->createAnimation("bolaAnim", 10.0f);
+    animation->setInterpolationMode(Animation::IM_LINEAR);
+    NodeAnimationTrack* track = animation->createNodeTrack(0);
+    track->setAssociatedNode(nodeBola);
+    TransformKeyFrame* kf;
+
+    kf = track->createNodeKeyFrame(0);
+    kf->setTranslate({ 0,100,0 });
+    kf->setScale({ 0.5,0.5,0.5 });
+
+	kf = track->createNodeKeyFrame(9.0f);
+    kf->setTranslate({ 0,-400,0 });
+    kf->setScale({1,1,1});
+}
+
+void IG2App::frameRendered(const Ogre::FrameEvent& evt)
+{
+    //estrellaChipNode->translate(0,DataSizes::SHIP_SPEED * evt.timeSinceLastFrame,0);
+    estrellaChipNode->setPosition(DataSizes::SHIP_SPEED * evt.timeSinceLastFrame, sin(DataSizes::SHIP_SPEED * evt.timeSinceLastFrame) * 10, 0);
+
+    //bolaFather->rotate({0,1,0}, Angle(evt.timeSinceLastFrame * DataSizes::SHIP_SPEED));
+
+    //Real o = (evt.timeSinceLastFrame * DataSizes::SHIP_SPEED);
+    //std::cout << o << std::endl;
+    //float angle = cos(o) + sin(o);
+    //nodeBola->yaw(Angle(angle));
+
+    /*
+    object.pos.x = object.speed * getElapsedTime();
+    object.pos.y = sin(object.speed * getElapsedTime()) * amplitude;
+    */
+
+
 }
