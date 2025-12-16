@@ -168,6 +168,10 @@ void IG2App::setupScene(void){
 	kf = track->createNodeKeyFrame(9.0f);
     kf->setTranslate({ 0,-400,0 });
     kf->setScale({1,1,1});
+
+    bolaAnim = mSM->createAnimationState("bolaAnim");
+    bolaAnim->setLoop(true);
+    bolaAnim->setEnabled(true);
 }
 
 void IG2App::frameRendered(const Ogre::FrameEvent& evt)
@@ -186,6 +190,6 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
     object.pos.x = object.speed * getElapsedTime();
     object.pos.y = sin(object.speed * getElapsedTime()) * amplitude;
     */
-
+    bolaAnim->addTime(evt.timeSinceLastFrame);
 
 }

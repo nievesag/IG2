@@ -49,7 +49,7 @@ protected:
 
     Ogre::SceneNode* nodeBola = nullptr;
 
-
+    AnimationState* bolaAnim = nullptr;
 };
 
 #endif
