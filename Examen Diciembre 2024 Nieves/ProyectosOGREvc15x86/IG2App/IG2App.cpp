@@ -161,6 +161,7 @@ void IG2App::setupScene(void){
     track->setAssociatedNode(nodeBola);
     TransformKeyFrame* kf;
 
+    /*
     kf = track->createNodeKeyFrame(0);
     kf->setTranslate({ 0,100,0 });
     kf->setScale({ 0.5,0.5,0.5 });
@@ -172,10 +173,22 @@ void IG2App::setupScene(void){
     bolaAnim = mSM->createAnimationState("bolaAnim");
     bolaAnim->setLoop(true);
     bolaAnim->setEnabled(true);
+	*/
 }
 
 void IG2App::frameRendered(const Ogre::FrameEvent& evt)
 {
+    /*
+    // Calculate vertical (Y) displacement using sine wave
+    float yOffset = Mathf.Sin(Time.time * frequency) * amplitude;
+
+    // Calculate horizontal (X) movement (simple constant speed)
+    float xOffset = Time.time * speed;
+
+    // Set the new position
+    transform.position = new Vector3(startPos.x + xOffset, startPos.y + yOffset, startPos.z);
+    */
+
     //estrellaChipNode->translate(0,DataSizes::SHIP_SPEED * evt.timeSinceLastFrame,0);
     estrellaChipNode->setPosition(DataSizes::SHIP_SPEED * evt.timeSinceLastFrame, sin(DataSizes::SHIP_SPEED * evt.timeSinceLastFrame) * 10, 0);
 
@@ -190,6 +203,6 @@ void IG2App::frameRendered(const Ogre::FrameEvent& evt)
     object.pos.x = object.speed * getElapsedTime();
     object.pos.y = sin(object.speed * getElapsedTime()) * amplitude;
     */
-    bolaAnim->addTime(evt.timeSinceLastFrame);
+    //bolaAnim->addTime(evt.timeSinceLastFrame);
 
 }
