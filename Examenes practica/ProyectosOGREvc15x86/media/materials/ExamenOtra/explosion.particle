@@ -1,0 +1,39 @@
+particle_system examen/explosion
+{
+    billboard_type point
+    particle_width 500
+    particle_height 500
+    quota 100
+    material examen/smoke
+
+    emitter Point
+    {
+        // Configuración del emisor
+        direction 0 1 0
+        position 0 0 0
+        angle 60
+        emission_rate 20
+        time_to_live 6
+
+        velocity_min 2000
+        velocity_max 2500
+
+        colour 0.027 0.89 0.0 0.9
+        duration 0.5
+    }
+
+    affector ColourFader
+    {
+        // Configuración del modificador
+        red 0.2
+        green 0.2
+        blue 0.2
+        alpha -0.06
+    }
+
+    affector Scaler
+    {
+        // Configuración del modificador
+        rate -10
+    }
+}

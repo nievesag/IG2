@@ -1,0 +1,36 @@
+particle_system examen/smokeGrey
+{
+    billboard_type point
+    particle_width 10
+    particle_height 10
+    quota 1000
+    material examen/smoke
+
+    emitter Point
+    {
+        // Configuración del emisor
+        direction 1 0 0
+        position 0 0 0
+        angle 10
+        emission_rate 100
+        time_to_live 10
+
+        velocity_min 150
+        velocity_max 200
+
+        colour 0.2 0.2 0.2 0.9
+        duration 0
+    }
+
+    affector ColourFader
+    {
+        // Configuración del modificador
+        alpha -0.06
+    }
+
+    affector Scaler
+    {
+        // Configuración del modificador
+        rate 20
+    }
+}

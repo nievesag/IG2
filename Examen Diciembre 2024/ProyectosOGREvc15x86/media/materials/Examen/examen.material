@@ -1,0 +1,191 @@
+material examen/body
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture corrosion.jpg
+            }
+        }
+    }
+}
+
+material examen/engine
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+
+            texture_unit
+            {
+                texture MtlPlat2.jpg
+            }
+        }
+    }
+}
+
+material examen/cube
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture BumpyMetal.jpg
+            }
+        }
+    }
+}
+
+material examen/sphere
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture MtlPlat2.jpg
+            }
+        }
+    }
+}
+
+material examen/floor
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture Water02.jpg
+            }
+
+            texture_unit
+            {
+                texture Noise.png
+                scroll_anim 0.1 0.0
+                colour_op modulate
+            }
+        }
+    }
+}
+
+material examen/sky
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+
+            texture_unit
+            {
+                texture spaceSky.jpg
+            }
+        }
+    }
+}
+
+material examen/smoke
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            scene_blend alpha_blend
+            depth_write off
+            diffuse vertexcolour
+
+            texture_unit
+            {
+                texture smoke.png
+                tex_address_mode clamp
+            }
+        }
+    }
+}
+
+vertex_program waveVS glsl
+{
+    source waveVS.glsl
+
+    default_params
+    {
+        param_named_auto modelViewProjMat worldviewproj_matrix
+        param_named_auto sintime sintime_0_2pi 200
+        param_named size float 1500
+    }
+}
+
+fragment_program waveFS glsl
+{
+    source waveFS.glsl
+
+    default_params
+    {
+        param_named textura int 0
+    }
+}
+
+material exam/waveShader
+{
+    technique
+    {
+        pass
+        {
+            vertex_program_ref waveVS {}
+            fragment_program_ref waveFS {}
+
+            texture_unit
+            {
+                texture Water02.jpg 2d
+            }
+        }
+    }
+}
+
+vertex_program planetVS glsl
+{
+    source planetVS.glsl
+
+    default_params
+    {
+        param_named_auto modelViewProjMat worldviewproj_matrix
+    }
+}
+
+fragment_program planetFS glsl
+{
+    source planetFS.glsl
+
+    default_params
+    {
+        param_named textura int 0
+        param_named_auto sintime sintime_0_2pi 10
+    }
+}
+
+material exam/planetShader
+{
+    technique
+    {
+        pass
+        {
+            vertex_program_ref planetVS {}
+            fragment_program_ref planetFS {}
+
+            texture_unit
+            {
+                texture Water02.jpg 2d
+            }
+        }
+    }
+}

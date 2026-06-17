@@ -1,0 +1,276 @@
+material example/stonesFloor
+{
+    technique
+	{ 
+		pass 
+		{  
+			texture_unit 
+			{
+				texture BeachStones.jpg
+			}
+		}
+    }
+}
+
+material examen/body
+{
+    technique 
+	{ 
+		pass 
+		{  
+			texture_unit 
+			{
+				texture corrosion.jpg
+			}
+		}
+    }
+}
+
+material examen/wings
+{
+    technique 
+	{ 
+		pass 
+		{  
+			texture_unit 
+			{
+				texture RustySteel.jpg
+			}
+		}
+    }
+}
+
+material examen/engine
+{
+    technique 
+	{ 
+		pass 
+		{  
+			lighting off
+
+			texture_unit 
+			{
+				texture MtlPlat2.jpg
+			}
+		}
+    }
+}
+
+material examen/rocket
+{
+    technique 
+	{ 
+		pass 
+		{  
+			texture_unit 
+			{
+				texture BumpyMetal.jpg
+			}
+		}
+    }
+}
+
+material examen/sky 
+{
+	technique 
+	{
+		pass 
+		{
+			texture_unit
+			{
+				texture spaceSky.jpg
+			}
+		}
+	}
+}
+
+material examen/floor 
+{
+	technique 
+	{
+		pass 
+		{
+			texture_unit
+			{
+				texture Water02.jpg
+				colour_op modulate
+			}
+
+			texture_unit
+			{
+				texture Noise.png
+				colour_op modulate
+				//scroll_anim 0.1 0.0
+			}
+		}
+	}
+}
+
+material examen/billboard1
+{
+	technique 
+	{
+		pass 
+		{
+			texture_unit 
+			{
+				texture fuerza.jpeg
+				env_map spherical
+			}
+		}
+	}
+}
+
+material examen/billboard2
+{
+	technique 
+	{
+		pass 
+		{
+			lighting off
+
+			texture_unit 
+			{
+				texture godot.png
+				tex_address_mode clamp 
+			}
+		}
+	}
+}
+
+material examen/smoke
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_write off
+			diffuse vertexcolour
+			
+			texture_unit
+			{
+				texture smoke.png
+				tex_address_mode clamp
+			}
+		}
+	}
+}
+
+vertex_program coloresVS glsl
+{
+	source coloresVS.glsl
+
+	default_params 
+	{
+		param_named_auto modelViewProjMat worldviewproj_matrix
+
+		param_named_auto sintime sintime_0_2pi 50
+		param_named_auto costime sintime_0_2pi 50
+	}
+}
+
+fragment_program coloresFS glsl
+{
+	source coloresFS.glsl
+	
+	default_params
+	{
+		param_named texturaA int 0
+		param_named texturaB int 1
+		param_named color float4 0.0 1.0 0.0 1.0
+		param_named radius float 0.2
+	}
+}
+
+fragment_program checkerFS glsl
+{
+	source checkerFS.glsl
+	
+	default_params
+	{
+		param_named texturaA int 0
+		param_named texturaB int 1
+	}
+}
+
+material examen/shaderColores
+{
+	technique 
+	{
+		pass
+		{
+			vertex_program_ref coloresVS {}
+			fragment_program_ref coloresFS {}
+
+			texture_unit
+			{
+				texture fuerza.jpeg 2d
+			}
+			texture_unit 
+			{
+				texture Water02.jpg 2d
+			}
+
+		}
+	}
+}
+
+material examen/shaderChecker
+{
+	technique 
+	{
+		pass
+		{
+			vertex_program_ref coloresVS {}
+			fragment_program_ref checkerFS {}
+
+			texture_unit
+			{
+				texture fuerza.jpeg 2d
+			}
+			texture_unit 
+			{
+				texture checker.png 2d
+			}
+
+		}
+	}
+}
+
+vertex_program diciembreVS glsl
+{
+	source diciembreVS.glsl
+
+	default_params
+	{
+		param_named_auto modelViewProjMat worldviewproj_matrix
+	}
+}
+
+fragment_program diciembreFS glsl
+{
+	source diciembreFS.glsl
+
+	default_params
+	{
+		param_named_auto varColor sintime_0_2pi 4
+	}
+}
+
+material examen/diciembre
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+            cull_hardware none
+            cull_software none
+
+			vertex_program_ref diciembreVS {}
+			fragment_program_ref diciembreFS {}
+		}
+	}
+}

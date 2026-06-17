@@ -1,0 +1,134 @@
+material examen/par
+{
+    technique
+    {
+        pass
+        {
+            texture_unit 
+            {
+                texture RustedMetal.jpg
+            }
+        }
+    }
+}
+
+material examen/impar
+{
+    technique
+    {
+        pass
+        {
+            texture_unit 
+            {
+                texture RustySteel.jpg
+            }
+        }
+    }
+}
+
+material examen/floor
+{
+    technique
+    {
+        pass
+        {
+            texture_unit 
+            {
+                texture grass_1024.jpg
+            }
+
+            texture_unit 
+            {
+                texture Noise.png
+                colour_op add
+                scroll_anim 0.05 0.0
+            }
+        }
+    }
+}
+
+material examen/sky
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture spaceSky.jpg
+                scroll_anim 0.05 0.0
+            }
+
+            texture_unit
+            {
+                texture lightMap.jpg
+                colour_op modulate
+            }
+        }
+    }
+}
+
+material examen/smoke
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            scene_blend alpha_blend
+            depth_write off
+            diffuse vertexcolour
+
+            texture_unit
+            {
+                texture smoke.png
+                tex_address_mode clamp
+            }
+        }
+    }
+}
+
+vertex_program shaderVS glsl
+{
+    source shaderVS.glsl
+
+    default_params
+    {
+        param_named_auto modelViewProjMat worldviewproj_matrix
+        param_named_auto modelViewMat worldview_matrix
+        param_named_auto normalMat normal_matrix
+    }
+}
+
+fragment_program shaderFS glsl
+{
+    source shaderFS.glsl
+
+    default_params
+    {
+        param_named_auto sintime sintime_0_2pi 4
+        param_named_auto Flipping render_target_flipping
+
+        //Parámetros de la luz. Como las viewMatrix, nos los da ogre y por eso están en _auto
+        param_named_auto lightDiffuse light_diffuse_colour 0;   //Color de luz difusa, en vector4
+        param_named_auto lightPosition light_position 0;        //Posicion de la luz (w define si es posicion o direccion)
+
+        //Parametro que define la cantida de luz que refleja el material
+        param_named materialDiffuse float3 0.7 0.7 0.7;
+    }
+}
+
+material examen/shader
+{
+technique
+    {
+        pass
+        {
+            cull_hardware none
+            cull_software none
+
+            vertex_program_ref shaderVS {}
+            fragment_program_ref shaderFS {}
+        }
+    }
+}

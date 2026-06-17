@@ -1,0 +1,31 @@
+particle_system examen/fire
+{
+    billboard_type point
+    particle_width 35
+    particle_height 35
+    quota 500
+    material examen/smoke
+
+    emitter Point
+    {
+        direction 0 -1 0
+        position 0 0 0
+        angle 10
+        emission_rate 50
+        time_to_live 6
+        velocity_min 150
+        velocity_max 180
+        colour 1.0 1.0 0.0 1.0
+        duration 0
+    }
+
+    affector ColourFader
+    {
+        green -0.6
+    }
+
+    affector Scaler
+    {
+        rate 10
+    }
+}
